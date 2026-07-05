@@ -1,0 +1,13 @@
+[package]
+name = "slipway-core"
+description = "Slipway domain model, persistence, and derivation engine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+rusqlite.workspace = true
+thiserror.workspace = true

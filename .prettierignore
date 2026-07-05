@@ -1,0 +1,6 @@
+dist
+target
+docs/design
+pnpm-lock.yaml
+src-tauri/gen
+src-tauri/icons

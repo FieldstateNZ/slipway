@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;family=Work+Sans:wght@400;500;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400;1,8..60,500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#1B1C1F;font-family:'Instrument Sans',system-ui,sans-serif}
+.dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(255,255,255,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 14px}
+.dv-tid{font:600 10px 'JetBrains Mono',monospace;padding:3px 7px;background:#ECEDEF;color:#141518;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 'Instrument Sans',sans-serif;color:#ECEDEF}
+.dv-opts{display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px 'JetBrains Mono',monospace;padding:3px 7px;background:rgba(255,255,255,.14);color:#fff;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:500 11.5px/1.3 'Instrument Sans',sans-serif;color:rgba(255,255,255,.6);letter-spacing:.02em}
+.dv-opt:target .dv-oid{background:#53A9FF;color:#0F1013}
+.dv-next{margin:28px 0 0;font:12px/1.6 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5)}
+</style>
+</helmet>
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Settled on <a class="dv-oid" href="#3c">3c</a> — the full loop at that weight: drawer → capture → advance → recall</span></div>
+<div style="max-width:1020px;margin:0 0 30px;font:400 13px/1.75 'Instrument Sans',sans-serif;color:rgba(255,255,255,.62)">
+One idea unifies everything now: <em>everything is a runway.</em> Board lanes advance (<a class="dv-oid" href="#4c">4c</a>); inside the drawer the steps are a runway too — one full, the rest in perspective (<a class="dv-oid" href="#4a">4a</a>); the capture is the flag at its end (<a class="dv-oid" href="#4b">4b</a>). Boldness stays on the capture takeover; the board's reward is the restrained lane-pull. Frames follow ds3 later today, after the two merges are swept. Recall (<a class="dv-oid" href="#4d">4d</a>) is the second tab.
+</div>
+<div class="dv-opts">
+<div class="dv-opt" id="4a">
+<div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a>DRAWER — ds3 open · steps as a runway, one full at a time</div>
+<div data-screen-label="4a Drawer" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(233,237,244,.08)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+</div>
+<div style="flex:1;display:flex;min-height:0">
+<div style="flex:1;position:relative;overflow:hidden;background-image:radial-gradient(rgba(233,237,244,.035) 1px,transparent 1px);background-size:22px 22px">
+<div style="opacity:.3">
+<div style="position:absolute;left:32px;top:34px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#9CA3AD">DECISION STUDIO</div>
+<div style="position:absolute;left:32px;right:40px;top:140px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:32px;top:64px;width:330px;height:150px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:13px;padding:16px 20px"><div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">next · 10m</div><div style="font:600 16px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE">DNS CNAME → GitHub Pages</div></div>
+<div style="position:absolute;left:410px;top:92px;width:220px;height:96px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.16);border-radius:11px;padding:12px 15px;opacity:.75"><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:5px">then · 15m</div><div style="font:600 13px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">npm publishers ×4</div></div>
+<div style="position:absolute;left:670px;top:128px;display:flex;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.25)"></span><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.15)"></span></div>
+<div style="position:absolute;left:32px;top:300px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">LOOM</div>
+<div style="position:absolute;left:32px;right:40px;top:400px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:32px;top:330px;width:330px;height:140px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:13px"></div>
+<div style="position:absolute;left:410px;top:360px;width:200px;height:80px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.16);border-radius:10px;opacity:.7"></div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(8,9,11,.55)"></div>
+</div>
+<div style="width:620px;flex:none;background:#121418;border-left:1px solid rgba(233,237,244,.10);box-shadow:-32px 0 60px rgba(0,0,0,.5);padding:24px 34px 26px;display:flex;flex-direction:column;gap:13px;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">decision-studio · ds3 · 10m</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#3C4046">esc parks it — progress keeps</span>
+</div>
+<div style="font:600 20px/1.35 'IBM Plex Sans',sans-serif;color:#E8EAEE">Add DNS CNAME — schema.workspec.io → fieldstatenz.github.io</div>
+<div style="font:400 13px/1.55 'IBM Plex Sans',sans-serif;color:#9CA3AD">The schema's permanent public address — every <span style="font:500 11.5px 'IBM Plex Mono',monospace">$schema</span> URL will point here. <span style="color:#596069">Frees ds4 → ds6.</span></div>
+<div style="background:#171A1F;border:1px solid rgba(233,237,244,.10);border-radius:10px;padding:13px 16px">
+<div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#53A9FF;margin-bottom:6px">BEFORE — 20 SECONDS</div>
+<div style="font:400 13px/1.6 'IBM Plex Sans',sans-serif;color:#9CA3AD">A CNAME says “this name is an alias for that name.” You're telling DNS that schema.workspec.io answers wherever GitHub Pages answers. Once GitHub sees the record it provisions a TLS certificate on its own.</div>
+</div>
+<div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069;margin-top:4px">STEP 1 OF 3</div>
+<div style="background:#171A1F;border:1px solid #53A9FF;border-radius:12px;padding:16px 18px;box-shadow:0 0 0 3px rgba(83,169,255,.10)">
+<div style="font:600 15px/1.4 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:10px">Add the record at your registrar</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0B0C0E;border:1px solid rgba(233,237,244,.12);border-radius:8px;padding:10px 12px;font:500 12px 'IBM Plex Mono',monospace;color:#B8C2CC">schema.workspec.io&nbsp;&nbsp;CNAME&nbsp;&nbsp;fieldstatenz.github.io<span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.16);border-radius:5px;padding:2px 7px;flex:none">⧉ copy</span></div>
+<div style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF;margin-top:10px">▸ why alias a name, not an IP — 10s</div>
+</div>
+<div style="margin-left:16px;border:1px dashed rgba(233,237,244,.16);border-radius:10px;padding:10px 14px;opacity:.6;font:400 13px 'IBM Plex Sans',sans-serif;color:#9CA3AD"><span style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">then</span>&nbsp;&nbsp;Wait out propagation — minutes to an hour</div>
+<div style="margin-left:32px;border:1px dashed rgba(233,237,244,.13);border-radius:10px;padding:10px 14px;opacity:.4;font:400 13px 'IBM Plex Sans',sans-serif;color:#9CA3AD"><span style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">then</span>&nbsp;&nbsp;Confirm with dig</div>
+<div style="margin-left:48px;display:inline-flex;align-items:center;gap:7px;align-self:flex-start;border:1px dashed rgba(83,169,255,.4);border-radius:999px;padding:5px 12px;font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">⚑ then one question — before it counts ◌→●</div>
+<div style="margin-top:auto">
+<div style="height:46px;border-radius:10px;background:#53A9FF;color:#0F1013;display:flex;align-items:center;justify-content:center;font:600 14.5px 'IBM Plex Sans',sans-serif">Done — next step ↵</div>
+</div>
+</div>
+</div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The drawer is the lane's runway turned inward: one step full-size with its copy-paste payload and a single concept link; the next steps shrink with indentation; the capture flag is visible at the end from the very start. One button. Esc never loses progress.</div>
+</div>
+<div class="dv-opt" id="4b">
+<div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a>CAPTURE — the flag at the end of the runway · the one loud moment</div>
+<div data-screen-label="4b Capture" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(233,237,244,.08)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+</div>
+<div style="flex:1;display:flex;min-height:0">
+<div style="flex:1;position:relative;overflow:hidden;background-image:radial-gradient(rgba(233,237,244,.03) 1px,transparent 1px);background-size:22px 22px">
+<div style="opacity:.18">
+<div style="position:absolute;left:32px;top:64px;width:330px;height:150px;background:#171A1F;border:1px solid rgba(233,237,244,.3);border-radius:13px"></div>
+<div style="position:absolute;left:410px;top:92px;width:220px;height:96px;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:11px"></div>
+<div style="position:absolute;left:32px;top:330px;width:330px;height:140px;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:13px"></div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(8,9,11,.68)"></div>
+</div>
+<div style="width:620px;flex:none;background:#121418;border-left:1px solid rgba(233,237,244,.10);box-shadow:-32px 0 60px rgba(0,0,0,.5);padding:26px 38px 28px;display:flex;flex-direction:column;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3 · the last step</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#3C4046">esc</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px;margin-top:14px;opacity:.5">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ record added at registrar</span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ propagation waited out</span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ dig → fieldstatenz.github.io.</span>
+</div>
+<div style="flex:1"></div>
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#53A9FF;margin-bottom:14px">ONE TAP.</div>
+<div style="font:600 26px/1.35 'IBM Plex Sans',sans-serif;color:#E8EAEE;max-width:500px;margin-bottom:24px">Why a CNAME here — not an A record?</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:12px 16px"><span style="width:27px;height:27px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12px 'IBM Plex Mono',monospace;color:#596069;flex:none">1</span><span style="font:400 14.5px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">CNAMEs are faster to resolve</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid #53A9FF;background:rgba(83,169,255,.12);border-radius:10px;padding:12px 16px"><span style="width:27px;height:27px;border-radius:7px;background:#53A9FF;display:flex;align-items:center;justify-content:center;font:600 12px 'IBM Plex Mono',monospace;color:#0F1013;flex:none">2</span><span style="font:500 14.5px/1.4 'IBM Plex Sans',sans-serif;color:#E8EAEE">GitHub's IPs can change; the alias follows them, a hardcoded IP wouldn't</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:12px 16px"><span style="width:27px;height:27px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12px 'IBM Plex Mono',monospace;color:#596069;flex:none">3</span><span style="font:400 14.5px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">A records don't support HTTPS</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:12px 16px"><span style="width:27px;height:27px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12px 'IBM Plex Mono',monospace;color:#596069;flex:none">4</span><span style="font:400 14.5px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">Subdomains can't have A records</span></div>
+</div>
+<div style="flex:1"></div>
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;color:#596069;text-align:center">↵ commit · s skip — ds3 stays hollow ◌ · misses come back sooner</div>
+</div>
+</div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The takeover from <a class="dv-oid" href="#1b">1b</a>, kept: steps collapse to three quiet ✓s, the board drops to 18%, and one question owns the panel. Keys 1–4 answer; the distractors carry the teaching. A miss highlights the right row with a one-line why and shortens the return interval.</div>
+</div>
+<div class="dv-opt" id="4c">
+<div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a>THE ADVANCE — capture committed, the lane pulls forward · the restrained reward</div>
+<div data-screen-label="4c Advance" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+<span style="flex:1"></span>
+<span style="border:1px solid rgba(233,237,244,.12);border-radius:6px;padding:4px 8px;font:500 11px 'IBM Plex Mono',monospace;color:#596069">g graph</span>
+</div>
+<div style="flex:1;background-image:radial-gradient(rgba(233,237,244,.035) 1px,transparent 1px);background-size:22px 22px;padding:26px 32px 0;display:flex;flex-direction:column;gap:26px">
+<div style="position:relative;height:230px">
+<div style="display:flex;align-items:baseline;gap:12px"><span style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#9CA3AD">DECISION STUDIO</span><span style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">advancing · 500ms</span></div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;border:1px dashed rgba(83,169,255,.35);border-radius:13px"></div>
+<div style="position:absolute;left:34px;top:26px;width:390px;height:170px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:13px;padding:18px 22px;box-shadow:0 0 0 3px rgba(83,169,255,.10),0 20px 44px rgba(0,0,0,.45)">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">next · 2m</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">Point Pages at the custom domain</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">One gh api call — HTTPS enforced.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;background:#53A9FF;color:#0F1013;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px;opacity:.85">Start ↵</div>
+</div>
+<div style="position:absolute;left:500px;top:56px;width:250px;height:110px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.16);border-radius:11px;padding:14px 17px;opacity:.75"><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:6px">then · 15m</div><div style="font:600 13.5px/1.35 'IBM Plex Sans',sans-serif;color:#9CA3AD">npm trusted publishers ×4</div></div>
+<div style="position:absolute;left:790px;top:76px;width:180px;height:70px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.12);border-radius:10px;padding:11px 14px;opacity:.45"><div style="font:600 12px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">◆ Rename API_VERSION?</div></div>
+<div style="position:absolute;left:900px;top:98px;height:26px;display:flex;align-items:center;gap:8px;background:#0F1013;border:1px solid rgba(83,169,255,.5);border-radius:999px;padding:0 11px;font:600 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">✓ ds3<span style="letter-spacing:3px;color:rgba(83,169,255,.45)">˗˗˗</span></div>
+<div style="position:absolute;left:1030px;top:70px;font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">−10m of you</div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ launch · ≈42m of you</div>
+</div>
+<div style="position:relative;height:230px;opacity:.72">
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">LOOM</div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:13px;padding:18px 22px">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">next · 10m · provide</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">API key + staging target</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">Last human input before live validation.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;border:1px solid rgba(233,237,244,.25);color:#9CA3AD;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px">Hand over</div>
+</div>
+<div style="position:absolute;left:440px;top:76px;width:200px;height:70px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:11px 14px;opacity:.7"><div style="font:600 12px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">◆ say “go” · 1m</div></div>
+<div style="position:absolute;left:680px;top:104px;background:#0F1013;padding:2px 8px;font:500 10.5px 'IBM Plex Mono',monospace;color:#3C4046;letter-spacing:.2em">▸ ▸ ▸ pipeline carries it ▸ ▸ ▸</div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ launch · 11m of you</div>
+</div>
+<div style="position:relative;height:230px;opacity:.72">
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">SLIPWAY</div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;background:rgba(83,169,255,.07);border:1px solid #53A9FF;border-radius:13px;padding:18px 22px">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF;margin-bottom:8px">● in progress — this session</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">Design brief → Claude session</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">You are here.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;border:1px solid rgba(83,169,255,.4);color:#53A9FF;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px">Continue</div>
+</div>
+<div style="position:absolute;left:440px;top:76px;width:430px;height:70px;display:flex;gap:12px;align-items:center"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#3C4046;background:#0F1013;padding:2px 6px">then:</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.7">spec — ATLAS</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.6">v0.1 — PIPE</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.5">dogfood — you</span></div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ v0.1</div>
+</div>
+</div>
+<div style="flex:none;display:flex;align-items:center;padding:12px 32px 14px;font:500 11px 'IBM Plex Mono',monospace;color:#3C4046"><span>1 2 3 lanes · ⇥ next in lane · ↵ start · g graph</span><span style="flex:1"></span><span style="display:inline-flex;align-items:center;gap:8px;background:#14161A;border:1px solid rgba(83,169,255,.4);border-radius:8px;padding:7px 12px;color:#9CA3AD"><span style="color:#53A9FF">●</span> dns aliasing — captured · resurfaces with ds6</span></div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The reward, mid-motion: ds3 shrinks to a ✓-pill and slides toward the flag; ds4 is docking into the dashed position-1 slot; every ghost grows one size; the flag ticks down 10 minutes of you-time. One 500ms ease-out, nothing bounces. The captured concept confirms quietly in the corner.</div>
+</div>
+<div class="dv-opt" id="4d">
+<div class="dv-olabel"><a class="dv-oid" href="#4d">4d</a>RECALL — second tab · a ledger, never a quiz</div>
+<div data-screen-label="4d Recall" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid rgba(233,237,244,.09)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+<div style="display:flex;gap:4px;height:100%;align-items:stretch">
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">board</span>
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#53A9FF;border-bottom:2px solid #53A9FF">recall</span>
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">intake</span>
+</div>
+<span style="flex:1"></span>
+<span style="border:1px solid rgba(233,237,244,.12);border-radius:6px;padding:4px 8px;font:500 11px 'IBM Plex Mono',monospace;color:#596069">⌘K</span>
+</div>
+<div style="flex:1;padding:44px 0 0 120px">
+<div style="width:940px">
+<div style="display:flex;align-items:baseline;gap:14px;margin-bottom:6px"><span style="font:600 21px 'IBM Plex Sans',sans-serif;color:#E8EAEE">Learned</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#596069">13 concepts · 11 held · 2 hollow ◌</span></div>
+<div style="font:400 13px/1.5 'IBM Plex Sans',sans-serif;color:#596069;margin-bottom:26px">Evidence, not homework. Nothing here interrupts you — rechecks ride along on the board.</div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:0 16px 8px;font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069"><span>CONCEPT</span><span>FROM</span><span>STREAK</span><span>NEXT</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07)"><span>cache ttl + propagation</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮▮▮</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">30d</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07)"><span>oidc trusted publishing</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds1</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮▮<span style="color:#33373D">▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">12d</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07);background:rgba(83,169,255,.07);border-radius:8px"><span>dns aliasing</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮<span style="color:#33373D">▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">[↵] ask me now</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07)"><span>tls auto-provisioning</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds4</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮<span style="color:#33373D">▮▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#9CA3AD">~1d — missed once</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07)"><span>npm provenance</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds5</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮<span style="color:#33373D">▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">6d</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.07)"><span>staging targets</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">lm1</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#53A9FF">▮<span style="color:#33373D">▮▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">9d</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#9CA3AD;border-top:1px solid rgba(233,237,244,.07)"><span>◌ breaking-change surface</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds9</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#33373D">▮▮▮▮</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">first check at ds7</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 110px 190px;gap:10px;padding:11px 16px;font:400 14px 'IBM Plex Sans',sans-serif;color:#9CA3AD;border-top:1px solid rgba(233,237,244,.07);border-bottom:1px solid rgba(233,237,244,.07)"><span>◌ review guards</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds10</span><span style="font:500 11.5px 'IBM Plex Mono',monospace;color:#33373D">▮▮▮▮</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">skipped — ask anytime</span></div>
+<div style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;margin-top:18px">hollow rings ◌ queue the same one-tap question — there is no quiz screen anywhere</div>
+</div>
+</div>
+<div style="flex:none;display:flex;align-items:center;padding:12px 32px 14px;font:500 11px 'IBM Plex Mono',monospace;color:#3C4046"><span>j/k rows · ↵ ask now · b board</span><span style="flex:1"></span><span>e export → cv.md</span></div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The ledger: one row per concept, streak as filled cells, next-surfacing in plain words. Held concepts fade for longer; misses shorten; hollows sit visibly unfilled with a no-pressure ask-me. Export turns the whole table into CV fuel.</div>
+</div>
+</div>
+<p class="dv-next">Try next: “animate <a class="dv-oid" href="#4c">4c</a>'s advance for real” · “light theme pass on <a class="dv-oid" href="#3c">3c</a> + <a class="dv-oid" href="#t4">turn 4</a>” · “intake at this weight”</p>
+</section>
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Lanes of one — parallel streams, each with a single point of concentration</span></div>
+<div style="max-width:1020px;margin:0 0 30px;font:400 13px/1.75 'Instrument Sans',sans-serif;color:rgba(255,255,255,.62)">
+Your call from <a class="dv-oid" href="#t2">turn 2</a>: keep multiple lanes, but each lane holds exactly one card. Variables here: what a lane <em>is</em> (<a class="dv-oid" href="#3a">3a</a> projects, <a class="dv-oid" href="#3b">3b</a> engagement modes, <a class="dv-oid" href="#3c">3c</a> projects-as-runways) and how the remainder stays felt without being read (slivers below · submerged dashes · perspective). One lane is active at a time — only it gets a solid button; <span style="font:500 11.5px 'JetBrains Mono',monospace">1 2 3</span> switch lanes, <span style="font:500 11.5px 'JetBrains Mono',monospace">⇥</span> deals the next card within a lane.
+</div>
+<div class="dv-opts">
+<div class="dv-opt" id="3a">
+<div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>BERTHS — vertical project lanes · one card each, queue stacked beneath · <a class="dv-oid" href="#1a">1a</a> skin</div>
+<div data-screen-label="3a Berths" style="width:1440px;height:900px;box-sizing:border-box;background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Instrument Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Instrument Sans',sans-serif;color:#5F757B">Slipway</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:rgba(79,200,184,.5)">◌ 20s</span>
+</div>
+<div style="flex:1;display:flex;gap:24px;padding:26px 32px 0">
+<div style="flex:1;display:flex;flex-direction:column">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px"><span style="font:600 13px 'Instrument Sans',sans-serif;color:#DFEAEC">Decision Studio</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">≈56m of you to launch</span></div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.45);border-radius:14px;padding:22px 24px;box-shadow:0 18px 44px rgba(0,0,0,.4)">
+<div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:10px">two minutes</div>
+<div style="font:600 18px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:8px">Merge PR #1 — OIDC trusted publishing</div>
+<div style="font:400 13.5px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA;margin-bottom:20px">No more long-lived npm secrets in CI.</div>
+<div style="height:44px;border-radius:10px;background:#FFA24D;color:#1A0E00;display:flex;align-items:center;justify-content:center;font:600 14px 'Instrument Sans',sans-serif">Start ↵</div>
+<div style="text-align:center;font:400 10.5px 'JetBrains Mono',monospace;color:#5F757B;margin-top:10px">lights ds5 ▸ first release</div>
+</div>
+<div style="margin:0 14px;height:34px;background:#0F181E;border:1px solid rgba(151,199,207,.11);border-top:none;border-radius:0 0 12px 12px;opacity:.7"></div>
+<div style="margin:0 28px;height:30px;background:#0D161C;border:1px solid rgba(151,199,207,.09);border-top:none;border-radius:0 0 12px 12px;opacity:.45"></div>
+<div style="text-align:center;font:500 10.5px 'JetBrains Mono',monospace;color:#3E5158;margin-top:12px">3 more ready · 5 at depth · ⇥ deals</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;opacity:.72">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px"><span style="font:600 13px 'Instrument Sans',sans-serif;color:#9FB5BA">Loom</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">11m, then hands-off</span></div>
+<div style="background:#101B21;border:1px solid rgba(151,199,207,.16);border-radius:14px;padding:22px 24px">
+<div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:10px">ten minutes · provide</div>
+<div style="font:600 18px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:8px">A live Anthropic key + a staging target</div>
+<div style="font:400 13.5px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA;margin-bottom:20px">The last human input before live validation.</div>
+<div style="height:44px;border-radius:10px;border:1px solid rgba(151,199,207,.25);color:#9FB5BA;display:flex;align-items:center;justify-content:center;font:600 14px 'Instrument Sans',sans-serif">Hand over</div>
+<div style="text-align:center;font:400 10.5px 'JetBrains Mono',monospace;color:#5F757B;margin-top:10px">unblocks the whole chain</div>
+</div>
+<div style="margin:0 14px;height:34px;background:#0F181E;border:1px solid rgba(151,199,207,.11);border-top:none;border-radius:0 0 12px 12px;opacity:.7"></div>
+<div style="text-align:center;font:500 10.5px 'JetBrains Mono',monospace;color:#3E5158;margin-top:12px">1 more ready · 3 with the pipeline</div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;opacity:.72">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:14px"><span style="font:600 13px 'Instrument Sans',sans-serif;color:#9FB5BA">Slipway</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">this session</span></div>
+<div style="background:#101B21;border:1px solid rgba(255,162,77,.35);border-radius:14px;padding:22px 24px">
+<div style="font:500 11px 'JetBrains Mono',monospace;color:#FFA24D;margin-bottom:10px">● in motion</div>
+<div style="font:600 18px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:8px">This design brief → Claude Design session</div>
+<div style="font:400 13.5px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA;margin-bottom:20px">You're inside this task right now.</div>
+<div style="height:44px;border-radius:10px;border:1px solid rgba(255,162,77,.35);color:#FFA24D;display:flex;align-items:center;justify-content:center;font:600 14px 'Instrument Sans',sans-serif">Continue</div>
+<div style="text-align:center;font:400 10.5px 'JetBrains Mono',monospace;color:#5F757B;margin-top:10px">then atlas takes it</div>
+</div>
+<div style="margin:0 14px;height:34px;background:#0F181E;border:1px solid rgba(151,199,207,.11);border-top:none;border-radius:0 0 12px 12px;opacity:.7"></div>
+<div style="text-align:center;font:500 10.5px 'JetBrains Mono',monospace;color:#3E5158;margin-top:12px">3 downstream, none yours yet</div>
+</div>
+</div>
+<div style="flex:none;display:flex;align-items:center;padding:14px 32px 16px;font:500 11px 'JetBrains Mono',monospace;color:#3E5158"><span>1 2 3 lanes · ⇥ next in lane · ↵ start · g graph · l ledger</span><span style="flex:1"></span><span>atlas 2 · pipeline 3 · shipped 27</span></div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">Lanes = projects, side by side like berths. Each shows one dealt card; the queue is two sliver-edges under it plus one count line. The active lane is full-bright with the only solid button; the others dim to 70% until you press their number.</div>
+</div>
+<div class="dv-opt" id="3b">
+<div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>MODES — horizontal lanes by engagement: do / decide / give · remainder submerged · <a class="dv-oid" href="#1c">1c</a> skin</div>
+<div data-screen-label="3b Modes" style="width:1440px;height:900px;box-sizing:border-box;background:#1A1512;border:1px solid rgba(240,233,225,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Work Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Work Sans',sans-serif;color:#8D7F6E">Slipway</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:rgba(233,161,59,.55)">◌ 20s</span>
+</div>
+<div style="flex:1;padding:30px 72px 0">
+<div style="font:italic 400 15px 'Source Serif 4',serif;color:#B5A796;margin-bottom:24px">Three lanes. One thing floats in each.</div>
+<div style="display:flex;flex-direction:column;gap:26px">
+<div>
+<div style="display:flex;gap:22px;align-items:stretch">
+<div style="width:110px;flex:none;padding-top:20px"><div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#E9A13B">DO</div><div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-top:5px">hands on<br>≈4m queued</div></div>
+<div style="flex:1;background:#241C13;border:1px solid #E9A13B;border-radius:14px;padding:18px 24px;display:flex;align-items:center;gap:24px;box-shadow:0 0 0 3px rgba(233,161,59,.12)">
+<div style="flex:1">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-bottom:6px">two minutes</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:4px">Merge PR #1 — OIDC trusted publishing</div>
+<div style="font:italic 400 13px 'Source Serif 4',serif;color:#9C8D7B">No more long-lived secrets in CI.</div>
+</div>
+<div style="height:44px;border-radius:10px;background:#E9A13B;color:#221407;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Start ↵</div>
+</div>
+</div>
+<div style="margin-left:132px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.18) 0 14px,transparent 14px 28px);margin-top:12px"></div>
+<div style="margin-left:132px;display:flex;gap:14px;margin-top:8px;align-items:center"><span style="font:400 11px 'JetBrains Mono',monospace;color:#4E4438">below —</span><span style="font:500 11.5px 'Work Sans',sans-serif;color:#6F6355;border:1px dashed rgba(240,233,225,.14);border-radius:7px;padding:4px 10px;opacity:.7">ds2 · schema PR · 2m</span><span style="font:400 11px 'JetBrains Mono',monospace;color:#4E4438">surfaces when this lands</span></div>
+</div>
+<div style="opacity:.75">
+<div style="display:flex;gap:22px;align-items:stretch">
+<div style="width:110px;flex:none;padding-top:20px"><div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#B5A796">DECIDE</div><div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-top:5px">one call<br>7m queued</div></div>
+<div style="flex:1;background:#221B15;border:1px solid rgba(240,233,225,.14);border-radius:14px;padding:18px 24px;display:flex;align-items:center;gap:24px">
+<div style="flex:1">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-bottom:6px">five minutes · gates the release</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:4px">Rename API_VERSION to match the new domain?</div>
+<div style="font:italic 400 13px 'Source Serif 4',serif;color:#9C8D7B">Breaking to every artifact — decide before the first outside adopter.</div>
+</div>
+<div style="height:44px;border-radius:10px;border:1px solid rgba(233,161,59,.5);color:#E9A13B;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Decide</div>
+</div>
+</div>
+<div style="margin-left:132px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.18) 0 14px,transparent 14px 28px);margin-top:12px"></div>
+<div style="margin-left:132px;display:flex;gap:14px;margin-top:8px;align-items:center"><span style="font:400 11px 'JetBrains Mono',monospace;color:#4E4438">below —</span><span style="font:500 11.5px 'Work Sans',sans-serif;color:#6F6355;border:1px dashed rgba(240,233,225,.14);border-radius:7px;padding:4px 10px;opacity:.7">◆ keep the merge guard? · 2m</span></div>
+</div>
+<div style="opacity:.75">
+<div style="display:flex;gap:22px;align-items:stretch">
+<div style="width:110px;flex:none;padding-top:20px"><div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.14em;color:#B5A796">GIVE</div><div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-top:5px">hand over<br>11m queued</div></div>
+<div style="flex:1;background:#221B15;border:1px solid rgba(240,233,225,.14);border-radius:14px;padding:18px 24px;display:flex;align-items:center;gap:24px">
+<div style="flex:1">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355;margin-bottom:6px">ten minutes · provide</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:4px">A live Anthropic key + a staging target</div>
+<div style="font:italic 400 13px 'Source Serif 4',serif;color:#9C8D7B">Unblocks the entire Loom chain — the pipeline takes it from there.</div>
+</div>
+<div style="height:44px;border-radius:10px;border:1px solid rgba(233,161,59,.5);color:#E9A13B;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Hand over</div>
+</div>
+</div>
+<div style="margin-left:132px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.18) 0 14px,transparent 14px 28px);margin-top:12px"></div>
+<div style="margin-left:132px;display:flex;gap:14px;margin-top:8px;align-items:center"><span style="font:400 11px 'JetBrains Mono',monospace;color:#4E4438">below —</span><span style="font:500 11.5px 'Work Sans',sans-serif;color:#6F6355;border:1px dashed rgba(240,233,225,.14);border-radius:7px;padding:4px 10px;opacity:.7">◆ say “go” on the harness · 1m</span></div>
+</div>
+</div>
+</div>
+<div style="flex:none;display:flex;align-items:center;padding:14px 72px 16px;font:500 11px 'JetBrains Mono',monospace;color:#4E4438"><span>1 2 3 lanes · ⇥ next in lane · g graph</span><span style="flex:1"></span><span>9 waiting on these · atlas 2 · pipeline 3 · launched 27 ▸▸▸</span></div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">Lanes = how you'd engage, not where the work lives: do, decide, give. Each lane floats exactly one card; its runner-up sits submerged under the lane's own waterline and surfaces on completion. Project names become metadata inside cards — no project navigation exists at all.</div>
+</div>
+<div class="dv-opt" id="3c">
+<div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a>SLIPS — project rows as mini-runways · one actionable point + perspective to the flag · <a class="dv-oid" href="#1b">1b</a> skin</div>
+<div data-screen-label="3c Slips" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+<span style="flex:1"></span>
+<span style="border:1px solid rgba(233,237,244,.12);border-radius:6px;padding:4px 8px;font:500 11px 'IBM Plex Mono',monospace;color:#596069">g graph</span>
+</div>
+<div style="flex:1;background-image:radial-gradient(rgba(233,237,244,.035) 1px,transparent 1px);background-size:22px 22px;padding:26px 32px 0;display:flex;flex-direction:column;gap:26px">
+<div style="position:relative;height:230px">
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#9CA3AD">DECISION STUDIO</div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:13px;padding:18px 22px;box-shadow:0 0 0 3px rgba(83,169,255,.10),0 20px 44px rgba(0,0,0,.45)">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">next · 2m</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">Merge PR #1 — OIDC publishing</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">No more long-lived npm secrets.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;background:#53A9FF;color:#0F1013;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px">Start ↵</div>
+</div>
+<div style="position:absolute;left:440px;top:56px;width:250px;height:110px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.16);border-radius:11px;padding:14px 17px;opacity:.75"><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:6px">then · 2m</div><div style="font:600 13.5px/1.35 'IBM Plex Sans',sans-serif;color:#9CA3AD">Merge PR #2 — schema domain</div></div>
+<div style="position:absolute;left:730px;top:76px;width:180px;height:70px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.12);border-radius:10px;padding:11px 14px;opacity:.45"><div style="font:600 12px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">◆ Rename API_VERSION?</div></div>
+<div style="position:absolute;left:950px;top:108px;display:flex;gap:7px"><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.25)"></span><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.18)"></span><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.12)"></span><span style="width:5px;height:5px;border-radius:50%;background:rgba(233,237,244,.08)"></span></div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ launch · ≈56m of you</div>
+</div>
+<div style="position:relative;height:230px;opacity:.75">
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">LOOM</div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:13px;padding:18px 22px">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">next · 10m · provide</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">API key + staging target</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">Last human input before live validation.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;border:1px solid rgba(233,237,244,.25);color:#9CA3AD;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px">Hand over</div>
+</div>
+<div style="position:absolute;left:440px;top:76px;width:200px;height:70px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:11px 14px;opacity:.7"><div style="font:600 12px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">◆ say “go” · 1m</div></div>
+<div style="position:absolute;left:680px;top:104px;background:#0F1013;padding:2px 8px;font:500 10.5px 'IBM Plex Mono',monospace;color:#3C4046;letter-spacing:.2em">▸ ▸ ▸ pipeline carries it ▸ ▸ ▸</div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ launch · 11m of you</div>
+</div>
+<div style="position:relative;height:230px;opacity:.75">
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">SLIPWAY</div>
+<div style="position:absolute;left:0;right:60px;top:111px;height:1px;background:rgba(233,237,244,.13)"></div>
+<div style="position:absolute;left:0;top:26px;width:390px;height:170px;box-sizing:border-box;background:rgba(83,169,255,.07);border:1px solid #53A9FF;border-radius:13px;padding:18px 22px">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF;margin-bottom:8px">● in progress — this session</div>
+<div style="font:600 17px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:6px">Design brief → Claude session</div>
+<div style="font:400 12.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">You are here.</div>
+<div style="position:absolute;left:22px;bottom:16px;height:38px;border-radius:9px;border:1px solid rgba(83,169,255,.4);color:#53A9FF;display:flex;align-items:center;justify-content:center;font:600 13px 'IBM Plex Sans',sans-serif;padding:0 20px">Continue</div>
+</div>
+<div style="position:absolute;left:440px;top:76px;width:430px;height:70px;display:flex;gap:12px;align-items:center"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#3C4046;background:#0F1013;padding:2px 6px">then:</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.7">spec — ATLAS</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.6">v0.1 — PIPE</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;border:1px dashed rgba(233,237,244,.16);border-radius:7px;padding:4px 10px;background:#0F1013;opacity:.5">dogfood — you</span></div>
+<div style="position:absolute;left:1030px;top:98px;height:26px;display:flex;align-items:center;background:#0F1013;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 11px;font:500 10px 'IBM Plex Mono',monospace;color:#596069">⚑ v0.1</div>
+</div>
+</div>
+<div style="flex:none;display:flex;align-items:center;padding:12px 32px 14px;font:500 11px 'IBM Plex Mono',monospace;color:#3C4046"><span>1 2 3 lanes · ⇥ next in lane · ↵ start · g graph</span><span style="flex:1"></span><span style="color:rgba(83,169,255,.5)">[r] ◌ 20s</span></div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">Lanes = projects as horizontal slips, each a mini-runway: one full actionable card, one or two shrinking ghosts, then dots to that lane's flag with an honest you-time estimate. Depth and destination per project in a single glance-line each — the graph never has to load as home.</div>
+</div>
+</div>
+<p class="dv-next">Try next: “<a class="dv-oid" href="#3a">3a</a> but lanes by mode like <a class="dv-oid" href="#3b">3b</a>” · “<a class="dv-oid" href="#3c">3c</a> with <a class="dv-oid" href="#1c">1c</a>'s warmth” · “rebuild the drawer + capture at this weight for the winner”</p>
+</section>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Load-shedding — the board carries one decision, not the map</span></div>
+<div style="max-width:1020px;margin:0 0 30px;font:400 13px/1.75 'Instrument Sans',sans-serif;color:rgba(255,255,255,.62)">
+Turn 1's boards all render the whole graph — that's the wall of everything again, just prettier. These three make the home surface answer a single question: <em>what do I touch next?</em> Principles: the app chooses (you can override) · title + one sentence + one number, nothing more per task · the graph demotes to a <span style="font:500 11.5px 'JetBrains Mono',monospace">g</span>-keystroke overlay — reassurance, not home · micro-tasks bundle into sweeps · atlas/pipeline/done compress to one breath line. Skins carried over so structure is the only variable: <a class="dv-oid" href="#2a">2a</a> wears <a class="dv-oid" href="#1a">1a</a>, <a class="dv-oid" href="#2b">2b</a> wears <a class="dv-oid" href="#1c">1c</a>, <a class="dv-oid" href="#2c">2c</a> wears <a class="dv-oid" href="#1b">1b</a>.
+</div>
+<div class="dv-opts">
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>ONE THING — a single dealt card · the queue is felt, not read</div>
+<div data-screen-label="2a One Thing" style="width:1440px;height:900px;box-sizing:border-box;background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Instrument Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Instrument Sans',sans-serif;color:#5F757B">Slipway</span>
+</div>
+<div style="flex:1;position:relative">
+<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-56%);width:640px">
+<div style="text-align:center;font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:18px">next — chosen for you</div>
+<div style="position:relative">
+<div style="position:absolute;left:32px;right:32px;top:-22px;height:40px;background:#0D161C;border:1px solid rgba(151,199,207,.10);border-radius:12px;opacity:.45"></div>
+<div style="position:absolute;left:16px;right:16px;top:-12px;height:40px;background:#0F181E;border:1px solid rgba(151,199,207,.12);border-radius:12px;opacity:.75"></div>
+<div style="position:relative;background:#121D23;border:1px solid rgba(79,200,184,.4);border-radius:16px;padding:36px 40px;box-shadow:0 30px 70px rgba(0,0,0,.5)">
+<div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:14px">two minutes · decision-studio</div>
+<div style="font:600 25px/1.3 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:10px">Merge PR #1 — release workflow → OIDC trusted publishing</div>
+<div style="font:400 15px/1.55 'Instrument Sans',sans-serif;color:#9FB5BA;margin-bottom:26px">Releases publish from CI with no long-lived npm secrets.</div>
+<div style="height:48px;border-radius:11px;background:#FFA24D;color:#1A0E00;display:flex;align-items:center;justify-content:center;font:600 15px 'Instrument Sans',sans-serif">Start</div>
+<div style="text-align:center;font:400 11px 'JetBrains Mono',monospace;color:#5F757B;margin-top:12px">finishing this lights ds5 ▸ first release</div>
+</div>
+</div>
+<div style="text-align:center;font:500 11.5px 'JetBrains Mono',monospace;color:#3E5158;margin-top:26px">5 more ready · ⇥ next · g graph · l ledger</div>
+</div>
+<div style="position:absolute;left:20px;bottom:16px;font:500 11px 'JetBrains Mono',monospace;color:rgba(79,200,184,.5)">◌ one from earlier — 20s, whenever</div>
+</div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The dealer model: one card, dealt by dependency order × effort. The two slivers behind it are the whole queue UI. <span style="font:500 10.5px 'JetBrains Mono',monospace">⇥</span> deals the next if this one's wrong; <span style="font:500 10.5px 'JetBrains Mono',monospace">g</span> summons the full graph (a turn-1 board) as a temporary overlay that closes on esc. Zero navigation, zero counts to parse.</div>
+</div>
+<div class="dv-opt" id="2b">
+<div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>THREE, MAX — slots by mode of engagement · micro-tasks bundle into a sweep</div>
+<div data-screen-label="2b Three Max" style="width:1440px;height:900px;box-sizing:border-box;background:#1A1512;border:1px solid rgba(240,233,225,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Work Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Work Sans',sans-serif;color:#8D7F6E">Slipway</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:rgba(233,161,59,.55)">◌ 20s</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;padding-top:52px">
+<div style="width:880px">
+<div style="font:600 24px 'Work Sans',sans-serif;color:#F2EBE1">Three ways in.</div>
+<div style="font:italic 400 15px 'Source Serif 4',serif;color:#B5A796;margin:6px 0 26px">Do the sweep, make one call, hand one thing over — nothing else needs you today.</div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div style="background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:14px;padding:20px 26px;display:flex;gap:24px;align-items:center">
+<div style="flex:1">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#E9A13B;margin-bottom:8px">DO — SWEEP · ≈6 MIN</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:8px">Three small ones, batched</div>
+<div style="display:flex;flex-direction:column;gap:4px;font:400 13px 'Work Sans',sans-serif;color:#B5A796"><span>merge the OIDC PR · 2m</span><span>merge the schema-domain PR · 2m</span><span>keep the no-self-merge guard? · 2m</span></div>
+</div>
+<div style="height:46px;border-radius:10px;background:#E9A13B;color:#221407;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Run the sweep</div>
+</div>
+<div style="background:#221B15;border:1px solid rgba(240,233,225,.12);border-radius:14px;padding:20px 26px;display:flex;gap:24px;align-items:center">
+<div style="flex:1">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#B5A796;margin-bottom:8px">DECIDE — ONE CALL · 5 MIN</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:6px">Rename API_VERSION to match the new domain?</div>
+<div style="font:italic 400 13.5px 'Source Serif 4',serif;color:#9C8D7B">Breaking to every artifact — decide before the first outside adopter.</div>
+</div>
+<div style="height:46px;border-radius:10px;border:1px solid rgba(233,161,59,.5);color:#E9A13B;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Decide</div>
+</div>
+<div style="background:#221B15;border:1px solid rgba(240,233,225,.12);border-radius:14px;padding:20px 26px;display:flex;gap:24px;align-items:center">
+<div style="flex:1">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#B5A796;margin-bottom:8px">GIVE — HAND OVER · 10 MIN</div>
+<div style="font:600 17px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:6px">A live Anthropic key + a staging target</div>
+<div style="font:italic 400 13.5px 'Source Serif 4',serif;color:#9C8D7B">Unblocks the entire Loom chain — the pipeline takes it from there. On the way: your one-word “go”.</div>
+</div>
+<div style="height:46px;border-radius:10px;border:1px solid rgba(233,161,59,.5);color:#E9A13B;display:flex;align-items:center;justify-content:center;font:600 14px 'Work Sans',sans-serif;padding:0 26px;flex:none">Hand over</div>
+</div>
+</div>
+<div style="height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.22) 0 14px,transparent 14px 28px);margin:30px 0 12px"></div>
+<div style="display:flex;align-items:center;font:500 11px 'JetBrains Mono',monospace;color:#6F6355"><span>below the line — 9 waiting on these · 2 with atlas · 3 with the pipeline · t to peek</span><span style="flex:1"></span><span style="color:#4E4438">launched 26 ▸▸▸</span></div>
+</div>
+</div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">Six ready tasks are really three kinds of engagement: do, decide, give. Bundling the three two-minute items into one sweep turns “six things” into “three moves”. Everything blocked/atlas/pipeline/done is one line of prose under the waterline. Projects aren't navigation at all — they're just words inside cards.</div>
+</div>
+<div class="dv-opt" id="2c">
+<div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>RUNWAY — the queue as perspective, not a map · order = topology</div>
+<div data-screen-label="2c Runway" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#596069">Slipway</span>
+<span style="flex:1"></span>
+<span style="border:1px solid rgba(233,237,244,.12);border-radius:6px;padding:4px 8px;font:500 11px 'IBM Plex Mono',monospace;color:#596069">g graph</span>
+</div>
+<div style="flex:1;position:relative;background-image:radial-gradient(rgba(233,237,244,.035) 1px,transparent 1px);background-size:22px 22px">
+<div style="position:absolute;left:90px;right:80px;top:470px;height:1px;background:rgba(233,237,244,.14)"></div>
+<div style="position:absolute;left:90px;top:250px;width:420px;height:220px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:14px;padding:24px 28px;box-shadow:0 0 0 3px rgba(83,169,255,.10),0 24px 50px rgba(0,0,0,.45)">
+<div style="font:500 11px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:12px">next · 2m · auto-ordered</div>
+<div style="font:600 20px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:8px">Merge PR #1 — OIDC trusted publishing</div>
+<div style="font:400 13.5px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">No more long-lived npm secrets in CI.</div>
+<div style="position:absolute;left:28px;right:28px;bottom:20px;display:flex;align-items:center;gap:14px">
+<div style="height:40px;border-radius:9px;background:#53A9FF;color:#0F1013;display:flex;align-items:center;justify-content:center;font:600 13.5px 'IBM Plex Sans',sans-serif;padding:0 22px">Start ↵</div>
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">frees ds5 → release path</div>
+</div>
+</div>
+<div style="position:absolute;left:570px;top:330px;width:300px;height:140px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.16);border-radius:12px;padding:16px 20px;opacity:.8">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:8px">then · 2m</div>
+<div style="font:600 15px/1.35 'IBM Plex Sans',sans-serif;color:#9CA3AD">Merge PR #2 — schema domain</div>
+</div>
+<div style="position:absolute;left:930px;top:380px;width:220px;height:90px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.12);border-radius:10px;padding:12px 16px;opacity:.5">
+<div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069;margin-bottom:6px">then · 5m</div>
+<div style="font:600 13px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD">◆ Rename API_VERSION?</div>
+</div>
+<div style="position:absolute;left:1190px;top:426px;display:flex;gap:8px;align-items:center"><span style="width:6px;height:6px;border-radius:50%;background:rgba(233,237,244,.25)"></span><span style="width:6px;height:6px;border-radius:50%;background:rgba(233,237,244,.18)"></span><span style="width:6px;height:6px;border-radius:50%;background:rgba(233,237,244,.12)"></span></div>
+<div style="position:absolute;left:1264px;top:406px;height:28px;display:flex;align-items:center;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 12px;font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">⚑ 2 launches</div>
+<div style="position:absolute;left:90px;top:500px;font:500 11.5px 'IBM Plex Mono',monospace;color:#596069">queue of 6 · ordered by what unlocks most · j/k reorder · ↵ start · g graph</div>
+<div style="position:absolute;right:20px;bottom:16px;font:500 11px 'IBM Plex Mono',monospace;color:rgba(83,169,255,.5)">[r] ◌ 20s</div>
+</div>
+</div>
+<div style="max-width:1000px;font:400 12px/1.7 'Instrument Sans',sans-serif;color:rgba(255,255,255,.5);margin-top:6px">The dependency graph collapses into its topological order — a runway. Position 1 is full-size and actionable; 2 and 3 shrink with distance; the rest are dots ending at the launch flag. You feel depth and destination without reading a map. Reordering is allowed but never required.</div>
+</div>
+</div>
+<p class="dv-next">Try next: “<a class="dv-oid" href="#2a">2a</a> as home with <a class="dv-oid" href="#1b">1b</a>'s graph on <span style="font:500 10.5px 'JetBrains Mono',monospace">g</span>” · “<a class="dv-oid" href="#2b">2b</a>'s sweep inside <a class="dv-oid" href="#2a">2a</a>'s one-card flow” · “redo the drawer at this weight”</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Slipway — three full directions: board + drawer + capture + recall + unlock motion</span></div>
+<div style="max-width:1020px;margin:0 0 34px;font:400 13px/1.75 'Instrument Sans',sans-serif;color:rgba(255,255,255,.62)">
+<div style="font:600 10.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:8px">READ ME FIRST — SHARED ASSUMPTIONS</div>
+Same seed graph in all three: ready-and-yours right now = <span style="font:500 11.5px 'JetBrains Mono',monospace">ds1 ds2 ds9 ds10 lm1 lm5</span> (≈22 min, 2 launches in reach), plus <span style="font:500 11.5px 'JetBrains Mono',monospace">sw1</span> in progress — it is literally this session. Nothing in Decision Studio is done yet.<br>
+All three drawers open the same task (<span style="font:500 11.5px 'JetBrains Mono',monospace">ds3</span>, the CNAME) at three moments of one flow: <a class="dv-oid" href="#1a">1a</a> mid-steps, <a class="dv-oid" href="#1b">1b</a> at the capture, <a class="dv-oid" href="#1c">1c</a> before-brief + answered. Together they storyboard the whole loop.<br>
+Recall placement differs on purpose — <a class="dv-oid" href="#1a">1a</a> quiet slide-over panel, <a class="dv-oid" href="#1b">1b</a> its own tab, <a class="dv-oid" href="#1c">1c</a> rechecks float at the waterline + a rail ledger. Any of these mixes with any visual direction.<br>
+Boldness: <a class="dv-oid" href="#1a">1a</a> and <a class="dv-oid" href="#1c">1c</a> spend it on the unlock; <a class="dv-oid" href="#1b">1b</a> spends it on the capture takeover. Frames are 1440×900, frameless Tauri, dark primary. Motion is shown as 3-frame storyboards.
+</div>
+<div class="dv-opts">
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>HARBOR — now-tiers + chain strips · humanist sans + mono · boldness on the unlock</div>
+
+<div style="width:1440px;box-sizing:border-box;background:#101A20;border:1px solid rgba(151,199,207,.12);border-radius:12px;padding:20px 24px;display:flex;gap:44px;align-items:flex-start;flex-wrap:wrap">
+<div style="max-width:520px">
+<div style="font:700 24px 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:8px">Harbor</div>
+<div style="font:400 13px/1.65 'Instrument Sans',sans-serif;color:#9FB5BA">The board answers “what now?” with tiers, not a diagram: your ready queue big and lit, every card's wake drawn as a chain strip beneath it. Calm harbor blues — the only warm thing on screen is what finishing something ignites.</div>
+</div>
+<div style="display:flex;gap:36px;flex-wrap:wrap;padding-top:6px">
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B;margin-bottom:8px">PALETTE</div><div style="display:flex;gap:6px"><span style="width:18px;height:18px;border-radius:50%;background:#0B1216;border:1px solid rgba(255,255,255,.15)"></span><span style="width:18px;height:18px;border-radius:50%;background:#121D23;border:1px solid rgba(255,255,255,.12)"></span><span style="width:18px;height:18px;border-radius:50%;background:#DFEAEC"></span><span style="width:18px;height:18px;border-radius:50%;background:#4FC8B8"></span><span style="width:18px;height:18px;border-radius:50%;background:#FFA24D"></span></div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B;margin-bottom:8px">TYPE</div><div style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">Instrument Sans</div><div style="font:500 11.5px 'JetBrains Mono',monospace;color:#9FB5BA;margin-top:3px">JetBrains Mono</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B;margin-bottom:8px">BOLD SPEND</div><div style="font:500 12.5px 'Instrument Sans',sans-serif;color:#FFA24D">unlock ripple on the board</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B;margin-bottom:8px">CAPTURE</div><div style="font:500 12.5px 'Instrument Sans',sans-serif;color:#9FB5BA">quiet inline card</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B;margin-bottom:8px">RECALL</div><div style="font:500 12.5px 'Instrument Sans',sans-serif;color:#9FB5BA">slide-over ledger + titlebar chip</div></div>
+</div>
+</div>
+
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-top:10px">BOARD — ds2 selected, its wake lit below · atlas/pipeline recede · done sinks</div>
+<div data-screen-label="1a Board" style="width:1440px;height:900px;box-sizing:border-box;background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Instrument Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(151,199,207,.10)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Instrument Sans',sans-serif;color:#9FB5BA;letter-spacing:.02em">Slipway</span>
+<span style="flex:1"></span>
+<span style="display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(79,200,184,.35);border-radius:999px;padding:5px 12px;font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">◌ 20s recheck — dns aliasing</span>
+<span style="border:1px solid rgba(151,199,207,.14);border-radius:6px;padding:4px 8px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">⌘K</span>
+</div>
+<div style="flex:1;padding:22px 28px 20px;display:flex;flex-direction:column;gap:16px;min-height:0">
+<div style="display:flex;align-items:center;gap:12px;background:#0E181E;border:1px solid rgba(255,162,77,.30);border-radius:10px;padding:10px 16px">
+<span style="width:8px;height:8px;border-radius:50%;background:#FFA24D;box-shadow:0 0 0 4px rgba(255,162,77,.15)"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">sw1</span>
+<span style="font:600 13.5px 'Instrument Sans',sans-serif;color:#DFEAEC">This design brief → Claude Design session</span>
+<span style="font:400 12.5px 'Instrument Sans',sans-serif;color:#9FB5BA">— the design you're looking at is this task, in progress</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#FFA24D">in motion · 1 session</span>
+</div>
+<div style="display:flex;align-items:baseline;gap:14px">
+<span style="font:600 21px 'Instrument Sans',sans-serif;color:#DFEAEC">Now</span>
+<span style="font:400 13px 'Instrument Sans',sans-serif;color:#9FB5BA">6 ready and yours · ≈22 min · clears the way to 2 launches</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">learned ● 12</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds1</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">action · 2m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Merge PR #1 — release workflow → OIDC trusted publishing</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">Releases publish from CI with no long-lived npm secrets.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">ds5</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#5F757B">▸ first release</span></div>
+</div>
+<div style="background:#121D23;border:1px solid #4FC8B8;border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px;box-shadow:0 0 0 3px rgba(79,200,184,.14)">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">ds2 — selected</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">action · 2m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Merge PR #2 — schema domain → schema.workspec.io</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">The schema gets its permanent public home.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#FFA24D;border:1px solid rgba(255,162,77,.4);border-radius:6px;padding:2px 7px">ds3</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#9FB5BA">▸ schema goes live — wake below</span></div>
+</div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">◆ ds9</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#FFA24D">decision · 5m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Rename API_VERSION to match the new domain?</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">Breaking to every artifact — decide before the first outside adopter.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">ds7</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#5F757B">▸ gates the release</span></div>
+</div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">◆ ds10</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#FFA24D">decision · 2m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Keep the no-self-merge review guard?</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">Two-minute call; friction on every future merge.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#5F757B">— nothing waits on it</span></div>
+</div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">▸ lm1</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">provide · 10m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Provide a live Anthropic API key + pick a staging target</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">The last human input between Loom and live validation.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">lm2</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#5F757B">▸ everything else in Loom</span></div>
+</div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:7px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">◆ lm5</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#FFA24D">decision · 1m</span></div>
+<div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Say “go” — dev lead pre-builds the validation harness</div>
+<div style="font:400 13px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">One word and the harness builds itself while you sleep.</div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:auto"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">lm2</span><span style="font:400 11px 'Instrument Sans',sans-serif;color:#5F757B">▸ instantly, once lm1 lands</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:9px;margin-top:2px">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#5F757B">UNLOCK WAKE — SELECT A CARD TO LIGHT ITS CHAIN</div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(79,200,184,.08);border:1px solid rgba(79,200,184,.5);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">ds2<span style="font:500 12px 'Instrument Sans',sans-serif;color:#DFEAEC">schema domain PR</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(255,162,77,.55);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds3<span style="font:500 12px 'Instrument Sans',sans-serif;color:#DFEAEC">DNS CNAME</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#FFA24D">next · 10m</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(255,162,77,.22);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds4<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">Pages custom domain</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(255,162,77,.22);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds6<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">verify $schema</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px dashed rgba(151,199,207,.25);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds8<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">marketing copy</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.2);border-radius:4px;padding:1px 5px">atlas</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="font:500 11.5px 'JetBrains Mono',monospace;color:#FFA24D">⚑ DS launch</span>
+</div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;opacity:.6">
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(151,199,207,.16);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds1<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">OIDC PR</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(151,199,207,.16);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds5<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">npm trusted publishers ×4</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(151,199,207,.16);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds7<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">cut first release</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#FFA24D">◆ ds9 joins here</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px dashed rgba(151,199,207,.25);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">ds8</span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="font:500 11.5px 'JetBrains Mono',monospace;color:#5F757B">⚑</span>
+</div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;opacity:.6">
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px solid rgba(151,199,207,.16);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">lm1 + lm5</span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px dashed rgba(151,199,207,.25);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">lm2<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">staging + harness</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.2);border-radius:4px;padding:1px 5px">pipeline</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px dashed rgba(151,199,207,.25);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">lm3<span style="font:500 12px 'Instrument Sans',sans-serif;color:#9FB5BA">run #27 live</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.2);border-radius:4px;padding:1px 5px">pipeline</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="display:inline-flex;align-items:center;gap:7px;background:#0F1920;border:1px dashed rgba(151,199,207,.25);border-radius:8px;padding:6px 11px;font:500 11px 'JetBrains Mono',monospace;color:#5F757B">lm4<span style="font:500 10px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.2);border-radius:4px;padding:1px 5px">atlas</span></span>
+<span style="color:#3E5158;font:500 12px 'JetBrains Mono',monospace">→</span>
+<span style="font:500 11.5px 'JetBrains Mono',monospace;color:#5F757B">⚑ Loom launch</span>
+</div>
+</div>
+<div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:10px">
+<span style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#3E5158">NOT YOUR LOAD</span>
+<span style="font:400 12px 'Instrument Sans',sans-serif;color:#5F757B;opacity:.8">ds8 · lm2 · lm3 · lm4 · sw2 · sw3 — atlas and the pipeline carry these; they surface only when they need you</span>
+</div>
+<div style="display:flex;align-items:center;gap:10px;opacity:.38">
+<span style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#3E5158">SHIPPED — SINKING</span>
+<span style="font:400 12px 'Instrument Sans',sans-serif;color:#5F757B">Loom v1 ✓ 26 merged ✓ Apache-2.0 relicense ✓</span>
+</div>
+</div>
+</div>
+</div>
+
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-top:14px">DRAWER — ds3 open mid-steps · step 2's concept disclosed · one primary action</div>
+<div data-screen-label="1a Drawer" style="width:1440px;height:900px;box-sizing:border-box;background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Instrument Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(151,199,207,.10)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Instrument Sans',sans-serif;color:#9FB5BA">Slipway</span>
+</div>
+<div style="flex:1;display:flex;min-height:0">
+<div style="flex:1;position:relative;overflow:hidden">
+<div style="padding:22px 28px;opacity:.32;filter:saturate(.7)">
+<div style="font:600 21px 'Instrument Sans',sans-serif;color:#DFEAEC;margin-bottom:14px">Now <span style="font:400 13px 'Instrument Sans',sans-serif;color:#9FB5BA">6 ready · ≈22 min</span></div>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px"><div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:6px">ds1</div><div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Merge PR #1 — OIDC trusted publishing</div></div>
+<div style="background:#121D23;border:1px solid #4FC8B8;border-radius:12px;padding:15px 17px"><div style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8;margin-bottom:6px">ds2</div><div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Merge PR #2 — schema domain</div></div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px"><div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:6px">◆ ds9</div><div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Rename API_VERSION?</div></div>
+<div style="background:#121D23;border:1px solid rgba(79,200,184,.28);border-radius:12px;padding:15px 17px"><div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B;margin-bottom:6px">▸ lm1</div><div style="font:600 15px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">API key + staging target</div></div>
+</div>
+</div>
+<div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,10,12,.42),rgba(6,10,12,.72))"></div>
+</div>
+<div style="width:560px;flex:none;background:#0F181D;border-left:1px solid rgba(151,199,207,.14);box-shadow:-32px 0 60px rgba(0,0,0,.45);padding:24px 28px;display:flex;flex-direction:column;gap:14px;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">decision-studio · ds3 · action · ~10m</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#3E5158">esc ✕</span>
+</div>
+<div style="font:600 19px/1.35 'Instrument Sans',sans-serif;color:#DFEAEC">Add DNS CNAME — schema.workspec.io → fieldstatenz.github.io</div>
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">unlocks</span>
+<span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">ds4</span>
+<span style="color:#3E5158;font:500 11px 'JetBrains Mono',monospace">→</span>
+<span style="font:500 10.5px 'JetBrains Mono',monospace;color:#9FB5BA;border:1px solid rgba(151,199,207,.16);border-radius:6px;padding:2px 7px">ds6</span>
+<span style="font:400 11.5px 'Instrument Sans',sans-serif;color:#5F757B">▸ the schema's public address goes live</span>
+</div>
+<div style="background:#0E1A20;border:1px solid rgba(151,199,207,.12);border-radius:10px;padding:14px 16px">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#4FC8B8;margin-bottom:7px">BEFORE — 20 SECONDS</div>
+<div style="font:400 13.5px/1.6 'Instrument Sans',sans-serif;color:#9FB5BA">A CNAME says “this name is an alias for that name.” You're telling DNS that schema.workspec.io answers wherever GitHub Pages answers. Once GitHub sees the record it provisions a TLS certificate for the domain automatically.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;gap:12px">
+<div style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(79,200,184,.5);background:rgba(79,200,184,.10);color:#4FC8B8;display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono',monospace;flex:none">✓</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div style="font:500 13.5px/1.45 'Instrument Sans',sans-serif;color:#9FB5BA;text-decoration:line-through;text-decoration-color:rgba(159,181,186,.4)">Add the record at the registrar</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0A1216;border:1px solid rgba(151,199,207,.12);border-radius:8px;padding:9px 12px;font:500 12px 'JetBrains Mono',monospace;color:#7E969C;opacity:.7">schema.workspec.io&nbsp;&nbsp;CNAME&nbsp;&nbsp;fieldstatenz.github.io<span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.16);border-radius:5px;padding:2px 7px">⧉ copied</span></div>
+</div>
+</div>
+<div style="display:flex;gap:12px">
+<div style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(255,162,77,.55);color:#FFA24D;display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono',monospace;flex:none">2</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div style="font:500 14px/1.45 'Instrument Sans',sans-serif;color:#DFEAEC">Wait out propagation — minutes to an hour</div>
+<div style="background:#0E1A20;border:1px solid rgba(79,200,184,.18);border-radius:10px;padding:12px 14px">
+<div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#4FC8B8;margin-bottom:6px">CONCEPT · 10 SEC</div>
+<div style="font:400 13px/1.6 'Instrument Sans',sans-serif;color:#9FB5BA">Nothing is “pushed” anywhere — resolvers cache answers, and propagation is just those caches expiring. The record's TTL decides how long stale answers linger.</div>
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B;margin-top:8px">▴ tuck away</div>
+</div>
+</div>
+</div>
+<div style="display:flex;gap:12px;opacity:.65">
+<div style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(151,199,207,.2);color:#5F757B;display:flex;align-items:center;justify-content:center;font:600 11px 'JetBrains Mono',monospace;flex:none">3</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:8px">
+<div style="font:500 13.5px/1.45 'Instrument Sans',sans-serif;color:#9FB5BA">Confirm it resolves</div>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#0A1216;border:1px solid rgba(151,199,207,.12);border-radius:8px;padding:9px 12px;font:500 12px 'JetBrains Mono',monospace;color:#7E969C">dig schema.workspec.io CNAME +short<span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B;border:1px solid rgba(151,199,207,.16);border-radius:5px;padding:2px 7px">⧉ copy</span></div>
+<div style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">expect → fieldstatenz.github.io.</div>
+<div style="font:500 11.5px 'JetBrains Mono',monospace;color:#4FC8B8">▸ why alias a name, not an IP — 10 sec</div>
+</div>
+</div>
+</div>
+<div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+<div style="height:46px;border-radius:10px;background:#FFA24D;color:#1A0E00;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Instrument Sans',sans-serif">Mark done — then one question</div>
+<div style="text-align:center;font:400 11px 'JetBrains Mono',monospace;color:#5F757B">one tap · skipping leaves ds3 hollow ◌</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display:flex;gap:20px;align-items:flex-start;margin-top:14px">
+<div style="width:460px;flex:none">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">CAPTURE CLOSE-UP — pre-answer, quiet inline</div>
+<div style="background:#101A20;border:1px solid rgba(151,199,207,.14);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#4FC8B8">ONE TAP — BEFORE IT COUNTS</div>
+<div style="font:600 16.5px/1.4 'Instrument Sans',sans-serif;color:#DFEAEC">Why a CNAME here — not an A record?</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;gap:10px;align-items:baseline;border:1px solid rgba(151,199,207,.14);border-radius:9px;padding:11px 13px"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">a</span><span style="font:400 13px/1.45 'Instrument Sans',sans-serif;color:#9FB5BA">CNAMEs are faster to resolve</span></div>
+<div style="display:flex;gap:10px;align-items:baseline;border:1px solid rgba(79,200,184,.55);background:rgba(79,200,184,.08);border-radius:9px;padding:11px 13px"><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">b</span><span style="font:400 13px/1.45 'Instrument Sans',sans-serif;color:#DFEAEC">GitHub's IPs can change; the alias follows them, a hardcoded IP wouldn't</span></div>
+<div style="display:flex;gap:10px;align-items:baseline;border:1px solid rgba(151,199,207,.14);border-radius:9px;padding:11px 13px"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">c</span><span style="font:400 13px/1.45 'Instrument Sans',sans-serif;color:#9FB5BA">A records don't support HTTPS</span></div>
+<div style="display:flex;gap:10px;align-items:baseline;border:1px solid rgba(151,199,207,.14);border-radius:9px;padding:11px 13px"><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">d</span><span style="font:400 13px/1.45 'Instrument Sans',sans-serif;color:#9FB5BA">Subdomains can't have A records</span></div>
+</div>
+<div style="font:400 11px 'JetBrains Mono',monospace;color:#5F757B">skip — ds3 stays hollow ◌</div>
+</div>
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#FFA24D;margin-top:8px;line-height:1.6">▲ the distractors are the teaching — c and d are real misconceptions</div>
+</div>
+<div style="width:430px;flex:none">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">RECALL — quiet slide-over ledger</div>
+<div style="background:#0F181D;border:1px solid rgba(151,199,207,.14);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:2px">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><span style="font:600 15px 'Instrument Sans',sans-serif;color:#DFEAEC">Learned</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#5F757B">12 concepts · 10 held · 2 hollow</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(151,199,207,.08)"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">cache TTL + propagation</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds3</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">●●●●</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">holds 30d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(151,199,207,.08)"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">oidc trusted publishing</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds1</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">●●●<span style="color:#2E4046">●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">holds 12d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(151,199,207,.08);background:linear-gradient(90deg,rgba(79,200,184,.06),transparent)"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">dns aliasing</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds3</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">●●<span style="color:#2E4046">●●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#4FC8B8">recheck ready — 20s</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(151,199,207,.08)"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">tls auto-provisioning</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds4</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">●<span style="color:#2E4046">●●●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#FFA24D">missed — back ~1d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(151,199,207,.08)"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#DFEAEC">npm provenance</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds5</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#4FC8B8">●●<span style="color:#2E4046">●●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">holds 6d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0"><span style="font:500 13px 'Instrument Sans',sans-serif;color:#9FB5BA">◌ breaking-change surface</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">ds9</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#5F757B">new — first check at ds7</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#4FC8B8;border:1px solid rgba(79,200,184,.35);border-radius:6px;padding:2px 8px">ask me</span></div>
+<div style="font:400 11px 'JetBrains Mono',monospace;color:#5F757B;margin-top:12px">quiet evidence, not homework — export → cv notes</div>
+</div>
+</div>
+<div style="flex:1;min-width:380px">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">UNLOCK MOTION — where 1a spends its boldness (~600ms, ease-out)</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(79,200,184,.16);border:1px solid #4FC8B8;border-radius:8px;padding:6px 11px;font:600 11px 'JetBrains Mono',monospace;color:#4FC8B8;box-shadow:0 0 0 6px rgba(79,200,184,.10)">✓ ds2</span>
+<span style="font:400 12px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">1 — the check lands; the card exhales</span>
+</div>
+<div style="background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;position:relative;width:150px;height:2px;background:linear-gradient(90deg,#4FC8B8,rgba(255,162,77,.9));border-radius:2px;flex:none"><span style="position:absolute;left:62%;top:-4px;width:10px;height:10px;border-radius:50%;background:#FFA24D;box-shadow:0 0 12px 3px rgba(255,162,77,.45)"></span></span>
+<span style="font:400 12px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">2 — a pulse runs the wake, teal → amber</span>
+</div>
+<div style="background:#0B1216;border:1px solid rgba(151,199,207,.14);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(255,162,77,.12);border:1px solid #FFA24D;border-radius:8px;padding:6px 11px;font:600 11px 'JetBrains Mono',monospace;color:#FFA24D">ds3 · next · 10m</span>
+<span style="font:400 12px/1.5 'Instrument Sans',sans-serif;color:#9FB5BA">3 — downstream ignites; queue refills itself</span>
+</div>
+<div style="font:400 11px/1.6 'JetBrains Mono',monospace;color:#5F757B">no confetti, no bounce · reduced-motion → simple crossfade</div>
+</div>
+</div>
+</div>
+</div>
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>CHART — literal node graph · IBM Plex, keyboard-first · boldness on the capture takeover</div>
+
+<div style="width:1440px;box-sizing:border-box;background:#14161A;border:1px solid rgba(233,237,244,.10);border-radius:12px;padding:20px 24px;display:flex;gap:44px;align-items:flex-start;flex-wrap:wrap;font-family:'IBM Plex Sans',sans-serif">
+<div style="max-width:520px">
+<div style="font:700 24px 'IBM Plex Sans',sans-serif;color:#E8EAEE;margin-bottom:8px">Chart</div>
+<div style="font:400 13px/1.65 'IBM Plex Sans',sans-serif;color:#9CA3AD">The graph is the interface: real nodes, real edges, laid left→right in dependency order on a chart grid. Mono-forward, keyboard-first, one azure accent. Restraint everywhere — so the capture takeover, when it arrives, is the loudest thing in the app.</div>
+</div>
+<div style="display:flex;gap:36px;flex-wrap:wrap;padding-top:6px">
+<div><div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069;margin-bottom:8px">PALETTE</div><div style="display:flex;gap:6px"><span style="width:18px;height:18px;border-radius:50%;background:#0F1013;border:1px solid rgba(255,255,255,.15)"></span><span style="width:18px;height:18px;border-radius:50%;background:#171A1F;border:1px solid rgba(255,255,255,.12)"></span><span style="width:18px;height:18px;border-radius:50%;background:#E8EAEE"></span><span style="width:18px;height:18px;border-radius:50%;background:#53A9FF"></span><span style="width:18px;height:18px;border-radius:50%;background:#596069"></span></div></div>
+<div><div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069;margin-bottom:8px">TYPE</div><div style="font:500 13px 'IBM Plex Sans',sans-serif;color:#E8EAEE">IBM Plex Sans</div><div style="font:500 11.5px 'IBM Plex Mono',monospace;color:#9CA3AD;margin-top:3px">IBM Plex Mono</div></div>
+<div><div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069;margin-bottom:8px">BOLD SPEND</div><div style="font:500 12.5px 'IBM Plex Sans',sans-serif;color:#53A9FF">capture takeover in the drawer</div></div>
+<div><div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069;margin-bottom:8px">CAPTURE</div><div style="font:500 12.5px 'IBM Plex Sans',sans-serif;color:#9CA3AD">full takeover · giant type · keycaps 1–4</div></div>
+<div><div style="font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069;margin-bottom:8px">RECALL</div><div style="font:500 12.5px 'IBM Plex Sans',sans-serif;color:#9CA3AD">its own tab · [r] toast in flow</div></div>
+</div>
+</div>
+
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.42);margin-top:10px">BOARD — the real graph · lit borders = ready · dashes = blocked · atlas/pipeline recede · ds2 focused</div>
+<div data-screen-label="1b Board" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid rgba(233,237,244,.09)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#9CA3AD">Slipway</span>
+<div style="display:flex;gap:4px;height:100%;align-items:stretch">
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#53A9FF;border-bottom:2px solid #53A9FF">board</span>
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">recall</span>
+<span style="display:flex;align-items:center;padding:0 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">intake</span>
+</div>
+<span style="flex:1"></span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#9CA3AD">6 ready · 22m</span>
+<span style="border:1px solid rgba(233,237,244,.12);border-radius:6px;padding:4px 8px;font:500 11px 'IBM Plex Mono',monospace;color:#596069">⌘K</span>
+</div>
+<div style="position:relative;flex:1;background-image:radial-gradient(rgba(233,237,244,.05) 1px,transparent 1px);background-size:22px 22px">
+<svg style="position:absolute;inset:0;pointer-events:none" width="1440" height="820" viewBox="0 0 1440 820" fill="none">
+<path d="M224 85 L304 85" stroke="#53A9FF" stroke-opacity="0.55" stroke-width="1.5"></path>
+<path d="M224 185 L304 185" stroke="#53A9FF" stroke-width="2"></path>
+<circle cx="304" cy="185" r="3.5" fill="#53A9FF"></circle>
+<path d="M224 285 C 380 285, 430 85, 580 85" stroke="#53A9FF" stroke-opacity="0.55" stroke-width="1.5"></path>
+<path d="M500 85 L580 85" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M500 185 L580 185" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M776 185 L856 185" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M776 85 C 950 85, 1000 131, 1132 131" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M1052 185 C 1090 185, 1100 131, 1132 131" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M1328 131 L1348 131" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M224 527 C 254 527, 262 577, 304 577" stroke="#53A9FF" stroke-opacity="0.55" stroke-width="1.5"></path>
+<path d="M224 627 C 254 627, 262 577, 304 577" stroke="#53A9FF" stroke-opacity="0.55" stroke-width="1.5"></path>
+<path d="M500 577 L580 577" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M776 577 L856 577" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M1052 577 L1080 577" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M224 761 L304 761" stroke="#53A9FF" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="2 4"></path>
+<path d="M500 761 L580 761" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+<path d="M776 761 L856 761" stroke="rgba(233,237,244,0.18)" stroke-width="1.2" stroke-dasharray="3 6"></path>
+</svg>
+<div style="position:absolute;left:28px;top:14px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">DECISION STUDIO — 4 READY · 5 STEPS TO LAUNCH</div>
+<div style="position:absolute;left:28px;top:44px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 3px rgba(83,169,255,.12)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds1</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">2m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Merge PR #1 — OIDC publishing</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">ready</div></div>
+<div style="position:absolute;left:28px;top:144px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 2px #53A9FF,0 0 0 5px rgba(83,169,255,.15)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">ds2</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">2m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Merge PR #2 — schema domain</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">ready · ↵ open</div></div>
+<div style="position:absolute;left:28px;top:244px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 3px rgba(83,169,255,.12)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">◆ ds9</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">5m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Rename API_VERSION?</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">ready · decision</div></div>
+<div style="position:absolute;left:28px;top:344px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 3px rgba(83,169,255,.12)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">◆ ds10</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">2m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Keep no-self-merge guard?</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">ready · unlocks —</div></div>
+<div style="position:absolute;left:304px;top:44px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds5</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">15m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">npm trusted publishers ×4</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds1</div></div>
+<div style="position:absolute;left:304px;top:144px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds3</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">next · 10m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">DNS CNAME → GitHub Pages</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds2 — one merge away</div></div>
+<div style="position:absolute;left:580px;top:44px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds7</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">15m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Cut first release</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds5 + ◆ds9</div></div>
+<div style="position:absolute;left:580px;top:144px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds4</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">2m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Point Pages at custom domain</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds3</div></div>
+<div style="position:absolute;left:856px;top:144px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds6</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">5m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Verify $schema + IntelliSense</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds4</div></div>
+<div style="position:absolute;left:1132px;top:90px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ds8</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Marketing copy — you skim</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs ds6 + ds7</div></div>
+<div style="position:absolute;left:1348px;top:117px;height:28px;display:flex;align-items:center;gap:6px;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 12px;font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;box-sizing:border-box">⚑ launch</div>
+<div style="position:absolute;left:28px;top:456px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">LOOM — 2 READY · BACKLOG EMPTY EXCEPT #27</div>
+<div style="position:absolute;left:660px;top:456px;font:500 10px 'IBM Plex Mono',monospace;color:#3C4046">▪▪▪▪▪▪▪▪ 26 MERGED · APACHE-2.0 RELICENSED</div>
+<div style="position:absolute;left:28px;top:486px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 3px rgba(83,169,255,.12)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">▸ lm1</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">10m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">API key + staging target</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">ready · provide</div></div>
+<div style="position:absolute;left:28px;top:586px;width:196px;height:82px;box-sizing:border-box;background:#171A1F;border:1px solid #53A9FF;border-radius:9px;padding:9px 11px;box-shadow:0 0 0 3px rgba(83,169,255,.12)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">◆ lm5</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">1m</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Say “go” — pre-build harness</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">ready · decision</div></div>
+<div style="position:absolute;left:304px;top:536px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">lm2</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Staging deploy + harness #27</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">needs lm1 + lm5</div></div>
+<div style="position:absolute;left:580px;top:536px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">lm3</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Run #27 live validation</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">after lm2</div></div>
+<div style="position:absolute;left:856px;top:536px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">lm4</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Marketing copy — you skim</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">after lm3</div></div>
+<div style="position:absolute;left:1080px;top:563px;height:28px;display:flex;align-items:center;gap:6px;border:1px dashed rgba(233,237,244,.25);border-radius:999px;padding:0 12px;font:500 10.5px 'IBM Plex Mono',monospace;color:#596069;box-sizing:border-box">⚑ launch</div>
+<div style="position:absolute;left:28px;top:690px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#596069">SLIPWAY — SW1 IN PROGRESS · THIS SESSION</div>
+<div style="position:absolute;left:28px;top:720px;width:196px;height:82px;box-sizing:border-box;background:rgba(83,169,255,.08);border:1px solid #53A9FF;border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">sw1</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#53A9FF">● live</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#E8EAEE;height:33px;overflow:hidden;margin-top:2px">Design brief → Claude session</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#53A9FF">in progress — you are here</div></div>
+<div style="position:absolute;left:304px;top:720px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">sw2</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Design → spec + backlog</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">after sw1</div></div>
+<div style="position:absolute;left:580px;top:720px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.18);border-radius:9px;padding:9px 11px;opacity:.55"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">sw3</span><span style="font:600 8.5px 'IBM Plex Mono',monospace;color:#596069;border:1px solid rgba(233,237,244,.2);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Build v0.1 — Tauri + SQLite</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">after sw2</div></div>
+<div style="position:absolute;left:856px;top:720px;width:196px;height:82px;box-sizing:border-box;background:#14161A;border:1px dashed rgba(233,237,244,.22);border-radius:9px;padding:9px 11px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">sw4</span><span style="font:500 10.5px 'IBM Plex Mono',monospace;color:#596069">ongoing</span></div><div style="font:600 12.5px/1.3 'IBM Plex Sans',sans-serif;color:#9CA3AD;height:33px;overflow:hidden;margin-top:2px">Dogfood both launches</div><div style="font:500 10px 'IBM Plex Mono',monospace;color:#596069">after v0.1 — the loop closes</div></div>
+<div style="position:absolute;right:20px;bottom:14px;display:flex;align-items:center;gap:8px;background:#14161A;border:1px solid rgba(83,169,255,.4);border-radius:8px;padding:8px 12px;font:500 11px 'IBM Plex Mono',monospace;color:#9CA3AD"><span style="color:#53A9FF">[r]</span> 20s recheck — oidc trust ◌</div>
+</div>
+<div style="height:34px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-top:1px solid rgba(233,237,244,.09)">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">j/k move · ↵ open · d done · / search · r recheck</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#9CA3AD">finishing <span style="color:#53A9FF">ds1 + ds2</span> unlocks 3 · 2 launches in reach</span>
+</div>
+</div>
+
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.42);margin-top:14px">DRAWER — the capture takeover · steps done, board recedes, one question is the whole screen</div>
+<div data-screen-label="1b Drawer" style="width:1440px;height:900px;box-sizing:border-box;background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'IBM Plex Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid rgba(233,237,244,.09)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'IBM Plex Sans',sans-serif;color:#9CA3AD">Slipway</span>
+</div>
+<div style="flex:1;display:flex;min-height:0">
+<div style="flex:1;position:relative;overflow:hidden;background-image:radial-gradient(rgba(233,237,244,.04) 1px,transparent 1px);background-size:22px 22px">
+<div style="opacity:.22">
+<div style="position:absolute;left:40px;top:120px;width:170px;height:64px;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:8px"></div>
+<div style="position:absolute;left:40px;top:240px;width:170px;height:64px;background:#14161A;border:1px solid rgba(233,237,244,.3);border-radius:8px"></div>
+<div style="position:absolute;left:320px;top:240px;width:170px;height:64px;background:#14161A;border:1px dashed rgba(233,237,244,.25);border-radius:8px"></div>
+<div style="position:absolute;left:320px;top:120px;width:170px;height:64px;background:#14161A;border:1px dashed rgba(233,237,244,.2);border-radius:8px"></div>
+<div style="position:absolute;left:600px;top:180px;width:170px;height:64px;background:#14161A;border:1px dashed rgba(233,237,244,.2);border-radius:8px"></div>
+<div style="position:absolute;left:40px;top:480px;width:170px;height:64px;background:#14161A;border:1px solid rgba(233,237,244,.2);border-radius:8px"></div>
+<div style="position:absolute;left:320px;top:480px;width:170px;height:64px;background:#14161A;border:1px dashed rgba(233,237,244,.2);border-radius:8px"></div>
+<svg style="position:absolute;inset:0" width="800" height="854" viewBox="0 0 800 854" fill="none"><path d="M210 152 L320 152" stroke="rgba(233,237,244,0.25)" stroke-width="1.2"></path><path d="M210 272 L320 272" stroke="rgba(233,237,244,0.35)" stroke-width="1.5"></path><path d="M490 272 C 540 272, 550 212, 600 212" stroke="rgba(233,237,244,0.25)" stroke-width="1.2" stroke-dasharray="3 6"></path><path d="M210 512 L320 512" stroke="rgba(233,237,244,0.25)" stroke-width="1.2" stroke-dasharray="3 6"></path></svg>
+</div>
+<div style="position:absolute;inset:0;background:rgba(8,9,11,.55)"></div>
+</div>
+<div style="width:640px;flex:none;background:#121418;border-left:1px solid rgba(233,237,244,.10);box-shadow:-32px 0 60px rgba(0,0,0,.5);padding:26px 40px 30px;display:flex;flex-direction:column;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3 · capture · 1 of 1</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#3C4046">esc</span>
+</div>
+<div style="display:flex;flex-direction:column;gap:5px;margin-top:14px;opacity:.55">
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ record added at registrar</span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ propagation waited out</span>
+<span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">✓ dig → fieldstatenz.github.io.</span>
+</div>
+<div style="flex:1"></div>
+<div style="font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#53A9FF;margin-bottom:14px">ONE TAP.</div>
+<div style="font:600 27px/1.35 'IBM Plex Sans',sans-serif;color:#E8EAEE;max-width:520px;margin-bottom:24px">Why a CNAME here — not an A record?</div>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:13px 16px"><span style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12.5px 'IBM Plex Mono',monospace;color:#596069;flex:none">1</span><span style="font:400 15px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">CNAMEs are faster to resolve</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid #53A9FF;background:rgba(83,169,255,.12);border-radius:10px;padding:13px 16px"><span style="width:28px;height:28px;border-radius:7px;background:#53A9FF;display:flex;align-items:center;justify-content:center;font:600 12.5px 'IBM Plex Mono',monospace;color:#0F1013;flex:none">2</span><span style="font:500 15px/1.4 'IBM Plex Sans',sans-serif;color:#E8EAEE">GitHub's IPs can change; the alias follows them, a hardcoded IP wouldn't</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:13px 16px"><span style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12.5px 'IBM Plex Mono',monospace;color:#596069;flex:none">3</span><span style="font:400 15px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">A records don't support HTTPS</span></div>
+<div style="display:flex;align-items:center;gap:14px;border:1px solid rgba(233,237,244,.14);border-radius:10px;padding:13px 16px"><span style="width:28px;height:28px;border-radius:7px;border:1px solid rgba(233,237,244,.2);display:flex;align-items:center;justify-content:center;font:600 12.5px 'IBM Plex Mono',monospace;color:#596069;flex:none">4</span><span style="font:400 15px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD">Subdomains can't have A records</span></div>
+</div>
+<div style="flex:1"></div>
+<div style="font:500 11.5px 'IBM Plex Mono',monospace;color:#596069;text-align:center">↵ commit · s skip — ds3 stays hollow ◌ · misses come back sooner</div>
+</div>
+</div>
+</div>
+
+<div style="display:flex;gap:20px;align-items:flex-start;margin-top:14px">
+<div style="width:460px;flex:none">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">CAPTURE CLOSE-UP — a miss teaches instantly</div>
+<div style="background:#14161A;border:1px solid rgba(233,237,244,.10);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;font-family:'IBM Plex Sans',sans-serif">
+<div style="font:600 14px/1.4 'IBM Plex Sans',sans-serif;color:#E8EAEE">Why a CNAME here — not an A record?</div>
+<div style="display:flex;align-items:center;gap:12px;border:1px solid rgba(233,237,244,.3);border-radius:9px;padding:10px 13px"><span style="width:24px;height:24px;border-radius:6px;border:1px solid rgba(233,237,244,.3);display:flex;align-items:center;justify-content:center;font:600 11px 'IBM Plex Mono',monospace;color:#9CA3AD;flex:none">3</span><span style="font:400 13px/1.4 'IBM Plex Sans',sans-serif;color:#9CA3AD;text-decoration:line-through;text-decoration-color:rgba(233,237,244,.4)">A records don't support HTTPS</span><span style="flex:1"></span><span style="font:500 12px 'IBM Plex Mono',monospace;color:#596069">✕</span></div>
+<div style="display:flex;align-items:center;gap:12px;border:1px solid #53A9FF;background:rgba(83,169,255,.10);border-radius:9px;padding:10px 13px"><span style="width:24px;height:24px;border-radius:6px;background:#53A9FF;display:flex;align-items:center;justify-content:center;font:600 11px 'IBM Plex Mono',monospace;color:#0F1013;flex:none">2</span><span style="font:400 13px/1.4 'IBM Plex Sans',sans-serif;color:#E8EAEE">GitHub's IPs can change; the alias follows them</span><span style="flex:1"></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">→ this one</span></div>
+<div style="font:400 12.5px/1.6 'IBM Plex Sans',sans-serif;color:#9CA3AD">HTTPS comes from the certificate, not the record type — the one-line why appears right here, right now.</div>
+<div style="height:1px;background:rgba(233,237,244,.08)"></div>
+<div style="display:flex;align-items:center;gap:10px"><span style="display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(83,169,255,.4);border-radius:999px;padding:5px 12px;font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">● dns-aliasing — captured</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">missed → rechecks ~1d, not ~4d</span></div>
+</div>
+</div>
+<div style="width:560px;flex:none">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">RECALL — its own tab · a table, not a quiz</div>
+<div style="background:#0F1013;border:1px solid rgba(233,237,244,.12);border-radius:12px;padding:0 0 14px;font-family:'IBM Plex Sans',sans-serif;overflow:hidden">
+<div style="display:flex;gap:4px;padding:10px 20px 0;border-bottom:1px solid rgba(233,237,244,.09)">
+<span style="padding:8px 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">board</span>
+<span style="padding:8px 12px;font:500 12px 'IBM Plex Mono',monospace;color:#53A9FF;border-bottom:2px solid #53A9FF">recall</span>
+<span style="padding:8px 12px;font:500 12px 'IBM Plex Mono',monospace;color:#596069">intake</span>
+</div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:12px 20px 6px;font:600 9.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#596069"><span>CONCEPT</span><span>FROM</span><span>STREAK</span><span>NEXT</span></div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:9px 20px;font:400 13px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.06)"><span>cache ttl + propagation</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮▮▮</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">30d</span></div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:9px 20px;font:400 13px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.06)"><span>oidc trusted publishing</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds1</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮▮<span style="color:#33373D">▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">12d</span></div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:9px 20px;font:400 13px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.06);background:rgba(83,169,255,.07)"><span>dns aliasing</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds3</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">▮▮<span style="color:#33373D">▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">[↵] ask me now</span></div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:9px 20px;font:400 13px 'IBM Plex Sans',sans-serif;color:#E8EAEE;border-top:1px solid rgba(233,237,244,.06)"><span>tls auto-provisioning</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds4</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#53A9FF">▮<span style="color:#33373D">▮▮▮</span></span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#9CA3AD">~1d — missed once</span></div>
+<div style="display:grid;grid-template-columns:1fr 64px 96px 150px;gap:8px;padding:9px 20px;font:400 13px 'IBM Plex Sans',sans-serif;color:#9CA3AD;border-top:1px solid rgba(233,237,244,.06)"><span>◌ breaking-change surface</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">ds9</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#33373D">▮▮▮▮</span><span style="font:500 11px 'IBM Plex Mono',monospace;color:#596069">first check at ds7</span></div>
+<div style="padding:12px 20px 0;font:500 11px 'IBM Plex Mono',monospace;color:#596069">12 concepts · 83% held · export → cv.md</div>
+</div>
+</div>
+<div style="flex:1;min-width:340px">
+<div style="font:500 10.5px 'IBM Plex Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">UNLOCK MOTION — deliberately restrained in 1b</div>
+<div style="display:flex;flex-direction:column;gap:10px;font-family:'IBM Plex Sans',sans-serif">
+<div style="background:#0F1013;border:1px solid rgba(233,237,244,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(83,169,255,.14);border:1px solid #53A9FF;border-radius:8px;padding:6px 11px;font:600 11px 'IBM Plex Mono',monospace;color:#53A9FF">✓ ds2</span>
+<span style="font:400 12px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">1 — ↵ commits; the node fills for a beat</span>
+</div>
+<div style="background:#0F1013;border:1px solid rgba(233,237,244,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;position:relative;width:150px;height:2px;flex:none"><span style="position:absolute;left:0;top:0;width:60%;height:2px;background:#53A9FF;border-radius:2px"></span><span style="position:absolute;left:60%;top:0;width:40%;height:2px;border-top:2px dashed rgba(233,237,244,.25)"></span></span>
+<span style="font:400 12px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">2 — the edge fills, left to right</span>
+</div>
+<div style="background:#0F1013;border:1px solid rgba(233,237,244,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:#171A1F;border:1px solid #53A9FF;border-radius:8px;padding:6px 11px;font:600 11px 'IBM Plex Mono',monospace;color:#E8EAEE">ds3 · ready</span>
+<span style="font:400 12px/1.5 'IBM Plex Sans',sans-serif;color:#9CA3AD">3 — dashes go solid; status bar ticks, still 6 ready</span>
+</div>
+<div style="font:400 11px/1.6 'IBM Plex Mono',monospace;color:#596069">the loud moment in 1b is the capture, so the graph stays calm</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>WATERLINE — one line across the board · warm charcoal + serif teaching voice · boldness on the surfacing</div>
+
+<div style="width:1440px;box-sizing:border-box;background:#201913;border:1px solid rgba(240,233,225,.10);border-radius:12px;padding:20px 24px;display:flex;gap:44px;align-items:flex-start;flex-wrap:wrap;font-family:'Work Sans',sans-serif">
+<div style="max-width:520px">
+<div style="font:700 24px 'Work Sans',sans-serif;color:#F2EBE1;margin-bottom:8px">Waterline</div>
+<div style="font:400 13px/1.65 'Work Sans',sans-serif;color:#B5A796">One waterline across the whole board: ready floats above it, blocked waits below at depth, done slips out to sea. Finishing a task literally lets the next one surface. Warm charcoal, amber ignition, and a serif voice reserved for the teaching.</div>
+</div>
+<div style="display:flex;gap:36px;flex-wrap:wrap;padding-top:6px">
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F6355;margin-bottom:8px">PALETTE</div><div style="display:flex;gap:6px"><span style="width:18px;height:18px;border-radius:50%;background:#1A1512;border:1px solid rgba(255,255,255,.15)"></span><span style="width:18px;height:18px;border-radius:50%;background:#221B15;border:1px solid rgba(255,255,255,.12)"></span><span style="width:18px;height:18px;border-radius:50%;background:#F2EBE1"></span><span style="width:18px;height:18px;border-radius:50%;background:#E9A13B"></span><span style="width:18px;height:18px;border-radius:50%;background:#86B29E"></span></div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F6355;margin-bottom:8px">TYPE</div><div style="font:500 13px 'Work Sans',sans-serif;color:#F2EBE1">Work Sans</div><div style="font:500 13px 'Source Serif 4',serif;font-style:italic;color:#B5A796;margin-top:3px">Source Serif 4 — the teaching voice</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F6355;margin-bottom:8px">BOLD SPEND</div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#E9A13B">the unlock — surfacing through the line</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F6355;margin-bottom:8px">CAPTURE</div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796">gentle 2×2 chips, serif question</div></div>
+<div><div style="font:600 9.5px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#6F6355;margin-bottom:8px">RECALL</div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796">bobs in the header + rail ledger</div></div>
+</div>
+</div>
+
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-top:10px">BOARD — ready floats, blocked sits at depth −1/−2/−3 · ds2's wake lit · sw1 straddles the line, in progress</div>
+<div data-screen-label="1c Board" style="width:1440px;height:900px;box-sizing:border-box;background:#1A1512;border:1px solid rgba(240,233,225,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Work Sans',sans-serif;display:flex;flex-direction:column">
+<div style="height:46px;flex:none;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(240,233,225,.08)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Work Sans',sans-serif;color:#B5A796">Slipway</span>
+<span style="flex:1"></span>
+<span style="border:1px solid rgba(240,233,225,.12);border-radius:6px;padding:4px 8px;font:500 11px 'JetBrains Mono',monospace;color:#6F6355">⌘K</span>
+</div>
+<div style="height:76px;flex:none;display:flex;align-items:center;gap:18px;padding:0 32px">
+<div>
+<div style="font:600 20px 'Work Sans',sans-serif;color:#F2EBE1">Now — 6 afloat</div>
+<div style="font:italic 400 14px 'Source Serif 4',serif;color:#B5A796">≈22 minutes of ready work puts two launches in reach.</div>
+</div>
+<span style="flex:1"></span>
+<span style="display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(233,161,59,.4);border-radius:999px;padding:6px 14px;font:500 11px 'JetBrains Mono',monospace;color:#E9A13B">◌ 20s — why a CNAME, not an A record?</span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#6F6355">learned ● 12</span>
+</div>
+<div style="position:relative;flex:1;overflow:hidden">
+<div style="position:absolute;left:0;right:0;top:0;height:380px;background:#1A1512"></div>
+<div style="position:absolute;left:0;right:0;top:380px;bottom:0;background:linear-gradient(180deg,#131009,#0D0A08)"></div>
+<div style="position:absolute;left:0;right:0;top:379px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.32) 0 16px,rgba(240,233,225,.08) 16px 32px)"></div>
+<div style="position:absolute;left:0;right:0;top:381px;height:56px;background:linear-gradient(180deg,rgba(233,161,59,.05),transparent)"></div>
+<svg style="position:absolute;inset:0;pointer-events:none" width="1440" height="778" viewBox="0 0 1440 778" fill="none">
+<path d="M253 200 C 253 300, 368 320, 368 414" stroke="#E9A13B" stroke-opacity="0.75" stroke-width="1.5"></path>
+<circle cx="368" cy="414" r="3" fill="#E9A13B"></circle>
+<path d="M368 478 L368 494" stroke="#E9A13B" stroke-opacity="0.5" stroke-width="1.5"></path>
+<path d="M368 558 L368 574" stroke="#E9A13B" stroke-opacity="0.35" stroke-width="1.5"></path>
+<path d="M719 372 L719 414" stroke="rgba(240,233,225,0.22)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+<path d="M719 478 L719 494" stroke="rgba(240,233,225,0.18)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+<path d="M719 558 L719 574" stroke="rgba(240,233,225,0.18)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+<path d="M1185 418 L1185 446" stroke="rgba(240,233,225,0.22)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+<path d="M1185 510 L1185 526" stroke="rgba(240,233,225,0.18)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+<path d="M1185 590 L1185 606" stroke="rgba(240,233,225,0.18)" stroke-width="1.2" stroke-dasharray="2 5"></path>
+</svg>
+<div style="position:absolute;left:32px;top:8px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F6355">DECISION STUDIO — 4 AFLOAT · 5 TO LAUNCH</div>
+<div style="position:absolute;left:32px;top:38px;width:442px;height:76px;box-sizing:border-box;background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:12px;padding:11px 16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds1 · action · 2m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">unlocks ds5</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Merge PR #1 — OIDC trusted publishing</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#9C8D7B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">Releases publish from CI with no long-lived secrets.</div></div>
+<div style="position:absolute;left:32px;top:124px;width:442px;height:76px;box-sizing:border-box;background:#241C13;border:1px solid #E9A13B;border-radius:12px;padding:11px 16px;box-shadow:0 0 0 3px rgba(233,161,59,.14)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">ds2 · action · 2m — selected</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">wake lit ↓</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Merge PR #2 — schema domain move</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#C9B9A6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">The schema gets its permanent public home.</div></div>
+<div style="position:absolute;left:32px;top:210px;width:442px;height:76px;box-sizing:border-box;background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:12px;padding:11px 16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">◆ ds9 · decision · 5m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">gates ds7</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Rename API_VERSION to match the domain?</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#9C8D7B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">Breaking to every artifact — decide before adoption.</div></div>
+<div style="position:absolute;left:32px;top:296px;width:442px;height:76px;box-sizing:border-box;background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:12px;padding:11px 16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">◆ ds10 · decision · 2m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">unlocks —</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Keep the no-self-merge review guard?</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#9C8D7B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">Two-minute call; friction on every future merge.</div></div>
+<div style="position:absolute;left:36px;top:436px;font:500 10px 'JetBrains Mono',monospace;color:#4E4438">−1</div>
+<div style="position:absolute;left:36px;top:516px;font:500 10px 'JetBrains Mono',monospace;color:#4E4438">−2</div>
+<div style="position:absolute;left:36px;top:596px;font:500 10px 'JetBrains Mono',monospace;color:#4E4438">−3</div>
+<div style="position:absolute;left:56px;top:414px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.8"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds5</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F6355">by ds1</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">npm trusted publishers ×4</div></div>
+<div style="position:absolute;left:268px;top:414px;width:200px;height:64px;box-sizing:border-box;background:#1D1610;border:1px solid rgba(233,161,59,.55);border-radius:10px;padding:9px 12px;opacity:.92"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">ds3</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#E9A13B">next · 10m</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#E4D9C9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">DNS CNAME → GitHub Pages</div></div>
+<div style="position:absolute;left:56px;top:494px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.6"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds7</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F6355">by ds5 +◆ds9</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Cut first release</div></div>
+<div style="position:absolute;left:268px;top:494px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.6"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds4</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F6355">by ds3</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Point Pages at the domain</div></div>
+<div style="position:absolute;left:56px;top:574px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.14);border-radius:10px;padding:9px 12px;opacity:.45"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds8</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Marketing copy — you skim</div></div>
+<div style="position:absolute;left:268px;top:574px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.14);border-radius:10px;padding:9px 12px;opacity:.45"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds6</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F6355">by ds4</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Verify $schema + IntelliSense</div></div>
+<div style="position:absolute;left:498px;top:8px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F6355">LOOM — 2 AFLOAT · 26 LAUNCHED</div>
+<div style="position:absolute;left:498px;top:210px;width:442px;height:76px;box-sizing:border-box;background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:12px;padding:11px 16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">▸ lm1 · provide · 10m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">unlocks lm2</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Provide API key + pick staging target</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#9C8D7B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">The last human input before live validation.</div></div>
+<div style="position:absolute;left:498px;top:296px;width:442px;height:76px;box-sizing:border-box;background:#221B15;border:1px solid rgba(233,161,59,.28);border-radius:12px;padding:11px 16px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">◆ lm5 · decision · 1m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">unlocks lm2</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">Say “go” — pre-build the harness</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#9C8D7B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">One word; it builds while you sleep.</div></div>
+<div style="position:absolute;left:619px;top:414px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.6"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">lm2</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Staging + harness for #27</div></div>
+<div style="position:absolute;left:619px;top:494px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.5"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">lm3</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Run #27 live validation</div></div>
+<div style="position:absolute;left:619px;top:574px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.14);border-radius:10px;padding:9px 12px;opacity:.45"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">lm4</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Marketing copy — you skim</div></div>
+<div style="position:absolute;left:619px;top:668px;width:320px;font:500 10.5px 'JetBrains Mono',monospace;color:#4E4438">▸▸▸▸▸▸▸▸ 26 launched · Apache-2.0 relicensed</div>
+<div style="position:absolute;left:964px;top:8px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#6F6355">SLIPWAY — SW1 ON THE SLIPWAY</div>
+<div style="position:absolute;left:964px;top:342px;width:442px;height:76px;box-sizing:border-box;background:#241C13;border:1px solid #E9A13B;border-radius:12px;padding:11px 16px;box-shadow:0 12px 32px rgba(0,0,0,.4)"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">sw1 · 1 session</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">● on the slipway</span></div><div style="font:600 14px 'Work Sans',sans-serif;color:#F2EBE1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px">This design brief → Claude Design session</div><div style="font:italic 400 12.5px 'Source Serif 4',serif;color:#C9B9A6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px">The design you're looking at is this task, mid-launch.</div></div>
+<div style="position:absolute;left:1085px;top:446px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.6"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">sw2</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">ATLAS</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Design → spec + backlog</div></div>
+<div style="position:absolute;left:1085px;top:526px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.5"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">sw3</span><span style="font:600 8.5px 'JetBrains Mono',monospace;color:#6F6355;border:1px solid rgba(240,233,225,.18);border-radius:4px;padding:1px 5px">PIPE</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Build v0.1 — Tauri + SQLite</div></div>
+<div style="position:absolute;left:1085px;top:606px;width:200px;height:64px;box-sizing:border-box;background:#191310;border:1px dashed rgba(240,233,225,.16);border-radius:10px;padding:9px 12px;opacity:.5"><div style="display:flex;justify-content:space-between"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">sw4</span><span style="font:500 10px 'JetBrains Mono',monospace;color:#6F6355">you · ongoing</span></div><div style="font:500 12.5px 'Work Sans',sans-serif;color:#B5A796;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px">Dogfood both launches</div></div>
+</div>
+</div>
+
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-top:14px">DRAWER — “dry dock” sheet rises from the line · serif before-brief · capture answered</div>
+<div data-screen-label="1c Drawer" style="width:1440px;height:900px;box-sizing:border-box;background:#1A1512;border:1px solid rgba(240,233,225,.12);border-radius:12px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);font-family:'Work Sans',sans-serif;position:relative">
+<div style="height:46px;display:flex;align-items:center;gap:16px;padding:0 18px;border-bottom:1px solid rgba(240,233,225,.08)">
+<div style="display:flex;gap:8px"><span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span><span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span><span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span></div>
+<span style="font:600 13px 'Work Sans',sans-serif;color:#B5A796">Slipway</span>
+</div>
+<div style="position:absolute;left:0;right:0;top:46px;bottom:0;overflow:hidden">
+<div style="position:absolute;left:0;right:0;top:110px;height:2px;background:repeating-linear-gradient(90deg,rgba(240,233,225,.18) 0 16px,rgba(240,233,225,.05) 16px 32px);opacity:.7"></div>
+<div style="position:absolute;left:60px;top:30px;width:340px;height:64px;background:#221B15;border:1px solid rgba(233,161,59,.2);border-radius:12px;opacity:.35"></div>
+<div style="position:absolute;left:430px;top:30px;width:340px;height:64px;background:#221B15;border:1px solid rgba(233,161,59,.2);border-radius:12px;opacity:.3"></div>
+<div style="position:absolute;left:90px;top:140px;width:220px;height:52px;background:#191310;border:1px dashed rgba(240,233,225,.14);border-radius:10px;opacity:.3"></div>
+<div style="position:absolute;inset:0;background:rgba(12,8,6,.45)"></div>
+<div style="position:absolute;left:320px;right:320px;top:120px;bottom:0;background:#201913;border:1px solid rgba(240,233,225,.12);border-bottom:none;border-radius:18px 18px 0 0;box-shadow:0 -30px 80px rgba(0,0,0,.55);padding:14px 48px 30px;box-sizing:border-box;display:flex;flex-direction:column;gap:13px">
+<div style="width:40px;height:4px;border-radius:99px;background:rgba(240,233,225,.18);margin:0 auto"></div>
+<div style="display:flex;align-items:center;gap:8px">
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#6F6355">decision-studio · ds3 · dry dock</span>
+<span style="flex:1"></span>
+<span style="font:500 11px 'JetBrains Mono',monospace;color:#4E4438">esc ✕</span>
+</div>
+<div style="font:600 21px/1.3 'Work Sans',sans-serif;color:#F2EBE1">Add DNS CNAME — schema.workspec.io → fieldstatenz.github.io</div>
+<div style="font:italic 400 15px/1.5 'Source Serif 4',serif;color:#C9B9A6">This is the schema's permanent public address — the thing every <span style="font:500 13px 'JetBrains Mono',monospace;font-style:normal">$schema</span> URL will point at.</div>
+<div>
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#E9A13B;margin-bottom:8px">BEFORE — WHY THIS WORKS</div>
+<div style="font:400 16px/1.65 'Source Serif 4',serif;color:#E4D9C9;max-width:640px">A CNAME says “this name is an alias for that name.” You're telling DNS that schema.workspec.io answers wherever GitHub Pages answers. Once GitHub sees the record, it provisions a TLS certificate for the domain on its own.</div>
+</div>
+<div style="border-top:1px solid rgba(240,233,225,.08);border-bottom:1px solid rgba(240,233,225,.08);padding:10px 0;font:500 11px 'JetBrains Mono',monospace;color:#6F6355">✓ ✓ ✓&nbsp;&nbsp;3 steps done — record added · propagation out · dig confirms</div>
+<div>
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:#E9A13B;margin-bottom:8px">ONE TAP — BEFORE IT COUNTS</div>
+<div style="font:600 19px/1.4 'Source Serif 4',serif;color:#F2EBE1;margin-bottom:12px">Why a CNAME here — not an A record?</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<div style="border:1px solid rgba(240,233,225,.12);border-radius:10px;padding:12px 14px;font:400 13px/1.45 'Work Sans',sans-serif;color:#B5A796;opacity:.45">CNAMEs are faster to resolve</div>
+<div style="background:#E9A13B;border:1px solid #E9A13B;border-radius:10px;padding:12px 14px;font:500 13px/1.45 'Work Sans',sans-serif;color:#221407">✓&nbsp; GitHub's IPs can change; the alias follows them, a hardcoded IP wouldn't</div>
+<div style="border:1px solid rgba(240,233,225,.12);border-radius:10px;padding:12px 14px;font:400 13px/1.45 'Work Sans',sans-serif;color:#B5A796;opacity:.45">A records don't support HTTPS</div>
+<div style="border:1px solid rgba(240,233,225,.12);border-radius:10px;padding:12px 14px;font:400 13px/1.45 'Work Sans',sans-serif;color:#B5A796;opacity:.45">Subdomains can't have A records</div>
+</div>
+<div style="display:flex;align-items:center;gap:10px;margin-top:12px">
+<span style="font:500 11.5px 'JetBrains Mono',monospace;color:#86B29E">● learned — dns aliasing · joins your ledger · resurfaces with ds6</span>
+<span style="flex:1"></span>
+<span style="font:400 11px 'JetBrains Mono',monospace;color:#4E4438">skip would have left ds3 hollow ◌</span>
+</div>
+</div>
+<div style="margin-top:auto">
+<div style="height:46px;border-radius:10px;background:#E9A13B;color:#221407;display:flex;align-items:center;justify-content:center;font:600 14.5px 'Work Sans',sans-serif">Back to the tide — ds4 is surfacing</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="display:flex;gap:20px;align-items:flex-start;margin-top:14px">
+<div style="width:460px;flex:none">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">CLOSE-UP — skipping is visible, not punished</div>
+<div style="background:#201913;border:1px solid rgba(240,233,225,.10);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;font-family:'Work Sans',sans-serif">
+<div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(240,233,225,.10);border-radius:10px;padding:11px 14px"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds3</span><span style="font:500 13px 'Work Sans',sans-serif;color:#E4D9C9">DNS CNAME → GitHub Pages</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#86B29E">✓ ● learned</span></div>
+<div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(240,233,225,.10);border-radius:10px;padding:11px 14px"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">ds1</span><span style="font:500 13px 'Work Sans',sans-serif;color:#E4D9C9">Merge PR #1 — OIDC publishing</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#E9A13B">✓ ◌ hollow</span></div>
+<div style="font:400 12.5px/1.65 'Work Sans',sans-serif;color:#B5A796">Done is done either way — the hollow ring is the only debt. It queues the same one-tap question for later and the ledger counts the concept as unheld until it lands.</div>
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">▲ a capture that happens beats a perfect capture that gets skipped</div>
+</div>
+</div>
+<div style="width:430px;flex:none">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">RECALL — rail ledger, serif evidence</div>
+<div style="background:#201913;border:1px solid rgba(240,233,225,.10);border-radius:12px;padding:18px 22px;display:flex;flex-direction:column;font-family:'Work Sans',sans-serif">
+<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:10px"><span style="font:600 17px 'Source Serif 4',serif;color:#F2EBE1">What you've learned</span><span style="font:500 11px 'JetBrains Mono',monospace;color:#6F6355">12 · 10 held</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(240,233,225,.07)"><span style="font:400 15px 'Source Serif 4',serif;color:#E4D9C9">cache TTL + propagation</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#E9A13B">●●●●</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#6F6355">30d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(240,233,225,.07)"><span style="font:400 15px 'Source Serif 4',serif;color:#E4D9C9">dns aliasing</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#E9A13B">●●<span style="color:#43392C">●●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#86B29E">with ds6</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(240,233,225,.07)"><span style="font:400 15px 'Source Serif 4',serif;color:#E4D9C9">tls auto-provisioning</span><span style="flex:1"></span><span style="font:500 11px 'JetBrains Mono',monospace;color:#E9A13B">●<span style="color:#43392C">●●●</span></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B">back ~1d</span></div>
+<div style="display:flex;align-items:center;gap:10px;padding:9px 0"><span style="font:400 15px 'Source Serif 4',serif;color:#B5A796">◌ oidc trust — skipped at ds1</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#E9A13B;border:1px solid rgba(233,161,59,.35);border-radius:6px;padding:2px 8px">ask me</span></div>
+<div style="font:italic 400 13px 'Source Serif 4',serif;color:#9C8D7B;margin-top:12px">Evidence, not homework — one day this is CV fuel.</div>
+</div>
+</div>
+<div style="flex:1;min-width:340px">
+<div style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.42);margin-bottom:10px">UNLOCK MOTION — where 1c spends its boldness (~800ms, one ease)</div>
+<div style="display:flex;flex-direction:column;gap:10px;font-family:'Work Sans',sans-serif">
+<div style="background:#1A1512;border:1px solid rgba(240,233,225,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:rgba(233,161,59,.14);border:1px solid #E9A13B;border-radius:8px;padding:6px 11px;font:600 11px 'JetBrains Mono',monospace;color:#E9A13B;flex:none">✓ ds2 <span style="letter-spacing:2px;color:rgba(233,161,59,.5)">˗˗˗</span></span>
+<span style="font:400 12px/1.5 'Work Sans',sans-serif;color:#B5A796">1 — done: the card slips out right, leaving wake</span>
+</div>
+<div style="background:#1A1512;border:1px solid rgba(240,233,225,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<svg width="150" height="30" viewBox="0 0 150 30" fill="none" style="flex:none"><path d="M0 20 Q 40 20 60 14 Q 75 9 90 14 Q 110 20 150 20" stroke="rgba(240,233,225,0.45)" stroke-width="1.5"></path><circle cx="75" cy="11" r="4" fill="#E9A13B" fill-opacity="0.7"></circle></svg>
+<span style="font:400 12px/1.5 'Work Sans',sans-serif;color:#B5A796">2 — the line ripples; ds3 rises through it, un-dimming</span>
+</div>
+<div style="background:#1A1512;border:1px solid rgba(240,233,225,.10);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px">
+<span style="display:inline-flex;align-items:center;gap:7px;background:#241C13;border:1px solid #E9A13B;border-radius:8px;padding:6px 11px;font:600 11px 'JetBrains Mono',monospace;color:#F2EBE1;flex:none">ds3 · surfaced · 10m</span>
+<span style="font:400 12px/1.5 'Work Sans',sans-serif;color:#B5A796">3 — afloat and ignited; the depth column shifts up one</span>
+</div>
+<div style="font:400 11px/1.6 'JetBrains Mono',monospace;color:#6F6355">the only bold motion in 1c · reduced-motion → crossfade</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>INTAKE — sketch only, direction-agnostic · the mouth of the app</div>
+<div style="width:560px;box-sizing:border-box;background:#17181A;border:1px dashed rgba(255,255,255,.18);border-radius:12px;padding:22px 24px;display:flex;flex-direction:column;gap:14px;font-family:'Instrument Sans',sans-serif">
+<div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.12em;color:rgba(255,255,255,.4)">INTAKE — WIREFRAME · V1 = MANUAL + JSON IMPORT, SAME SHAPE</div>
+<div style="border:1.5px dashed rgba(255,255,255,.22);border-radius:10px;padding:26px 20px;text-align:center;background:repeating-linear-gradient(45deg,rgba(255,255,255,.015) 0 10px,transparent 10px 20px)">
+<div style="font:500 13px 'JetBrains Mono',monospace;color:rgba(255,255,255,.55)">paste anything</div>
+<div style="font:400 11.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.35);margin-top:6px">a brief · a PR list · meeting notes · a wall of text</div>
+</div>
+<div style="display:flex;align-items:center;gap:10px"><span style="flex:1;height:1px;background:rgba(255,255,255,.1)"></span><span style="font:500 10px 'JetBrains Mono',monospace;color:rgba(255,255,255,.35)">BECOMES</span><span style="flex:1;height:1px;background:rgba(255,255,255,.1)"></span></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 12px"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)">action</span><span style="font:500 13px 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75)">Merge PR #1 — OIDC publishing</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)">you · 2m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.3)">unlocks? ▾</span></div>
+<div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 12px"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)">decision</span><span style="font:500 13px 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75)">Rename API_VERSION?</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:#FFA24D">owner? ⚠</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.3)">5m ▾</span></div>
+<div style="display:flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,.12);border-radius:9px;padding:10px 12px"><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)">provide</span><span style="font:500 13px 'Instrument Sans',sans-serif;color:rgba(255,255,255,.75)">API key + staging target</span><span style="flex:1"></span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.4)">you · 10m</span><span style="font:500 10.5px 'JetBrains Mono',monospace;color:rgba(255,255,255,.3)">unlocks? ▾</span></div>
+</div>
+<div style="font:400 11px/1.6 'JetBrains Mono',monospace;color:rgba(255,255,255,.35)">every guess is editable before it lands · flags mark what parsing couldn't infer — owner, effort, edges</div>
+<div style="display:flex;gap:10px">
+<div style="flex:1;height:40px;border-radius:9px;background:rgba(255,255,255,.9);color:#141518;display:flex;align-items:center;justify-content:center;font:600 13px 'Instrument Sans',sans-serif">Confirm 3 → board</div>
+<div style="height:40px;border-radius:9px;border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font:500 12.5px 'Instrument Sans',sans-serif;padding:0 16px">edit first</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: “<a class="dv-oid" href="#1b">1b</a>'s graph board with <a class="dv-oid" href="#1a">1a</a>'s palette” · “animate <a class="dv-oid" href="#1c">1c</a>'s unlock for real” · “go deep on one direction — full flow including intake”</p>
+</section>
+</x-dc>
+</body>
+</html>
