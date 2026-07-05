@@ -1,0 +1,157 @@
+/* App shell — the window IS the 440px sidebar. */
+.sw-app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--sw-bg-sidebar);
+  border-right: 1px solid var(--sw-border-08);
+  font-family: var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-main {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px 24px 8px;
+}
+
+/* Titlebar */
+.sw-titlebar {
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--sw-border-08);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Non-interactive titlebar children pass pointer events through to the
+   root drag region so the frameless window stays draggable everywhere
+   except the buttons. */
+.sw-titlebar-lights,
+.sw-titlebar-label,
+.sw-titlebar-spacer,
+.sw-titlebar-summary {
+  pointer-events: none;
+}
+
+.sw-titlebar-lights {
+  display: flex;
+  gap: 7px;
+}
+
+.sw-titlebar-light {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+}
+
+/* Red + yellow are real buttons (close / minimize): they re-enable pointer
+   events inside the pass-through wrapper — so they never become drag-region
+   holes — and keep the default cursor, like macOS traffic lights. */
+button.sw-titlebar-light {
+  pointer-events: auto;
+  cursor: default;
+  appearance: none;
+}
+
+.sw-titlebar-light-red {
+  background: var(--sw-traffic-red);
+}
+
+.sw-titlebar-light-yellow {
+  background: var(--sw-traffic-yellow);
+}
+
+.sw-titlebar-light-green {
+  background: var(--sw-traffic-green);
+}
+
+.sw-titlebar-label {
+  font: 600 12.5px var(--sw-sans);
+  color: var(--sw-text-muted);
+}
+
+.sw-titlebar-spacer,
+.sw-footer-spacer {
+  flex: 1;
+}
+
+.sw-titlebar-summary {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-titlebar-btn {
+  background: none;
+  border: 1px solid var(--sw-border-12);
+  border-radius: var(--sw-radius-6);
+  padding: 3px 8px;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-text-muted);
+  cursor: pointer;
+}
+
+/* Footer */
+.sw-footer {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 8px 24px 12px;
+}
+
+.sw-footer-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--sw-bg-toast);
+  border: 1px solid var(--sw-accent-border-40);
+  border-radius: var(--sw-radius-8);
+  padding: 8px 12px;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+}
+
+.sw-footer-toast {
+  animation: swFadeUp var(--sw-dur-fadeup) ease;
+}
+
+.sw-footer-recheck {
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.sw-footer-recheck-key {
+  color: var(--sw-accent);
+}
+
+.sw-footer-hints {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-faint);
+}
+
+.sw-footer-hintline {
+  line-height: 1.5;
+}
+
+.sw-footer-reset {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}

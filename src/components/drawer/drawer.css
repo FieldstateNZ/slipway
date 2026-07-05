@@ -1,0 +1,452 @@
+/* Task drawer — full-panel overlay where a task is done. Geometry and type
+   transcribed from docs/design/project/"Slipway Sidebar.dc.html" (drawer
+   template, lines 133–191). */
+
+.sw-drawer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  box-sizing: border-box;
+  background: var(--sw-bg-drawer);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 24px;
+  animation: swPanelIn var(--sw-dur-panel) ease;
+  overflow-y: auto;
+}
+
+/* Header row — crumb · spacer · "esc parks it ✕" */
+.sw-drawer-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.sw-drawer-crumb {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-drawer-head-spacer {
+  flex: 1;
+}
+
+.sw-drawer-close {
+  background: none;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+  cursor: pointer;
+}
+
+.sw-drawer-title {
+  font: 600 17px/1.35 var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-sub {
+  font: 400 12.5px/1.55 var(--sw-sans);
+  color: var(--sw-text-secondary);
+}
+
+.sw-drawer-frees {
+  color: var(--sw-text-muted);
+}
+
+/* BEFORE — 20 SECONDS card */
+.sw-drawer-before {
+  flex: none;
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-border-10);
+  border-radius: var(--sw-radius-10);
+  padding: 12px 14px;
+}
+
+.sw-drawer-before-label {
+  font: 600 9px var(--sw-mono);
+  letter-spacing: 0.12em;
+  color: var(--sw-accent);
+  margin-bottom: 6px;
+}
+
+.sw-drawer-before-body {
+  font: 400 12.5px/1.6 var(--sw-sans);
+  color: var(--sw-text-secondary);
+}
+
+/* "STEP N OF M" / "THE CALL — PICK ONE" */
+.sw-drawer-phase-label {
+  flex: none;
+  font: 600 9px var(--sw-mono);
+  letter-spacing: 0.12em;
+  color: var(--sw-text-muted);
+}
+
+/* Current step card */
+.sw-drawer-step {
+  flex: none;
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-accent);
+  border-radius: var(--sw-radius-12);
+  padding: 14px 16px;
+  box-shadow: var(--sw-glow-step);
+}
+
+.sw-drawer-step-text {
+  font: 600 14px/1.4 var(--sw-sans);
+  color: var(--sw-text-primary);
+  margin-bottom: 9px;
+}
+
+.sw-drawer-cmd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--sw-bg-command);
+  border: 1px solid var(--sw-border-12);
+  border-radius: var(--sw-radius-8);
+  padding: 9px 11px;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-text-command);
+}
+
+.sw-drawer-cmd-text {
+  min-width: 0;
+  word-break: break-all;
+}
+
+.sw-drawer-copy {
+  background: none;
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  border: 1px solid var(--sw-border-16);
+  border-radius: var(--sw-radius-5);
+  padding: 2px 7px;
+  flex: none;
+  cursor: pointer;
+}
+
+/* Concept disclosure — strictly opt-in */
+.sw-drawer-concept-toggle {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-accent);
+  margin-top: 9px;
+  cursor: pointer;
+}
+
+.sw-drawer-concept {
+  background: var(--sw-bg-concept);
+  border: 1px solid var(--sw-accent-border-18);
+  border-radius: var(--sw-radius-9);
+  padding: 10px 12px;
+  margin-top: 7px;
+}
+
+.sw-drawer-concept-text {
+  font: 400 12px/1.6 var(--sw-sans);
+  color: var(--sw-text-secondary);
+}
+
+/* Remaining steps — dashed, faded, stair-stepped (opacity + indent inline) */
+.sw-drawer-rem {
+  flex: none;
+  border: 1px dashed var(--sw-border-15);
+  border-radius: var(--sw-radius-10);
+  padding: 9px 13px;
+  font: 400 12.5px var(--sw-sans);
+  color: var(--sw-text-secondary);
+}
+
+.sw-drawer-rem-then {
+  font: 500 9.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+/* Capture-horizon pill — "⚑ then one question ◌→●" */
+.sw-drawer-horizon {
+  flex: none;
+  margin-left: 36px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  border: 1px dashed var(--sw-accent-border-40);
+  border-radius: var(--sw-radius-pill);
+  padding: 4px 11px;
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-accent);
+}
+
+/* Primary button pinned to the bottom */
+.sw-drawer-cta-wrap {
+  margin-top: auto;
+  flex: none;
+  padding-top: 8px;
+}
+
+.sw-drawer-cta {
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: var(--sw-radius-10);
+  background: var(--sw-accent);
+  /* Design uses the sidebar background (#0F1013) as accent-button text. */
+  color: var(--sw-bg-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 13.5px var(--sw-sans);
+  cursor: pointer;
+}
+
+/* Decision option cards */
+.sw-drawer-option {
+  flex: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  color: inherit;
+  border: 1px solid var(--sw-border-16);
+  border-radius: var(--sw-radius-12);
+  padding: 14px 16px;
+  cursor: pointer;
+}
+
+.sw-drawer-option:hover {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-06);
+}
+
+.sw-drawer-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+.sw-drawer-option-num {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--sw-radius-6);
+  border: 1px solid var(--sw-border-20);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+  flex: none;
+}
+
+.sw-drawer-option-title {
+  font: 600 13.5px var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-option-body {
+  font: 400 12px/1.5 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  margin-left: 32px;
+}
+
+.sw-drawer-dec-footer {
+  flex: none;
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  text-align: center;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+/* Capture phase — faded ledger of what was just done (design lines 187–191) */
+.sw-drawer-done {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.5;
+}
+
+.sw-drawer-done-line {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+/* Capture phase — the ONE TAP question (design lines 192–214) */
+.sw-drawer-cap-spacer {
+  flex: 1;
+}
+
+.sw-drawer-cap-label {
+  flex: none;
+  font: 600 9.5px var(--sw-mono);
+  letter-spacing: 0.14em;
+  color: var(--sw-accent);
+}
+
+.sw-drawer-cap-q {
+  flex: none;
+  font: 600 20px/1.35 var(--sw-sans);
+  color: var(--sw-text-primary);
+  margin-bottom: 8px;
+}
+
+.sw-drawer-cap-choices {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* One choice row: key square · text · mark slot (design line 197–201). */
+.sw-drawer-cap-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--sw-border-14);
+  border-radius: var(--sw-radius-10);
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.sw-drawer-cap-choice-idle:hover {
+  border-color: var(--sw-accent-border-55);
+}
+
+.sw-drawer-cap-key {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--sw-radius-6);
+  border: 1px solid var(--sw-border-20);
+  background: transparent;
+  color: var(--sw-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 11px var(--sw-mono);
+  flex: none;
+}
+
+.sw-drawer-cap-text {
+  font: 400 13px/1.4 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  flex: 1;
+}
+
+.sw-drawer-cap-mark {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  flex: none;
+}
+
+/* Correct pick — the row flips accent (prototype capChoices, st === 'correct'). */
+.sw-drawer-cap-choice-correct {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-12);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-key {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent);
+  /* Design uses the sidebar background (#0F1013) as accent-square text. */
+  color: var(--sw-bg-sidebar);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-text {
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-mark {
+  color: var(--sw-accent);
+}
+
+/* Miss — the picked row dims up its border and takes the ✕ mark… */
+.sw-drawer-cap-choice-missed {
+  border-color: var(--sw-border-32);
+}
+
+/* …and the correct row is revealed with "→ this one". */
+.sw-drawer-cap-choice-reveal {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-10);
+}
+
+.sw-drawer-cap-choice-reveal .sw-drawer-cap-text {
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-cap-choice-reveal .sw-drawer-cap-mark {
+  color: var(--sw-accent);
+}
+
+/* The why is the win (design line 205). */
+.sw-drawer-cap-why {
+  flex: none;
+  font: 400 12px/1.6 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  margin-top: 8px;
+}
+
+.sw-drawer-cap-continue {
+  flex: none;
+  width: 100%;
+  height: 40px;
+  border-radius: var(--sw-radius-10);
+  border: 1px solid var(--sw-accent-border-50);
+  background: transparent;
+  color: var(--sw-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 12.5px var(--sw-sans);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* "● {concept} — captured" stamp under the flipped row. */
+.sw-drawer-cap-stamp {
+  flex: none;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-accent);
+  margin-top: 10px;
+}
+
+/* Inline complete_task failure — the drawer stays open. */
+.sw-drawer-cap-error {
+  flex: none;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+  margin-top: 10px;
+}
+
+/* Idle footer line: "1–4 commit · s skip — stays hollow ◌ · misses return sooner" */
+.sw-drawer-cap-idle {
+  flex: none;
+  font: 500 10.5px/1.6 var(--sw-mono);
+  color: var(--sw-text-muted);
+  text-align: center;
+}
+
+.sw-drawer-cap-skip {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

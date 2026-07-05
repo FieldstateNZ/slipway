@@ -1,0 +1,126 @@
+/* The Learned ledger overlay — evidence, not homework. Geometry and type
+   transcribed from docs/design/project/"Slipway Sidebar.dc.html"
+   (recall template, lines 73–87). */
+
+.sw-ledger {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--sw-bg-overlay);
+  display: flex;
+  flex-direction: column;
+  animation: swPanelIn var(--sw-dur-panel) ease;
+}
+
+.sw-ledger-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 24px 4px;
+}
+
+.sw-ledger-title {
+  font: 600 17px var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-ledger-summary {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-ledger-spacer,
+.sw-ledger-row-spacer {
+  flex: 1;
+}
+
+.sw-ledger-close {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+  cursor: pointer;
+}
+
+.sw-ledger-tagline {
+  font: 400 11.5px/1.5 var(--sw-sans);
+  color: var(--sw-text-muted);
+  padding: 0 24px 10px;
+}
+
+.sw-ledger-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 24px;
+}
+
+.sw-ledger-row {
+  border-top: 1px solid var(--sw-border-07);
+  padding: 11px 2px;
+}
+
+.sw-ledger-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.sw-ledger-name {
+  font: 500 13.5px var(--sw-sans);
+  color: var(--sw-text-primary);
+  flex: 1;
+}
+
+.sw-ledger-name-hollow {
+  color: var(--sw-text-secondary);
+}
+
+.sw-ledger-streak {
+  font: 500 11px var(--sw-mono);
+}
+
+.sw-ledger-streak-fill {
+  color: var(--sw-accent);
+}
+
+.sw-ledger-streak-rest {
+  color: var(--sw-streak-empty);
+}
+
+.sw-ledger-row-sub {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.sw-ledger-from {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-ledger-ask {
+  background: none;
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-accent);
+  border: 1px solid var(--sw-accent-border-35);
+  border-radius: var(--sw-radius-6);
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.sw-ledger-footer {
+  flex: none;
+  border-top: 1px solid var(--sw-border-07);
+  padding: 12px 24px;
+  font: 500 10px/1.6 var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-ledger-error {
+  margin-top: 14px;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+}

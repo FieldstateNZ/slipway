@@ -1,0 +1,319 @@
+/* Intake overlay + drop curtain. Geometry and type transcribed from
+   docs/design/project/"Slipway Sidebar.dc.html" (intake template lines
+   88–114, drag overlay lines 236–243). The manual-entry form has no design
+   mock — it borrows the command-block input styling to stay tokens-true. */
+
+.sw-intake {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--sw-bg-overlay);
+  display: flex;
+  flex-direction: column;
+  animation: swPanelIn var(--sw-dur-panel) ease;
+}
+
+.sw-intake-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 24px 4px;
+}
+
+.sw-intake-title {
+  font: 600 17px var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-intake-tag {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-spacer {
+  flex: 1;
+}
+
+.sw-intake-close {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+  cursor: pointer;
+}
+
+.sw-intake-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 24px;
+}
+
+/* -- empty state ---------------------------------------------------------- */
+
+.sw-intake-dropzone {
+  border: 1.5px dashed var(--sw-border-22);
+  border-radius: var(--sw-radius-12);
+  padding: 34px 18px;
+  text-align: center;
+  background: var(--sw-stripe-drop);
+}
+
+.sw-intake-dropzone-main {
+  font: 500 12px var(--sw-mono);
+  color: var(--sw-text-secondary);
+}
+
+.sw-intake-dropzone-sub {
+  font: 400 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+  margin-top: 7px;
+}
+
+.sw-intake-note {
+  font: 400 10.5px/1.7 var(--sw-mono);
+  color: var(--sw-text-muted);
+  margin-top: 14px;
+}
+
+/* -- manual entry (no design mock — spartan, tokens only) ------------------ */
+
+.sw-intake-manual-link {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin-top: 14px;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-accent);
+  cursor: pointer;
+}
+
+.sw-intake-manual {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.sw-intake-manual-row {
+  display: flex;
+  gap: 8px;
+}
+
+.sw-intake-manual-row > .sw-intake-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.sw-intake-input {
+  box-sizing: border-box;
+  background: var(--sw-bg-command);
+  border: 1px solid var(--sw-border-12);
+  border-radius: var(--sw-radius-8);
+  padding: 8px 10px;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-text-command);
+}
+
+.sw-intake-input::placeholder {
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-input-eff {
+  flex: none;
+  width: 64px;
+}
+
+/* -- dropped state ---------------------------------------------------------- */
+
+.sw-intake-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--sw-accent-border-35);
+  border-radius: var(--sw-radius-9);
+  padding: 9px 12px;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-accent);
+}
+
+.sw-intake-chip-size {
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-becomes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.sw-intake-becomes-line {
+  flex: 1;
+  height: 1px;
+  background: var(--sw-border-09);
+}
+
+.sw-intake-becomes-label {
+  font: 500 9.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-stub {
+  border: 1px solid var(--sw-border-12);
+  border-radius: var(--sw-radius-10);
+  padding: 10px 13px;
+  margin-bottom: 8px;
+}
+
+.sw-intake-stub-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.sw-intake-stub-meta {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-stub-spacer {
+  flex: 1;
+}
+
+.sw-intake-stub-guess {
+  font: 500 9.5px var(--sw-mono);
+  color: var(--sw-accent);
+  border: 1px solid var(--sw-accent-border-30);
+  border-radius: var(--sw-radius-5);
+  padding: 1px 6px;
+}
+
+/* Clickable-to-edit title/effort: button resets keep the design's type. */
+.sw-intake-stub-title,
+.sw-intake-stub-eff {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: text;
+  text-align: left;
+}
+
+.sw-intake-stub-title {
+  display: block;
+  width: 100%;
+  font: 500 13px var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-intake-stub-eff {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-intake-stub-title-input,
+.sw-intake-stub-eff-input {
+  box-sizing: border-box;
+  background: var(--sw-bg-command);
+  border: 1px solid var(--sw-accent-border-35);
+  border-radius: var(--sw-radius-5);
+  padding: 0 4px;
+  color: var(--sw-text-primary);
+}
+
+.sw-intake-stub-title-input {
+  display: block;
+  width: 100%;
+  font: 500 13px var(--sw-sans);
+}
+
+.sw-intake-stub-eff-input {
+  width: 52px;
+  font: 500 10px var(--sw-mono);
+}
+
+.sw-intake-editnote {
+  font: 400 10.5px/1.6 var(--sw-mono);
+  color: var(--sw-text-muted);
+  margin: 4px 0 14px;
+}
+
+/* JSON-import summary line (no design mock — kept minimal). */
+.sw-intake-json-note {
+  font: 400 10.5px/1.6 var(--sw-mono);
+  color: var(--sw-text-muted);
+  margin: 4px 0 14px;
+}
+
+.sw-intake-confirm {
+  box-sizing: border-box;
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: var(--sw-radius-10);
+  background: var(--sw-accent);
+  color: var(--sw-bg-sidebar);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 13.5px var(--sw-sans);
+  cursor: pointer;
+}
+
+.sw-intake-confirm-manual {
+  height: 36px;
+  font: 600 12.5px var(--sw-sans);
+}
+
+.sw-intake-discard {
+  display: block;
+  margin: 10px auto 0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+  cursor: pointer;
+}
+
+.sw-intake-error {
+  margin-top: 10px;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+}
+
+/* -- drop curtain (z60, pointer-events none) -------------------------------- */
+
+.sw-dragover {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.sw-dragover-inner {
+  height: 100%;
+  box-sizing: border-box;
+  border: 1.5px dashed var(--sw-accent-border-55);
+  border-radius: var(--sw-radius-14);
+  background: var(--sw-accent-tint-05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.sw-dragover-main {
+  font: 500 12px var(--sw-mono);
+  color: var(--sw-accent);
+}
+
+.sw-dragover-sub {
+  font: 400 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}

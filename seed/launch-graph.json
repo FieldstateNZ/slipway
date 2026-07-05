@@ -1,0 +1,778 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "key": "ds",
+      "name": "DECISION STUDIO",
+      "full_name": "decision-studio",
+      "custom": false
+    },
+    {
+      "key": "lm",
+      "name": "LOOM",
+      "full_name": "loom",
+      "custom": false
+    },
+    {
+      "key": "sw",
+      "name": "SLIPWAY",
+      "full_name": "slipway",
+      "custom": false
+    }
+  ],
+  "concepts": [
+    {
+      "id": "ttl",
+      "name": "cache ttl + propagation",
+      "resurface_hint": "30d"
+    },
+    {
+      "id": "oidc",
+      "name": "oidc trusted publishing",
+      "resurface_hint": "with ds5"
+    },
+    {
+      "id": "urls",
+      "name": "stable public urls",
+      "resurface_hint": "with ds6"
+    },
+    {
+      "id": "dns",
+      "name": "dns aliasing",
+      "resurface_hint": "with ds6"
+    },
+    {
+      "id": "tls",
+      "name": "tls auto-provisioning",
+      "resurface_hint": "~4d"
+    },
+    {
+      "id": "provenance",
+      "name": "npm provenance",
+      "resurface_hint": "with ds7"
+    },
+    {
+      "id": "cleanroom",
+      "name": "clean-room verification",
+      "resurface_hint": "~4d"
+    },
+    {
+      "id": "breaking",
+      "name": "breaking-change surface",
+      "resurface_hint": "at ds7"
+    },
+    {
+      "id": "guards",
+      "name": "review guards",
+      "resurface_hint": "~4d"
+    },
+    {
+      "id": "live",
+      "name": "live validation",
+      "resurface_hint": "with lm3"
+    },
+    {
+      "id": "parallel",
+      "name": "parallelizing handoffs",
+      "resurface_hint": "~4d"
+    },
+    {
+      "id": "thesis",
+      "name": "the slipway thesis",
+      "resurface_hint": "at sw4"
+    },
+    {
+      "id": "intake",
+      "name": "intake learn-loops",
+      "resurface_hint": "~4d"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "ds1",
+      "project": "ds",
+      "pr": 1,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 2,
+      "deps": [],
+      "title": "Merge PR #1 — release workflow → OIDC trusted publishing",
+      "short": "Merge PR #1 — OIDC publishing",
+      "sub": "No more long-lived npm secrets in CI.",
+      "frees": "frees ds5 → release path",
+      "in_progress": false,
+      "learn": {
+        "before": "Trusted publishing swaps the stored npm token for an OIDC handshake: CI proves who it is to npm, per release. Nothing long-lived is left to leak.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Merge the PR",
+            "cmd": "gh pr merge 1 --squash --repo fieldstatenz/decision-studio",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Watch the release workflow go green",
+            "cmd": null,
+            "concept_label": "what OIDC swaps out",
+            "concept_text": "Instead of a secret sitting in CI, npm and GitHub do a per-run identity handshake. A leaked log can never leak a token that does not exist."
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "oidc",
+          "question": "After this merge, what lives in CI secrets?",
+          "choices": [
+            "An npm automation token",
+            "Nothing npm-related — the OIDC handshake is the credential",
+            "A GPG signing key",
+            "A short-lived password, rotated daily"
+          ],
+          "correct_index": 1,
+          "why": "The handshake is the credential — no stored token exists to steal."
+        }
+      }
+    },
+    {
+      "id": "ds2",
+      "project": "ds",
+      "pr": 2,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 2,
+      "deps": [],
+      "title": "Merge PR #2 — schema domain → schema.workspec.io/v1alpha1",
+      "short": "Merge PR #2 — schema domain",
+      "sub": "The schema gets its permanent public home.",
+      "frees": "frees ds3 → schema live",
+      "in_progress": false,
+      "learn": {
+        "before": "The schema moves to a domain you own. Hosting can change underneath it forever after; the URL in every $schema line does not.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Merge the PR",
+            "cmd": "gh pr merge 2 --squash --repo fieldstatenz/decision-studio",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Confirm CI publishes under /v1alpha1",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "urls",
+          "question": "Why give the schema its own subdomain?",
+          "choices": [
+            "Subdomains resolve faster",
+            "GitHub Pages requires a custom domain",
+            "The URL must outlive wherever the files happen to be hosted",
+            "It enables IntelliSense in editors"
+          ],
+          "correct_index": 2,
+          "why": "Hosting moves; a URL you own doesn’t."
+        }
+      }
+    },
+    {
+      "id": "ds3",
+      "project": "ds",
+      "pr": 3,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 10,
+      "deps": ["ds2"],
+      "title": "Add DNS CNAME — schema.workspec.io → fieldstatenz.github.io",
+      "short": "DNS CNAME → GitHub Pages",
+      "sub": "The schema’s permanent public address.",
+      "frees": "frees ds4 → ds6",
+      "in_progress": false,
+      "learn": {
+        "before": "A CNAME says “this name is an alias for that name.” You’re telling DNS that schema.workspec.io answers wherever GitHub Pages answers. Once GitHub sees the record it provisions a TLS certificate on its own.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Add the record at your registrar",
+            "cmd": "schema.workspec.io  CNAME  fieldstatenz.github.io",
+            "concept_label": "why alias a name, not an IP",
+            "concept_text": "GitHub’s IPs change without notice. The alias follows them automatically; a hardcoded A record would break silently."
+          },
+          {
+            "idx": 1,
+            "text": "Wait out propagation — minutes to an hour",
+            "cmd": null,
+            "concept_label": "what propagation actually is",
+            "concept_text": "Nothing is pushed anywhere — resolvers cache answers, and propagation is just those caches expiring. The record’s TTL decides how long stale answers linger."
+          },
+          {
+            "idx": 2,
+            "text": "Confirm it resolves",
+            "cmd": "dig schema.workspec.io CNAME +short",
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "dns",
+          "question": "Why a CNAME here — not an A record?",
+          "choices": [
+            "CNAMEs are faster to resolve",
+            "GitHub’s IPs can change; the alias follows them, a hardcoded IP wouldn’t",
+            "A records don’t support HTTPS",
+            "Subdomains can’t have A records"
+          ],
+          "correct_index": 1,
+          "why": "HTTPS comes from the certificate, not the record type — the alias is about GitHub’s changing IPs."
+        }
+      }
+    },
+    {
+      "id": "ds4",
+      "project": "ds",
+      "pr": 4,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 2,
+      "deps": ["ds3"],
+      "title": "Point GitHub Pages at the custom domain",
+      "short": "Point Pages at the domain",
+      "sub": "One gh api call — HTTPS enforced.",
+      "frees": "frees ds6 → verify",
+      "in_progress": false,
+      "learn": {
+        "before": "Pages needs to know the domain claims it; then it requests a certificate and can force HTTPS. One API call sets all of it.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Set the cname + enforce HTTPS",
+            "cmd": "gh api -X PUT repos/fieldstatenz/decision-studio/pages -f cname=schema.workspec.io -F https_enforced=true",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Wait for the cert check to go green",
+            "cmd": null,
+            "concept_label": "where the cert comes from",
+            "concept_text": "GitHub asks Let’s Encrypt for a certificate once the CNAME is visible, then renews it forever. You never touch a key."
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "tls",
+          "question": "What does https_enforced=true actually do?",
+          "choices": [
+            "Makes the certificate issue faster",
+            "Encrypts the DNS lookup",
+            "Redirects http → https once the cert exists",
+            "It’s mandatory for custom domains"
+          ],
+          "correct_index": 2,
+          "why": "The record proves ownership; enforcement is just a redirect GitHub flips on once the cert exists."
+        }
+      }
+    },
+    {
+      "id": "ds5",
+      "project": "ds",
+      "pr": 5,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 15,
+      "deps": ["ds1"],
+      "title": "Register npm trusted publishers — 4 packages",
+      "short": "npm trusted publishers ×4",
+      "sub": "Four packages, same three fields each.",
+      "frees": "frees ds7 → first release",
+      "in_progress": false,
+      "learn": {
+        "before": "Each package tells npm which repo and which workflow may publish it. That mapping is the whole trust model — no tokens anywhere.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Add the publisher on each of the 4 packages",
+            "cmd": "npmjs.com → package → settings → trusted publisher",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Double-check the workflow filename matches release.yml",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "provenance",
+          "question": "What exactly does npm verify at publish time?",
+          "choices": [
+            "Your npm password",
+            "That the build came from the registered repo + workflow",
+            "The package’s test coverage",
+            "A GPG signature on the tarball"
+          ],
+          "correct_index": 1,
+          "why": "The registered repo + workflow pair is the identity; provenance falls out of it."
+        }
+      }
+    },
+    {
+      "id": "ds6",
+      "project": "ds",
+      "pr": 6,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 5,
+      "deps": ["ds4"],
+      "title": "Verify $schema URL + IntelliSense from a clean editor",
+      "short": "Verify $schema + IntelliSense",
+      "sub": "The outside-world check.",
+      "frees": "frees ds8 (atlas)",
+      "in_progress": false,
+      "learn": {
+        "before": "A clean editor profile is the only honest test: no cached schema, no logged-in state — exactly what a stranger gets.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Open a scratch workspec in a fresh profile",
+            "cmd": "code --profile clean scratch.workspec.yaml",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Confirm completions come from schema.workspec.io",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "cleanroom",
+          "question": "Why test from a clean editor profile?",
+          "choices": [
+            "Extensions slow the schema down",
+            "Your cache can serve a stale schema and hide a broken URL",
+            "IntelliSense only works in fresh profiles",
+            "GitHub rate-limits logged-in editors"
+          ],
+          "correct_index": 1,
+          "why": "Caches lie on your machine only — a stranger’s editor has no cache to save it."
+        }
+      }
+    },
+    {
+      "id": "ds9",
+      "project": "ds",
+      "pr": 7,
+      "owner": "you",
+      "kind": "decision",
+      "effort_min": 5,
+      "deps": [],
+      "title": "Decide: rename API_VERSION to match the new domain?",
+      "short": "◆ Rename API_VERSION?",
+      "sub": "Breaking to every artifact — decide before adoption.",
+      "frees": "ungates ds7",
+      "in_progress": false,
+      "learn": {
+        "before": "The string workspec.fieldstate.io/v1alpha1 is stamped into every artifact. Today a rename costs one regeneration; after the first outside adopter it costs them, forever.",
+        "steps": [],
+        "decision_options": [
+          {
+            "idx": 0,
+            "title": "Rename now → schema.workspec.io/v1alpha1",
+            "body": "Breaking today, clean forever. Every internal artifact regenerates once."
+          },
+          {
+            "idx": 1,
+            "title": "Keep workspec.fieldstate.io/v1alpha1",
+            "body": "No churn now; the domain mismatch becomes permanent lore."
+          }
+        ],
+        "capture": {
+          "concept_id": "breaking",
+          "question": "Why does this decision expire at the first outside adopter?",
+          "choices": [
+            "npm locks the name at first publish",
+            "After adoption the string is a public contract — changing it breaks them",
+            "GitHub caches API_VERSION for 30 days",
+            "SemVer forbids renames after 1.0"
+          ],
+          "correct_index": 1,
+          "why": "Before adoption a rename is free; after, it’s someone else’s breakage."
+        }
+      }
+    },
+    {
+      "id": "ds7",
+      "project": "ds",
+      "pr": 8,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 15,
+      "deps": ["ds5", "ds9"],
+      "title": "Cut the first release",
+      "short": "Cut first release",
+      "sub": "npm login once, then the pipeline publishes.",
+      "frees": "frees ds8 (atlas)",
+      "in_progress": false,
+      "learn": {
+        "before": "First publish bootstraps the packages; every later release is CI-only via the trusted publisher.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Login once",
+            "cmd": "npm login",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Tag and let the pipeline publish",
+            "cmd": "git tag v0.1.0 --sign",
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "provenance",
+          "question": "Why is npm login needed only this once?",
+          "choices": [
+            "npm caches your session forever",
+            "First publish creates the package; after that the trusted publisher takes over",
+            "Tokens renew automatically",
+            "It isn’t — every release needs it"
+          ],
+          "correct_index": 1,
+          "why": "Creation needs a human; publishing after that is the workflow’s job."
+        }
+      }
+    },
+    {
+      "id": "ds10",
+      "project": "ds",
+      "pr": 9,
+      "owner": "you",
+      "kind": "decision",
+      "effort_min": 2,
+      "deps": [],
+      "title": "Decide: keep the no-self-merge review guard?",
+      "short": "◆ Keep merge guard?",
+      "sub": "Two-minute call; friction on every future merge.",
+      "frees": "frees nothing — housekeeping",
+      "in_progress": false,
+      "learn": {
+        "before": "You merge everything yourself. The guard forces the PR ritual even when the reviewer is you.",
+        "steps": [],
+        "decision_options": [
+          {
+            "idx": 0,
+            "title": "Keep the guard",
+            "body": "Every merge takes the PR path. Slower, safer at 2am."
+          },
+          {
+            "idx": 1,
+            "title": "Relax for green-CI PRs",
+            "body": "Solo-merge when checks pass; discipline moves to the pipeline."
+          }
+        ],
+        "capture": {
+          "concept_id": "guards",
+          "question": "What does the guard actually protect against?",
+          "choices": [
+            "Malicious fork PRs",
+            "Your own unreviewed 2am mistake",
+            "CI being skipped",
+            "Force-pushes to main"
+          ],
+          "correct_index": 1,
+          "why": "It’s a seatbelt against your own hurry, not against other people."
+        }
+      }
+    },
+    {
+      "id": "ds8",
+      "project": "ds",
+      "pr": 10,
+      "owner": "atlas",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["ds6", "ds7"],
+      "title": "Marketing page copy",
+      "short": "Marketing copy — you skim",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "lm1",
+      "project": "lm",
+      "pr": 1,
+      "owner": "you",
+      "kind": "provide",
+      "effort_min": 10,
+      "deps": [],
+      "title": "Provide a live Anthropic API key + pick a staging target",
+      "short": "API key + staging target",
+      "sub": "Last human input before live validation.",
+      "frees": "unblocks the whole chain",
+      "in_progress": false,
+      "learn": {
+        "before": "Issue #27 needs real model calls. A scoped key in the staging vault plus a named target is everything the pipeline is waiting on.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Create a scoped key in the console",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Drop it in the staging vault",
+            "cmd": "op item edit loom-staging ANTHROPIC_API_KEY=sk-ant-…",
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 2,
+            "text": "Name the target",
+            "cmd": null,
+            "concept_label": "why staging, not prod",
+            "concept_text": "#27 exercises live calls with real budgets. Staging keeps a bad prompt from becoming a bad bill."
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "live",
+          "question": "Why does #27 need a live key when mocks pass?",
+          "choices": [
+            "Mocks can’t simulate rate limits",
+            "#27 validates real model behavior — mocks can’t, by definition",
+            "Live keys run faster",
+            "The SDK requires one in staging"
+          ],
+          "correct_index": 1,
+          "why": "Mocks validate plumbing; the issue exists to validate behavior."
+        }
+      }
+    },
+    {
+      "id": "lm5",
+      "project": "lm",
+      "pr": 2,
+      "owner": "you",
+      "kind": "decision",
+      "effort_min": 1,
+      "deps": [],
+      "title": "Say “go” — dev lead pre-builds the lm2 harness now",
+      "short": "◆ Say “go” — harness",
+      "sub": "One word; it builds while you sleep.",
+      "frees": "lets lm2 start tonight",
+      "in_progress": false,
+      "learn": {
+        "before": "The offer on the table: build the harness before your key lands, so lm1 unblocks everything the moment it arrives.",
+        "steps": [],
+        "decision_options": [
+          {
+            "idx": 0,
+            "title": "Go — build it now",
+            "body": "Harness lands tonight; lm1 becomes the last domino."
+          },
+          {
+            "idx": 1,
+            "title": "Wait for the key first",
+            "body": "Serial and safe; nothing speculative gets built."
+          }
+        ],
+        "capture": {
+          "concept_id": "parallel",
+          "question": "What does “go” actually buy?",
+          "choices": [
+            "It skips code review",
+            "The harness builds in parallel, so your key unblocks everything instantly",
+            "Free CI minutes",
+            "Nothing — it’s already built"
+          ],
+          "correct_index": 1,
+          "why": "It converts a serial wait into a parallel one — the classic cheap win."
+        }
+      }
+    },
+    {
+      "id": "lm2",
+      "project": "lm",
+      "pr": 3,
+      "owner": "pipeline",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["lm1", "lm5"],
+      "title": "Staging deploy + live-validation harness",
+      "short": "Staging deploy + harness #27",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "lm3",
+      "project": "lm",
+      "pr": 4,
+      "owner": "pipeline",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["lm2"],
+      "title": "Run #27 — full live validation",
+      "short": "Run #27 live validation",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "lm4",
+      "project": "lm",
+      "pr": 5,
+      "owner": "atlas",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["lm3"],
+      "title": "Marketing page copy",
+      "short": "Marketing copy — you skim",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "sw1",
+      "project": "sw",
+      "pr": 1,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": [],
+      "title": "This design brief → Claude Design session",
+      "short": "Design brief → Claude session",
+      "sub": "You are here.",
+      "frees": "frees sw2 (atlas)",
+      "in_progress": true,
+      "learn": {
+        "before": "The externalized mental model, being externalized. This session is the task.",
+        "steps": [
+          {
+            "idx": 0,
+            "text": "Review the direction options",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 1,
+            "text": "Settle on one — lanes of one, sidebar-width",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          },
+          {
+            "idx": 2,
+            "text": "Take delivery of the hi-fi prototype",
+            "cmd": null,
+            "concept_label": null,
+            "concept_text": null
+          }
+        ],
+        "decision_options": [],
+        "capture": {
+          "concept_id": "thesis",
+          "question": "What makes Slipway not a todo app?",
+          "choices": [
+            "It’s local-first and instant",
+            "Tasks form a dependency graph",
+            "Execution is the method; retained capability is the point",
+            "Keyboard-first navigation"
+          ],
+          "correct_index": 2,
+          "why": "The checkmark isn’t the product — what you can still do a month later is."
+        }
+      }
+    },
+    {
+      "id": "sw2",
+      "project": "sw",
+      "pr": 2,
+      "owner": "atlas",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["sw1"],
+      "title": "Design → tech spec + backlog",
+      "short": "Design → spec + backlog",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "sw3",
+      "project": "sw",
+      "pr": 3,
+      "owner": "pipeline",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["sw2"],
+      "title": "Pipeline builds v0.1",
+      "short": "Build v0.1 — Tauri + SQLite",
+      "sub": "",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    },
+    {
+      "id": "sw4",
+      "project": "sw",
+      "pr": 4,
+      "owner": "you",
+      "kind": "action",
+      "effort_min": 0,
+      "deps": ["sw3"],
+      "title": "Dogfood: run both launches through Slipway",
+      "short": "Dogfood both launches",
+      "sub": "Run the Loom + DS launches through Slipway itself.",
+      "frees": "",
+      "in_progress": false,
+      "learn": null
+    }
+  ],
+  "seed_learned": [
+    {
+      "concept_id": "ttl",
+      "from_task": "ds3",
+      "streak": 4,
+      "hollow": false,
+      "next": "30d",
+      "question": {
+        "question": "You drop a TTL from 3600 to 300 right before a cutover. Why?",
+        "choices": [
+          "Lower TTL makes DNS resolve faster",
+          "Caches expire sooner, so the switch lands in minutes, not hours",
+          "300 is the minimum for CNAMEs",
+          "It forces resolvers to re-register the record"
+        ],
+        "correct_index": 1,
+        "why": "TTL is just cache lifetime — shorter cache, faster convergence."
+      }
+    }
+  ]
+}

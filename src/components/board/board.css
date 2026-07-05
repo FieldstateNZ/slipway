@@ -1,0 +1,208 @@
+/* The Board — lanes of one. Geometry and type transcribed from
+   docs/design/project/"Slipway Sidebar.dc.html" (board template, lines 33–57). */
+
+/* Lane */
+.sw-lane {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.sw-lane-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.sw-lane-name {
+  font: 600 10px var(--sw-mono);
+  letter-spacing: 0.12em;
+}
+
+.sw-lane-head-spacer {
+  flex: 1;
+}
+
+.sw-lane-whisper {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-faint);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sw-lane-adv {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-accent);
+}
+
+/* Focus card — the one card a lane deals */
+.sw-focus {
+  position: relative;
+  box-sizing: border-box;
+  background: var(--sw-bg-card);
+  border: 1px solid var(--sw-border-20);
+  border-radius: var(--sw-radius-13);
+  padding: 15px 18px;
+  cursor: pointer;
+}
+
+.sw-focus-accent {
+  border-color: var(--sw-accent);
+}
+
+.sw-focus-active {
+  box-shadow: var(--sw-shadow-focus);
+}
+
+.sw-focus-dock {
+  animation: swDockIn var(--sw-dur-dock) cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.sw-focus-meta {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+  margin-bottom: 7px;
+}
+
+.sw-focus-meta-accent {
+  color: var(--sw-accent);
+}
+
+.sw-focus-title {
+  font: 600 15.5px/1.35 var(--sw-sans);
+  color: var(--sw-text-primary);
+  margin-bottom: 5px;
+}
+
+.sw-focus-sub {
+  font: 400 12.5px/1.5 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 13px;
+}
+
+.sw-focus-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sw-focus-btn {
+  height: 36px;
+  border-radius: var(--sw-radius-9);
+  background: transparent;
+  border: 1px solid var(--sw-border-25);
+  color: var(--sw-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 12.5px var(--sw-sans);
+  padding: 0 18px;
+  flex: none;
+  cursor: pointer;
+}
+
+.sw-focus-btn-active {
+  background: var(--sw-accent);
+  border-color: var(--sw-accent);
+  /* Design uses the sidebar background (#0F1013) as accent-button text. */
+  color: var(--sw-bg-sidebar);
+}
+
+.sw-focus-frees {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  flex: 1;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Waiting card — atlas/pipeline whispers */
+.sw-wait {
+  box-sizing: border-box;
+  border: 1px dashed var(--sw-border-18);
+  border-radius: var(--sw-radius-13);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 7px;
+  min-height: 96px;
+}
+
+.sw-wait-title {
+  font: 600 13.5px var(--sw-sans);
+  color: var(--sw-text-secondary);
+}
+
+.sw-wait-sub {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+/* Completion pill — "✓ id ˗˗˗" sliding out of the lane */
+.sw-lane-pill {
+  position: absolute;
+  right: 8px;
+  top: 58px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--sw-bg-sidebar);
+  border: 1px solid var(--sw-accent-border-50);
+  border-radius: var(--sw-radius-pill);
+  padding: 0 10px;
+  font: 600 10px var(--sw-mono);
+  color: var(--sw-accent);
+  animation: swSlideOut var(--sw-dur-slideout) ease-out forwards;
+  pointer-events: none;
+}
+
+.sw-lane-pill-dashes {
+  letter-spacing: 3px;
+  color: var(--sw-accent-dashes-45);
+}
+
+/* First-run empty state (issue #9) */
+.sw-board-empty {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sw-board-empty-card {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1.5px dashed var(--sw-border-22);
+  border-radius: var(--sw-radius-12);
+  padding: 34px 18px;
+  background: var(--sw-stripe-drop);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.sw-board-empty-btn {
+  height: 42px;
+  border: none;
+  border-radius: var(--sw-radius-10);
+  background: var(--sw-accent);
+  color: var(--sw-bg-sidebar);
+  font: 600 13.5px var(--sw-sans);
+  padding: 0 18px;
+  cursor: pointer;
+}
+
+.sw-board-empty-sub {
+  font: 400 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}

@@ -1,0 +1,363 @@
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Board, type BoardHandle } from "./components/board/Board";
+import { AppShell } from "./components/chrome/AppShell";
+import { Drawer, type DrawerParkSnapshot } from "./components/drawer/Drawer";
+import { DragOverlay } from "./components/intake/DragOverlay";
+import { IntakeOverlay } from "./components/intake/IntakeOverlay";
+import { LedgerOverlay } from "./components/ledger/LedgerOverlay";
+import { MapOverlay } from "./components/map/MapOverlay";
+import { RecheckCard, type QuizSource } from "./components/recheck/RecheckCard";
+import { readySummary } from "./lib/board/present";
+import { useBoard } from "./lib/board/useBoard";
+import { useWindowDrop, type DroppedDoc } from "./lib/intake/useWindowDrop";
+import { getDueRecheck, getRecheck, resetAll } from "./lib/ipc/commands";
+import type { CaptureResult, CompleteResult, DueRecheck } from "./lib/ipc/types";
+import { KEY_PRIORITY, useKeyLayer } from "./lib/keys";
+import { SettingsProvider } from "./lib/settings";
+
+/** Footer toast lifetimes, from the prototype (5.2s default, 2.5s for reset). */
+const TOAST_MS = 5200;
+const RESET_TOAST_MS = 2500;
+
+/** The full-screen overlays; at most one shows (prototype `state.overlay`). */
+type OverlayKind = "map" | "ledger" | "intake";
+
+/** The quiz card on offer, plus where it came from. */
+interface QuizState {
+  recheck: DueRecheck;
+  source: QuizSource;
+}
+
+/** Footer toast copy for a completed capture (prototype `finishTask`). */
+function completionToast(result: CompleteResult, outcome: CaptureResult): string {
+  // With S1's store every completion carries a capture; a null capture can
+  // only mean there was nothing to grade, which reads as hollow.
+  if (outcome === "hollow" || result.capture === null) {
+    return `◌ ${result.task_id} done, left hollow — it will ask again`;
+  }
+  if (outcome === "correct") {
+    return `● ${result.capture.name} — captured · resurfaces ${result.capture.next_display}`;
+  }
+  return `✕ ${result.capture.name} — the why is the win · back ~1d`;
+}
+
+function AppContent() {
+  const { board, refresh } = useBoard();
+  const [toast, setToast] = useState<string | undefined>(undefined);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // The open drawer, plus in-memory parked state per task id: Esc parks a
+  // task without completing it, and reopening restores phase + step index.
+  const [openTaskId, setOpenTaskId] = useState<string | null>(null);
+  const parkedDrawers = useRef(new Map<string, DrawerParkSnapshot>());
+  const boardRef = useRef<BoardHandle>(null);
+
+  // The overlays ("on demand, never home"): g toggles the map, l the ledger;
+  // each overlay consumes Esc + its own key at OVERLAY priority to close.
+  // version bumps force a refetch if state mutates while one is showing.
+  const [overlay, setOverlay] = useState<OverlayKind | null>(null);
+  const [mapVersion, setMapVersion] = useState(0);
+  const [ledgerVersion, setLedgerVersion] = useState(0);
+
+  // Recheck-in-passing: the single due recheck on offer, and the quiz card.
+  const [dueRecheck, setDueRecheck] = useState<DueRecheck | null>(null);
+  const [quiz, setQuiz] = useState<QuizState | null>(null);
+
+  // Intake: the dropped doc lives here (not in the overlay) because drops
+  // land while intake is closed; `intakePending` holds a drop that arrived
+  // over an open drawer until the drawer closes.
+  const [dropped, setDropped] = useState<DroppedDoc | null>(null);
+  const [intakePending, setIntakePending] = useState(false);
+  // Keys this session has already minted (in1, in2, …). The board prop can
+  // lag (a failed refresh, a raced second drop) — counting lanes alone could
+  // re-mint in1 and the importer would upsert over the first INBOX lane.
+  const mintedIntakeKeys = useRef(new Set<string>());
+
+  const drawerClosed = openTaskId === null;
+
+  // Window-level drag-drop (prototype lines 319–335). The prototype sets
+  // overlay:'intake' on every drop, even with a drawer open (the drawer just
+  // renders above it); App's standing rule is that overlays never show over
+  // a drawer, so a drop while one is open holds the doc and opens intake the
+  // moment the drawer closes — same outcome, no hidden overlay swap.
+  const dragging = useWindowDrop((doc: DroppedDoc) => {
+    setDropped(doc);
+    if (drawerClosed) {
+      setOverlay("intake");
+    } else {
+      setIntakePending(true);
+    }
+  });
+
+  useEffect(() => {
+    if (intakePending && drawerClosed) {
+      setIntakePending(false);
+      setOverlay("intake");
+    }
+  }, [intakePending, drawerClosed]);
+
+  useEffect(() => () => clearTimeout(toastTimer.current), []);
+
+  const showToast = useCallback((text: string, durationMs: number = TOAST_MS) => {
+    setToast(text);
+    clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(undefined), durationMs);
+  }, []);
+
+  const refreshDueRecheck = useCallback(async () => {
+    try {
+      setDueRecheck(await getDueRecheck());
+    } catch (cause) {
+      console.error("due recheck fetch failed", cause);
+    }
+  }, []);
+
+  // The board fetch happens in useBoard; the due recheck needs its own
+  // mount-time fetch so the footer slot can offer one before any mutation.
+  useEffect(() => {
+    void refreshDueRecheck();
+  }, [refreshDueRecheck]);
+
+  // Every board refresh also bumps the overlay versions (so an open map or
+  // ledger repaints when state mutates underneath it) and re-asks for the
+  // due recheck (completions seed new concepts).
+  const refreshAll = useCallback(async () => {
+    await refresh();
+    setMapVersion((version) => version + 1);
+    setLedgerVersion((version) => version + 1);
+    await refreshDueRecheck();
+  }, [refresh, refreshDueRecheck]);
+
+  const handleReset = useCallback(() => {
+    void (async () => {
+      await resetAll();
+      // Parked drawer snapshots would otherwise survive into the re-imported
+      // graph (task ids are stable), restoring pre-reset progress. An open
+      // quiz card would grade against wiped concepts — drop it too, and the
+      // held/dropped intake doc (prototype resetAll clears `dropped`).
+      parkedDrawers.current.clear();
+      mintedIntakeKeys.current.clear();
+      setOpenTaskId(null);
+      setQuiz(null);
+      setDropped(null);
+      setIntakePending(false);
+      await refreshAll();
+      showToast("reset — fresh tide", RESET_TOAST_MS);
+    })().catch((cause: unknown) => console.error("reset failed", cause));
+  }, [refreshAll, showToast]);
+
+  const handleOpenTask = useCallback((taskId: string) => {
+    setOpenTaskId(taskId);
+  }, []);
+
+  const handlePark = useCallback(
+    (snapshot: DrawerParkSnapshot | null) => {
+      // A null snapshot (detail never loaded) keeps any earlier parked state.
+      if (openTaskId !== null && snapshot !== null) {
+        parkedDrawers.current.set(openTaskId, snapshot);
+      }
+      setOpenTaskId(null);
+    },
+    [openTaskId],
+  );
+
+  // The drawer's capture resolved and complete_task succeeded: close the
+  // drawer, drop its parked snapshot (a completed task must never restore
+  // stale state), and hand the board the choreography + exact toast copy.
+  const handleComplete = useCallback(
+    (result: CompleteResult, outcome: CaptureResult) => {
+      parkedDrawers.current.delete(result.task_id);
+      setOpenTaskId(null);
+      const text = completionToast(result, outcome);
+      const laneKey = board?.lanes.find(
+        (lane) =>
+          lane.focus?.id === result.task_id ||
+          lane.queue.some((queued) => queued.id === result.task_id),
+      )?.key;
+      if (laneKey !== undefined) {
+        // onCompleted toasts and refreshes (its refresh prop is refreshAll).
+        boardRef.current?.onCompleted(result.task_id, laneKey, text);
+      } else {
+        // Lane no longer on the board (mutated underneath) — skip the
+        // choreography but still toast and refresh.
+        showToast(text);
+        void refreshAll();
+      }
+    },
+    [board, showToast, refreshAll],
+  );
+
+  const toggleOverlay = useCallback(
+    (kind: OverlayKind) => {
+      // Prototype: overlays never show over an open drawer.
+      if (openTaskId === null) setOverlay((current) => (current === kind ? null : kind));
+    },
+    [openTaskId],
+  );
+
+  const closeOverlay = useCallback(() => setOverlay(null), []);
+
+  // Intake confirmed: the payload is already imported. Close intake, drop
+  // the doc, then refresh and activate the new lane before toasting.
+  const handleIntakeConfirmed = useCallback(
+    (projectKey: string | null, toastText: string) => {
+      if (projectKey !== null) mintedIntakeKeys.current.add(projectKey);
+      setOverlay(null);
+      setDropped(null);
+      void (async () => {
+        await refreshAll();
+        if (projectKey !== null) boardRef.current?.selectLane(projectKey);
+        showToast(toastText);
+      })().catch((cause: unknown) => console.error("post-intake refresh failed", cause));
+    },
+    [refreshAll, showToast],
+  );
+
+  // The next INBOX index: one past the highest in{N} key seen on the board
+  // OR minted this session, whichever is larger.
+  const intakeCustomCount = (() => {
+    const indexOf = (key: string): number => {
+      const match = /^in(\d+)$/.exec(key);
+      return match === null ? 0 : Number(match[1]);
+    };
+    const boardMax = Math.max(
+      0,
+      ...(board?.lanes.filter((lane) => lane.custom).map((lane) => indexOf(lane.key)) ?? []),
+    );
+    const mintedMax = Math.max(0, ...[...mintedIntakeKeys.current].map(indexOf));
+    const customLanes = board?.lanes.filter((lane) => lane.custom).length ?? 0;
+    return Math.max(boardMax, mintedMax, customLanes);
+  })();
+
+  const openDueRecheck = useCallback(() => {
+    if (dueRecheck !== null) setQuiz({ recheck: dueRecheck, source: "recheck" });
+  }, [dueRecheck]);
+
+  // Ledger "ask me": fetch that concept's question regardless of due-ness.
+  // The card renders over the open ledger (quiz z50 above overlay z30).
+  const handleAsk = useCallback(
+    (conceptId: string) => {
+      getRecheck(conceptId).then(
+        (recheck) => setQuiz({ recheck, source: "ledger" }),
+        (cause: unknown) => {
+          // Surface the dead click — the ledger stays open behind the toast.
+          console.error("recheck fetch failed", cause);
+          showToast(
+            `couldn’t load that recheck — ${cause instanceof Error ? cause.message : String(cause)}`,
+          );
+        },
+      );
+    },
+    [showToast],
+  );
+
+  const handleQuizAnswered = useCallback(() => {
+    // Repaint an open ledger behind the card, and re-ask what's due next.
+    setLedgerVersion((version) => version + 1);
+    void refreshDueRecheck();
+  }, [refreshDueRecheck]);
+
+  // Prototype `recheckOn` (line 606): the footer offers the recheck only
+  // when nothing else is talking — no toast, drawer, overlay, or quiz card.
+  const recheckSlot =
+    dueRecheck !== null && toast === undefined && drawerClosed && overlay === null && quiz === null
+      ? { label: `20s recheck — ${dueRecheck.name} ◌`, onOpen: openDueRecheck }
+      : undefined;
+
+  // App owns the overlay/recheck-opening keys at BOARD priority; while an
+  // overlay is open its own OVERLAY layer consumes Esc + its toggle key, and
+  // the other open keys go dead (prototype: only close keys work then). The
+  // quiz card consumes everything at QUIZ priority while it shows.
+  useKeyLayer(
+    KEY_PRIORITY.BOARD,
+    (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      if (overlay !== null) return false;
+      if (event.key === "g") {
+        toggleOverlay("map");
+        return true;
+      }
+      if (event.key === "l") {
+        toggleOverlay("ledger");
+        return true;
+      }
+      if (event.key === "i") {
+        toggleOverlay("intake");
+        return true;
+      }
+      if (event.key === "r" && recheckSlot !== undefined) {
+        openDueRecheck();
+        return true;
+      }
+      return false;
+    },
+    drawerClosed && quiz === null,
+  );
+
+  return (
+    <AppShell
+      readySummary={board !== null ? readySummary(board) : "0 ready · 0m"}
+      onIntake={() => toggleOverlay("intake")}
+      onLearned={() => toggleOverlay("ledger")}
+      onMap={() => toggleOverlay("map")}
+      toast={toast}
+      recheck={recheckSlot}
+      onReset={handleReset}
+    >
+      {board !== null && (
+        <Board
+          ref={boardRef}
+          board={board}
+          refresh={refreshAll}
+          onOpenTask={handleOpenTask}
+          onToast={showToast}
+          keysEnabled={drawerClosed && overlay === null && quiz === null}
+        />
+      )}
+      <MapOverlay open={overlay === "map"} onClose={closeOverlay} version={mapVersion} />
+      <IntakeOverlay
+        open={overlay === "intake"}
+        onClose={closeOverlay}
+        dropped={dropped}
+        onDiscard={() => setDropped(null)}
+        customCount={intakeCustomCount}
+        lanes={board?.lanes.map(({ key, name }) => ({ key, name })) ?? []}
+        onConfirmed={handleIntakeConfirmed}
+      />
+      <LedgerOverlay
+        open={overlay === "ledger"}
+        onClose={closeOverlay}
+        version={ledgerVersion}
+        onAsk={handleAsk}
+      />
+      {openTaskId !== null && (
+        <Drawer
+          key={openTaskId}
+          taskId={openTaskId}
+          restored={parkedDrawers.current.get(openTaskId) ?? null}
+          onPark={handlePark}
+          onComplete={handleComplete}
+        />
+      )}
+      {quiz !== null && (
+        <RecheckCard
+          key={`${quiz.source}-${quiz.recheck.concept_id}`}
+          recheck={quiz.recheck}
+          source={quiz.source}
+          onClose={() => setQuiz(null)}
+          onAnswered={handleQuizAnswered}
+        />
+      )}
+      {dragging && <DragOverlay />}
+    </AppShell>
+  );
+}
+
+export default function App() {
+  return (
+    <SettingsProvider>
+      <AppContent />
+    </SettingsProvider>
+  );
+}
