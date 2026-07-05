@@ -584,6 +584,23 @@ impl Store {
         Ok(best.map(|(_, r)| r))
     }
 
+    /// The recheck quiz for one concept, regardless of due-ness — powers the
+    /// ledger's "ask me". Errors when the concept has no question anywhere.
+    pub fn recheck_for(&self, concept_id: &str) -> Result<DueRecheck> {
+        let concept = load_concept(&self.conn, concept_id)?;
+        let events = events_for(&self.conn, concept_id)?;
+        let question = recheck_question_for(&self.conn, &concept, &events)?
+            .ok_or_else(|| Error::NoRecheckQuestion(concept_id.to_string()))?;
+        Ok(DueRecheck {
+            concept_id: concept.id,
+            name: concept.name,
+            question: question.question,
+            choices: question.choices,
+            correct_index: question.correct_index,
+            why: question.why,
+        })
+    }
+
     /// Ids of tasks that are ready right now (not done, all deps done),
     /// regardless of owner or loop. Mostly for tests and diagnostics.
     pub fn ready_task_ids(&self) -> Result<HashSet<String>> {

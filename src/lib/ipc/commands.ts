@@ -55,6 +55,11 @@ export function getDueRecheck(): Promise<DueRecheck | null> {
   return invoke("get_due_recheck");
 }
 
+/** The recheck quiz for one concept regardless of due-ness (ledger "ask me"). */
+export function getRecheck(conceptId: string): Promise<DueRecheck> {
+  return invoke("get_recheck", { concept_id: conceptId });
+}
+
 /** Grade a recheck answer; returns whether it was right plus the updated "next" display. */
 export function answerRecheck(conceptId: string, choiceIndex: number): Promise<RecheckOutcome> {
   return invoke("answer_recheck", { concept_id: conceptId, choice_index: choiceIndex });

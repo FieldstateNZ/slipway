@@ -74,6 +74,12 @@ fn get_due_recheck(db: State<'_, Db>) -> CmdResult<Option<DueRecheck>> {
     lock(&db)?.due_recheck(unix_now()).map_err(err)
 }
 
+/// The recheck quiz for one concept regardless of due-ness (ledger "ask me").
+#[tauri::command(rename_all = "snake_case")]
+fn get_recheck(db: State<'_, Db>, concept_id: String) -> CmdResult<DueRecheck> {
+    lock(&db)?.recheck_for(&concept_id).map_err(err)
+}
+
 /// Grade a recheck answer; returns whether it was right plus the updated
 /// "next" display.
 #[tauri::command(rename_all = "snake_case")]
@@ -118,6 +124,7 @@ pub fn run() {
             complete_task,
             get_ledger,
             get_due_recheck,
+            get_recheck,
             answer_recheck,
             import_graph,
             reset_all
