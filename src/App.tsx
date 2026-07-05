@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Board } from "./components/board/Board";
 import { AppShell } from "./components/chrome/AppShell";
+import { Drawer, type DrawerParkSnapshot } from "./components/drawer/Drawer";
 import { readySummary } from "./lib/board/present";
 import { useBoard } from "./lib/board/useBoard";
 import { resetAll } from "./lib/ipc/commands";
@@ -20,6 +21,11 @@ function AppContent() {
   const [toast, setToast] = useState<string | undefined>(undefined);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
+  // The open drawer, plus in-memory parked state per task id: Esc parks a
+  // task without completing it, and reopening restores phase + step index.
+  const [openTaskId, setOpenTaskId] = useState<string | null>(null);
+  const parkedDrawers = useRef(new Map<string, DrawerParkSnapshot>());
+
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
   const showToast = useCallback((text: string, durationMs: number = TOAST_MS) => {
@@ -36,9 +42,20 @@ function AppContent() {
     })();
   }, [refresh, showToast]);
 
-  const handleOpenTask = useCallback((_taskId: string) => {
-    // Task drawer lands in S4.
+  const handleOpenTask = useCallback((taskId: string) => {
+    setOpenTaskId(taskId);
   }, []);
+
+  const handlePark = useCallback(
+    (snapshot: DrawerParkSnapshot | null) => {
+      // A null snapshot (detail never loaded) keeps any earlier parked state.
+      if (openTaskId !== null && snapshot !== null) {
+        parkedDrawers.current.set(openTaskId, snapshot);
+      }
+      setOpenTaskId(null);
+    },
+    [openTaskId],
+  );
 
   return (
     <AppShell
@@ -51,6 +68,14 @@ function AppContent() {
     >
       {board !== null && (
         <Board board={board} refresh={refresh} onOpenTask={handleOpenTask} onToast={showToast} />
+      )}
+      {openTaskId !== null && (
+        <Drawer
+          key={openTaskId}
+          taskId={openTaskId}
+          restored={parkedDrawers.current.get(openTaskId) ?? null}
+          onPark={handlePark}
+        />
       )}
     </AppShell>
   );
