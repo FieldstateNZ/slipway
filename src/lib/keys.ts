@@ -29,17 +29,27 @@ const layers: KeyLayer[] = [];
 let nextSeq = 0;
 let listenerAttached = false;
 
+function isEditable(target: EventTarget | null): boolean {
+  return (
+    target instanceof HTMLElement &&
+    (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+  );
+}
+
 function dispatch(event: KeyboardEvent): void {
+  // Typing into a field never reaches the layers — otherwise the board would
+  // steal digits (and handled keys' preventDefault would eat characters).
+  if (isEditable(event.target)) return;
   // Highest priority first; within a priority, most recently registered first.
   const ordered = [...layers].sort((a, b) => b.priority - a.priority || b.seq - a.seq);
   for (const layer of ordered) {
     // A higher layer may unregister lower ones mid-dispatch; skip the dead.
     if (!layers.includes(layer)) continue;
     if (layer.handler(event)) {
-      // Never let a handled Tab move browser focus.
-      if (event.key === "Tab") {
-        event.preventDefault();
-      }
+      // Kill the default action for EVERY handled key: a handled Enter must
+      // not also fire a synthetic click on whichever button holds focus
+      // (double-advance), and a handled Tab must not move focus.
+      event.preventDefault();
       return;
     }
   }

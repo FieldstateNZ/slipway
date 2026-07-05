@@ -54,15 +54,22 @@ export function Drawer({ taskId, restored, onPark, onCapturePhase }: DrawerProps
   const [decisionChoice, setDecisionChoice] = useState<number | null>(
     restored?.decisionChoice ?? null,
   );
+  const [loadFailed, setLoadFailed] = useState(false);
   const copyTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(copyTimer.current), []);
 
   useEffect(() => {
     let cancelled = false;
-    void getTaskDetail(taskId).then((fetched) => {
-      if (!cancelled) setDetail(fetched);
-    });
+    getTaskDetail(taskId).then(
+      (fetched) => {
+        if (!cancelled) setDetail(fetched);
+      },
+      (cause: unknown) => {
+        console.error("task detail failed", cause);
+        if (!cancelled) setLoadFailed(true);
+      },
+    );
     return () => {
       cancelled = true;
     };
@@ -119,10 +126,18 @@ export function Drawer({ taskId, restored, onPark, onCapturePhase }: DrawerProps
     copyTimer.current = setTimeout(() => setCopied(false), COPY_FLIP_MS);
   }, []);
 
+  // NOTE: keys this layer leaves unhandled fall through to lower layers —
+  // App gates the board layer (keysEnabled) while a drawer is open, which is
+  // what gives the prototype's swallow-everything behavior. Tab is consumed
+  // here so focus can't walk onto the drawer's buttons (a focused button
+  // turns Enter into a click even with the key handled — see keys.ts).
   useKeyLayer(KEY_PRIORITY.DRAWER, (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return false;
     if (event.key === "Escape") {
       park();
+      return true;
+    }
+    if (event.key === "Tab") {
       return true;
     }
     if (phase === "steps" && event.key === "Enter") {
@@ -140,8 +155,19 @@ export function Drawer({ taskId, restored, onPark, onCapturePhase }: DrawerProps
   });
 
   if (detail === null) {
-    // Minimal loading state — the panel is already there, content lands next tick.
-    return <div className="sw-drawer" />;
+    // Loading (or failed) state: keep the header's park affordance so a
+    // mouse-only user can always leave even if the detail fetch rejected.
+    return (
+      <div className="sw-drawer">
+        <div className="sw-drawer-head">
+          <span className="sw-drawer-crumb">{loadFailed ? "couldn’t load this task" : ""}</span>
+          <span className="sw-drawer-head-spacer" />
+          <button type="button" className="sw-drawer-close" onClick={park}>
+            esc parks it ✕
+          </button>
+        </div>
+      </div>
+    );
   }
 
   const crumb =

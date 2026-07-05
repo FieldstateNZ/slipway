@@ -53,6 +53,10 @@ function AppContent() {
   const handleReset = useCallback(() => {
     void (async () => {
       await resetAll();
+      // Parked drawer snapshots would otherwise survive into the re-imported
+      // graph (task ids are stable), restoring pre-reset progress.
+      parkedDrawers.current.clear();
+      setOpenTaskId(null);
       await refreshAll();
       showToast("reset — fresh tide", RESET_TOAST_MS);
     })().catch((cause: unknown) => console.error("reset failed", cause));
