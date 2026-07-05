@@ -1,13 +1,15 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getTaskDetail } from "../../lib/ipc/commands";
-import type { TaskDetail } from "../../lib/ipc/types";
+import { completeTask, getTaskDetail } from "../../lib/ipc/commands";
+import type { CompleteResult, TaskDetail } from "../../lib/ipc/types";
 import { KEY_PRIORITY, registerKeyLayer } from "../../lib/keys";
+import { SETTINGS_STORAGE_KEY, SettingsProvider } from "../../lib/settings";
 import { Drawer, type DrawerParkSnapshot } from "./Drawer";
 
 vi.mock("../../lib/ipc/commands", () => ({
   getTaskDetail: vi.fn(),
+  completeTask: vi.fn(),
 }));
 
 // ds3 from seed/launch-graph.json — 3 steps: cmd+concept, concept, cmd.
@@ -92,10 +94,23 @@ const ds9Detail: TaskDetail = {
   },
 };
 
+const ds3Result: CompleteResult = {
+  task_id: "ds3",
+  capture: {
+    concept_id: "dns",
+    name: "dns aliasing",
+    streak: 1,
+    hollow: false,
+    next_display: "with ds6",
+  },
+};
+
 const writeText = vi.fn<(text: string) => Promise<void>>();
 
 beforeEach(() => {
+  window.localStorage.clear();
   vi.mocked(getTaskDetail).mockReset();
+  vi.mocked(completeTask).mockReset();
   writeText.mockReset();
   writeText.mockResolvedValue(undefined);
   Object.defineProperty(navigator, "clipboard", {
@@ -109,7 +124,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-/** Settle the getTaskDetail promise chain (also under fake timers). */
+/** Settle the getTaskDetail/completeTask promise chains (also under fake timers). */
 async function flushMicrotasks() {
   await act(async () => {
     await Promise.resolve();
@@ -120,22 +135,31 @@ async function flushMicrotasks() {
 
 interface RenderOptions {
   restored?: DrawerParkSnapshot | null;
-  onCapturePhase?: (detail: TaskDetail, decisionChoice: number | null) => void;
 }
 
 async function renderDrawer(detail: TaskDetail, options: RenderOptions = {}) {
   vi.mocked(getTaskDetail).mockResolvedValue(detail);
   const onPark = vi.fn();
+  const onComplete = vi.fn();
   const utils = render(
-    <Drawer
-      taskId={detail.id}
-      restored={options.restored ?? null}
-      onPark={onPark}
-      onCapturePhase={options.onCapturePhase}
-    />,
+    <SettingsProvider>
+      <Drawer
+        taskId={detail.id}
+        restored={options.restored ?? null}
+        onPark={onPark}
+        onComplete={onComplete}
+      />
+    </SettingsProvider>,
   );
   await flushMicrotasks();
-  return { onPark, ...utils };
+  return { onPark, onComplete, ...utils };
+}
+
+/** Straight into the capture phase, as a park-restore would land there. */
+async function renderCapture(detail: TaskDetail = ds3Detail) {
+  return renderDrawer(detail, {
+    restored: { phase: "capture", stepIdx: detail.steps.length, decisionChoice: null },
+  });
 }
 
 function key(k: string) {
@@ -233,9 +257,8 @@ describe("Drawer — steps phase", () => {
     expect(screen.queryByText("▴ tuck away")).not.toBeInTheDocument();
   });
 
-  it("Enter advances through the steps, switches the button label, and lands in the capture placeholder", async () => {
-    const onCapturePhase = vi.fn();
-    await renderDrawer(ds3Detail, { onCapturePhase });
+  it("Enter advances through the steps, switches the button label, and lands in the capture pane", async () => {
+    await renderDrawer(ds3Detail);
     expect(screen.getByText("Done — next step ↵")).toBeInTheDocument();
 
     key("Enter");
@@ -247,12 +270,13 @@ describe("Drawer — steps phase", () => {
     expect(screen.getByText("Done — one question ↵")).toBeInTheDocument();
 
     key("Enter");
-    // Capture placeholder: the faded ✓ ledger of the completed steps.
+    // Capture pane: the faded ✓ ledger of the completed steps + ONE TAP.
     expect(screen.getByText("✓ Add the record at your registrar")).toBeInTheDocument();
     expect(screen.getByText("✓ Wait out propagation — minutes to an hour")).toBeInTheDocument();
     expect(screen.getByText("✓ Confirm it resolves")).toBeInTheDocument();
     expect(screen.queryByText(/STEP \d OF/)).not.toBeInTheDocument();
-    expect(onCapturePhase).toHaveBeenCalledExactlyOnceWith(ds3Detail, null);
+    expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
+    expect(screen.getByText("Why a CNAME here — not an A record?")).toBeInTheDocument();
   });
 
   it("clicking the primary button advances like Enter", async () => {
@@ -270,6 +294,7 @@ describe("Drawer — steps phase", () => {
       stepIdx: 1,
       decisionChoice: null,
     });
+    expect(completeTask).not.toHaveBeenCalled();
   });
 
   it('the "esc parks it ✕" affordance parks too', async () => {
@@ -288,19 +313,6 @@ describe("Drawer — steps phase", () => {
     });
     expect(screen.getByText("STEP 2 OF 3")).toBeInTheDocument();
     expect(screen.queryByText(ds3Detail.steps[1]?.concept_text ?? "")).not.toBeInTheDocument();
-  });
-
-  it("Esc still parks from the capture placeholder", async () => {
-    const { onPark } = await renderDrawer(ds3Detail, {
-      restored: { phase: "capture", stepIdx: 2, decisionChoice: null },
-    });
-    expect(screen.getByText("✓ Confirm it resolves")).toBeInTheDocument();
-    key("Escape");
-    expect(onPark).toHaveBeenCalledExactlyOnceWith({
-      phase: "capture",
-      stepIdx: 2,
-      decisionChoice: null,
-    });
   });
 
   it("consumes its own keys so lower layers never see them, and lets the rest fall through", async () => {
@@ -334,15 +346,17 @@ describe("Drawer — decision phase", () => {
     expect(screen.getByText("choosing completes the task — then one question")).toBeInTheDocument();
   });
 
-  it("key 2 records the choice and lands in the capture placeholder", async () => {
-    const onCapturePhase = vi.fn();
-    await renderDrawer(ds9Detail, { onCapturePhase });
+  it("key 2 records the choice and lands in the capture pane", async () => {
+    await renderDrawer(ds9Detail);
     key("2");
     expect(
       screen.getByText("✓ call made — Keep workspec.fieldstate.io/v1alpha1"),
     ).toBeInTheDocument();
     expect(screen.queryByText("THE CALL — PICK ONE")).not.toBeInTheDocument();
-    expect(onCapturePhase).toHaveBeenCalledExactlyOnceWith(ds9Detail, 1);
+    expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Why does this decision expire at the first outside adopter?"),
+    ).toBeInTheDocument();
   });
 
   it("clicking an option records that choice", async () => {
@@ -357,5 +371,245 @@ describe("Drawer — decision phase", () => {
       stepIdx: 0,
       decisionChoice: 0,
     });
+  });
+
+  it("passes the decision choice through to complete_task", async () => {
+    vi.mocked(completeTask).mockResolvedValue({
+      task_id: "ds9",
+      capture: {
+        concept_id: "breaking",
+        name: "breaking-change surface",
+        streak: 1,
+        hollow: false,
+        next_display: "at ds7",
+      },
+    });
+    await renderDrawer(ds9Detail);
+    key("2"); // The call.
+    key("2"); // The correct capture pick.
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds9", "correct", 1);
+  });
+});
+
+describe("Drawer — capture phase", () => {
+  it("renders the ONE TAP pane: label, question, numbered choices, idle footer line", async () => {
+    const { container } = await renderCapture();
+    expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
+    expect(screen.getByText("Why a CNAME here — not an A record?")).toBeInTheDocument();
+
+    const choices = container.querySelectorAll(".sw-drawer-cap-choice");
+    expect(choices).toHaveLength(4);
+    ds3Detail.capture.choices.forEach((text, index) => {
+      expect(choices[index]?.querySelector(".sw-drawer-cap-key")?.textContent).toBe(
+        String(index + 1),
+      );
+      expect(choices[index]?.querySelector(".sw-drawer-cap-text")?.textContent).toBe(text);
+      expect(choices[index]).toHaveClass("sw-drawer-cap-choice-idle");
+    });
+
+    // Footer line with the clickable, underlined skip span.
+    expect(container.querySelector(".sw-drawer-cap-idle")?.textContent).toBe(
+      "1–4 commit · s skip — stays hollow ◌ · misses return sooner",
+    );
+    expect(screen.getByRole("button", { name: "s skip — stays hollow ◌" })).toHaveClass(
+      "sw-drawer-cap-skip",
+    );
+  });
+
+  it("correct pick flips the row, fires complete_task immediately, stamps, and finishes at 900ms", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { container, onComplete } = await renderCapture();
+
+    key("2");
+    // The IPC fires on the pick, not at the end of the dwell.
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "correct");
+
+    const choices = container.querySelectorAll(".sw-drawer-cap-choice");
+    expect(choices[1]).toHaveClass("sw-drawer-cap-choice-correct");
+    expect(choices[1]?.querySelector(".sw-drawer-cap-mark")?.textContent).toBe("✓");
+    expect(choices[0]).not.toHaveClass("sw-drawer-cap-choice-idle");
+    // The idle footer line is gone once resolved.
+    expect(container.querySelector(".sw-drawer-cap-idle")).not.toBeInTheDocument();
+
+    // The response's capture feeds the stamp.
+    await flushMicrotasks();
+    expect(screen.getByText("● dns aliasing — captured")).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(899);
+    });
+    expect(onComplete).not.toHaveBeenCalled();
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "correct");
+  });
+
+  it("finishes only after BOTH the dwell timer and the complete_task response", async () => {
+    vi.useFakeTimers();
+    let resolveComplete!: (result: CompleteResult) => void;
+    vi.mocked(completeTask).mockReturnValue(
+      new Promise<CompleteResult>((resolve) => {
+        resolveComplete = resolve;
+      }),
+    );
+    const { onComplete } = await renderCapture();
+
+    key("2");
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+    // Timer done but the response is still in flight — do not finish yet.
+    expect(onComplete).not.toHaveBeenCalled();
+
+    resolveComplete(ds3Result);
+    await flushMicrotasks();
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "correct");
+  });
+
+  it("finishes a correct pick after 250ms under reducedMotion", async () => {
+    window.localStorage.setItem(
+      SETTINGS_STORAGE_KEY,
+      JSON.stringify({ reducedMotion: true, keyHints: true }),
+    );
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onComplete } = await renderCapture();
+
+    key("2");
+    await flushMicrotasks();
+    act(() => {
+      vi.advanceTimersByTime(249);
+    });
+    expect(onComplete).not.toHaveBeenCalled();
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "correct");
+  });
+
+  it("clicking a choice picks it like the number key", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    await renderCapture();
+    fireEvent.click(
+      screen.getByText("GitHub’s IPs can change; the alias follows them, a hardcoded IP wouldn’t"),
+    );
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "correct");
+  });
+
+  it("a miss reveals ✕, the correct row, and the why — completing only on continue", async () => {
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { container, onComplete } = await renderCapture();
+
+    key("1");
+    // Nothing is written yet — the why is the win, read first.
+    expect(completeTask).not.toHaveBeenCalled();
+
+    const choices = container.querySelectorAll(".sw-drawer-cap-choice");
+    expect(choices[0]).toHaveClass("sw-drawer-cap-choice-missed");
+    expect(choices[0]?.querySelector(".sw-drawer-cap-mark")?.textContent).toBe("✕");
+    expect(choices[1]).toHaveClass("sw-drawer-cap-choice-reveal");
+    expect(choices[1]?.querySelector(".sw-drawer-cap-mark")?.textContent).toBe("→ this one");
+    expect(screen.getByText(ds3Detail.capture.why)).toBeInTheDocument();
+    expect(container.querySelector(".sw-drawer-cap-idle")).not.toBeInTheDocument();
+
+    key("Enter");
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "miss");
+    await flushMicrotasks();
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "miss");
+  });
+
+  it('clicking "Got it — continue ↵" finishes the miss too', async () => {
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onComplete } = await renderCapture();
+    key("3");
+    fireEvent.click(screen.getByRole("button", { name: "Got it — continue ↵" }));
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "miss");
+    await flushMicrotasks();
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "miss");
+  });
+
+  it("s skips — completes hollow immediately", async () => {
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onComplete } = await renderCapture();
+    key("s");
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "hollow");
+    await flushMicrotasks();
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "hollow");
+  });
+
+  it("the underlined skip span skips on click", async () => {
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onComplete } = await renderCapture();
+    fireEvent.click(screen.getByRole("button", { name: "s skip — stays hollow ◌" }));
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds3", "hollow");
+    await flushMicrotasks();
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "hollow");
+  });
+
+  it("Esc parks from the idle capture pane, but does nothing once a pick landed", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onPark } = await renderCapture();
+
+    // Idle: Esc parks (existing behavior).
+    key("Escape");
+    expect(onPark).toHaveBeenCalledExactlyOnceWith({
+      phase: "capture",
+      stepIdx: 3,
+      decisionChoice: null,
+    });
+    onPark.mockClear();
+
+    // After a correct pick: capture keys only.
+    key("2");
+    key("Escape");
+    expect(onPark).not.toHaveBeenCalled();
+  });
+
+  it("Esc does nothing during the miss reveal", async () => {
+    const { onPark } = await renderCapture();
+    key("1");
+    key("Escape");
+    expect(onPark).not.toHaveBeenCalled();
+    expect(screen.getByText("Got it — continue ↵")).toBeInTheDocument();
+  });
+
+  it("a rejected complete_task keeps the drawer open with an inline error", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      vi.mocked(completeTask).mockRejectedValue(new Error("db locked"));
+      const { onComplete } = await renderCapture();
+      key("s");
+      await flushMicrotasks();
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(screen.getByText("couldn’t complete — db locked")).toBeInTheDocument();
+      expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
+      expect(errorSpy).toHaveBeenCalled();
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("a failed correct pick re-opens the Esc exit", async () => {
+    vi.useFakeTimers();
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      vi.mocked(completeTask).mockRejectedValue(new Error("db locked"));
+      const { onPark, onComplete } = await renderCapture();
+      key("2");
+      await flushMicrotasks();
+      act(() => {
+        vi.advanceTimersByTime(900);
+      });
+      expect(onComplete).not.toHaveBeenCalled();
+      expect(screen.getByText("couldn’t complete — db locked")).toBeInTheDocument();
+      key("Escape");
+      expect(onPark).toHaveBeenCalledTimes(1);
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 });

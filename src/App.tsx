@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Board } from "./components/board/Board";
+import { Board, type BoardHandle } from "./components/board/Board";
 import { AppShell } from "./components/chrome/AppShell";
 import { Drawer, type DrawerParkSnapshot } from "./components/drawer/Drawer";
+import { LedgerOverlay } from "./components/ledger/LedgerOverlay";
 import { MapOverlay } from "./components/map/MapOverlay";
+import { RecheckCard, type QuizSource } from "./components/recheck/RecheckCard";
 import { readySummary } from "./lib/board/present";
 import { useBoard } from "./lib/board/useBoard";
-import { resetAll } from "./lib/ipc/commands";
+import { getDueRecheck, getRecheck, resetAll } from "./lib/ipc/commands";
+import type { CaptureResult, CompleteResult, DueRecheck } from "./lib/ipc/types";
 import { KEY_PRIORITY, useKeyLayer } from "./lib/keys";
 import { SettingsProvider } from "./lib/settings";
 
@@ -14,8 +17,30 @@ import { SettingsProvider } from "./lib/settings";
 const TOAST_MS = 5200;
 const RESET_TOAST_MS = 2500;
 
+/** The full-screen overlays; at most one shows (prototype `state.overlay`). */
+type OverlayKind = "map" | "ledger";
+
+/** The quiz card on offer, plus where it came from. */
+interface QuizState {
+  recheck: DueRecheck;
+  source: QuizSource;
+}
+
+/** Footer toast copy for a completed capture (prototype `finishTask`). */
+function completionToast(result: CompleteResult, outcome: CaptureResult): string {
+  // With S1's store every completion carries a capture; a null capture can
+  // only mean there was nothing to grade, which reads as hollow.
+  if (outcome === "hollow" || result.capture === null) {
+    return `◌ ${result.task_id} done, left hollow — it will ask again`;
+  }
+  if (outcome === "correct") {
+    return `● ${result.capture.name} — captured · resurfaces ${result.capture.next_display}`;
+  }
+  return `✕ ${result.capture.name} — the why is the win · back ~1d`;
+}
+
 function noop(): void {
-  // Placeholder chrome handlers until the overlay slices (S5, S7) wire real behavior.
+  // Placeholder chrome handler until the intake slice (S7) wires real behavior.
 }
 
 function AppContent() {
@@ -27,12 +52,19 @@ function AppContent() {
   // task without completing it, and reopening restores phase + step index.
   const [openTaskId, setOpenTaskId] = useState<string | null>(null);
   const parkedDrawers = useRef(new Map<string, DrawerParkSnapshot>());
+  const boardRef = useRef<BoardHandle>(null);
 
-  // The map overlay ("on demand, never home"): g toggles it; the overlay
-  // itself consumes Esc/g to close at OVERLAY priority. version bumps force
-  // a refetch if the graph mutates while the map is showing.
-  const [mapOpen, setMapOpen] = useState(false);
+  // The overlays ("on demand, never home"): g toggles the map, l the ledger;
+  // each overlay consumes Esc + its own key at OVERLAY priority to close.
+  // version bumps force a refetch if state mutates while one is showing.
+  const [overlay, setOverlay] = useState<OverlayKind | null>(null);
   const [mapVersion, setMapVersion] = useState(0);
+  const [ledgerVersion, setLedgerVersion] = useState(0);
+
+  // Recheck-in-passing: the single due recheck on offer, and the quiz card.
+  const [dueRecheck, setDueRecheck] = useState<DueRecheck | null>(null);
+  const [quiz, setQuiz] = useState<QuizState | null>(null);
+
   const drawerClosed = openTaskId === null;
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
@@ -43,20 +75,39 @@ function AppContent() {
     toastTimer.current = setTimeout(() => setToast(undefined), durationMs);
   }, []);
 
-  // Every board refresh also bumps the map version, so an open map repaints
-  // when the graph mutates underneath it (issue #7: live updates).
+  const refreshDueRecheck = useCallback(async () => {
+    try {
+      setDueRecheck(await getDueRecheck());
+    } catch (cause) {
+      console.error("due recheck fetch failed", cause);
+    }
+  }, []);
+
+  // The board fetch happens in useBoard; the due recheck needs its own
+  // mount-time fetch so the footer slot can offer one before any mutation.
+  useEffect(() => {
+    void refreshDueRecheck();
+  }, [refreshDueRecheck]);
+
+  // Every board refresh also bumps the overlay versions (so an open map or
+  // ledger repaints when state mutates underneath it) and re-asks for the
+  // due recheck (completions seed new concepts).
   const refreshAll = useCallback(async () => {
     await refresh();
     setMapVersion((version) => version + 1);
-  }, [refresh]);
+    setLedgerVersion((version) => version + 1);
+    await refreshDueRecheck();
+  }, [refresh, refreshDueRecheck]);
 
   const handleReset = useCallback(() => {
     void (async () => {
       await resetAll();
       // Parked drawer snapshots would otherwise survive into the re-imported
-      // graph (task ids are stable), restoring pre-reset progress.
+      // graph (task ids are stable), restoring pre-reset progress. An open
+      // quiz card would grade against wiped concepts — drop it too.
       parkedDrawers.current.clear();
       setOpenTaskId(null);
+      setQuiz(null);
       await refreshAll();
       showToast("reset — fresh tide", RESET_TOAST_MS);
     })().catch((cause: unknown) => console.error("reset failed", cause));
@@ -77,51 +128,137 @@ function AppContent() {
     [openTaskId],
   );
 
-  const toggleMap = useCallback(() => {
-    // Prototype: overlays never show over an open drawer.
-    if (openTaskId === null) setMapOpen((open) => !open);
-  }, [openTaskId]);
+  // The drawer's capture resolved and complete_task succeeded: close the
+  // drawer, drop its parked snapshot (a completed task must never restore
+  // stale state), and hand the board the choreography + exact toast copy.
+  const handleComplete = useCallback(
+    (result: CompleteResult, outcome: CaptureResult) => {
+      parkedDrawers.current.delete(result.task_id);
+      setOpenTaskId(null);
+      const text = completionToast(result, outcome);
+      const laneKey = board?.lanes.find(
+        (lane) =>
+          lane.focus?.id === result.task_id ||
+          lane.queue.some((queued) => queued.id === result.task_id),
+      )?.key;
+      if (laneKey !== undefined) {
+        // onCompleted toasts and refreshes (its refresh prop is refreshAll).
+        boardRef.current?.onCompleted(result.task_id, laneKey, text);
+      } else {
+        // Lane no longer on the board (mutated underneath) — skip the
+        // choreography but still toast and refresh.
+        showToast(text);
+        void refreshAll();
+      }
+    },
+    [board, showToast, refreshAll],
+  );
 
-  // App owns the overlay-opening keys at BOARD priority; while an overlay is
-  // open its own OVERLAY layer consumes Esc/g first (toggle-close).
+  const toggleOverlay = useCallback(
+    (kind: OverlayKind) => {
+      // Prototype: overlays never show over an open drawer.
+      if (openTaskId === null) setOverlay((current) => (current === kind ? null : kind));
+    },
+    [openTaskId],
+  );
+
+  const closeOverlay = useCallback(() => setOverlay(null), []);
+
+  const openDueRecheck = useCallback(() => {
+    if (dueRecheck !== null) setQuiz({ recheck: dueRecheck, source: "recheck" });
+  }, [dueRecheck]);
+
+  // Ledger "ask me": fetch that concept's question regardless of due-ness.
+  // The card renders over the open ledger (quiz z50 above overlay z30).
+  const handleAsk = useCallback((conceptId: string) => {
+    getRecheck(conceptId).then(
+      (recheck) => setQuiz({ recheck, source: "ledger" }),
+      (cause: unknown) => console.error("recheck fetch failed", cause),
+    );
+  }, []);
+
+  const handleQuizAnswered = useCallback(() => {
+    // Repaint an open ledger behind the card, and re-ask what's due next.
+    setLedgerVersion((version) => version + 1);
+    void refreshDueRecheck();
+  }, [refreshDueRecheck]);
+
+  // Prototype `recheckOn` (line 606): the footer offers the recheck only
+  // when nothing else is talking — no toast, drawer, overlay, or quiz card.
+  const recheckSlot =
+    dueRecheck !== null && toast === undefined && drawerClosed && overlay === null && quiz === null
+      ? { label: `20s recheck — ${dueRecheck.name} ◌`, onOpen: openDueRecheck }
+      : undefined;
+
+  // App owns the overlay/recheck-opening keys at BOARD priority; while an
+  // overlay is open its own OVERLAY layer consumes Esc + its toggle key, and
+  // the other open keys go dead (prototype: only close keys work then). The
+  // quiz card consumes everything at QUIZ priority while it shows.
   useKeyLayer(
     KEY_PRIORITY.BOARD,
     (event) => {
       if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      if (overlay !== null) return false;
       if (event.key === "g") {
-        toggleMap();
+        toggleOverlay("map");
+        return true;
+      }
+      if (event.key === "l") {
+        toggleOverlay("ledger");
+        return true;
+      }
+      if (event.key === "r" && recheckSlot !== undefined) {
+        openDueRecheck();
         return true;
       }
       return false;
     },
-    drawerClosed,
+    drawerClosed && quiz === null,
   );
 
   return (
     <AppShell
       readySummary={board !== null ? readySummary(board) : "0 ready · 0m"}
       onIntake={noop}
-      onLearned={noop}
-      onMap={toggleMap}
+      onLearned={() => toggleOverlay("ledger")}
+      onMap={() => toggleOverlay("map")}
       toast={toast}
+      recheck={recheckSlot}
       onReset={handleReset}
     >
       {board !== null && (
         <Board
+          ref={boardRef}
           board={board}
           refresh={refreshAll}
           onOpenTask={handleOpenTask}
           onToast={showToast}
-          keysEnabled={drawerClosed && !mapOpen}
+          keysEnabled={drawerClosed && overlay === null && quiz === null}
         />
       )}
-      <MapOverlay open={mapOpen} onClose={() => setMapOpen(false)} version={mapVersion} />
+      <MapOverlay open={overlay === "map"} onClose={closeOverlay} version={mapVersion} />
+      <LedgerOverlay
+        open={overlay === "ledger"}
+        onClose={closeOverlay}
+        version={ledgerVersion}
+        onAsk={handleAsk}
+      />
       {openTaskId !== null && (
         <Drawer
           key={openTaskId}
           taskId={openTaskId}
           restored={parkedDrawers.current.get(openTaskId) ?? null}
           onPark={handlePark}
+          onComplete={handleComplete}
+        />
+      )}
+      {quiz !== null && (
+        <RecheckCard
+          key={`${quiz.source}-${quiz.recheck.concept_id}`}
+          recheck={quiz.recheck}
+          source={quiz.source}
+          onClose={() => setQuiz(null)}
+          onAnswered={handleQuizAnswered}
         />
       )}
     </AppShell>

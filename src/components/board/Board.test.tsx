@@ -3,13 +3,12 @@ import { createRef, useCallback, useState, type Ref } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import seedRaw from "../../../seed/launch-graph.json?raw";
-import { completeTask, importGraph } from "../../lib/ipc/commands";
+import { importGraph } from "../../lib/ipc/commands";
 import type { BoardView, FocusCard as FocusCardData, LaneView } from "../../lib/ipc/types";
 import { SETTINGS_STORAGE_KEY, SettingsProvider } from "../../lib/settings";
 import { Board, type BoardHandle } from "./Board";
 
 vi.mock("../../lib/ipc/commands", () => ({
-  completeTask: vi.fn(),
   importGraph: vi.fn(),
 }));
 
@@ -120,18 +119,8 @@ function key(k: string) {
   fireEvent.keyDown(document, { key: k });
 }
 
-/** Let the dev driver's completeTask promise chain settle under fake timers. */
-async function flush() {
-  await act(async () => {
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-  });
-}
-
 beforeEach(() => {
   window.localStorage.clear();
-  vi.mocked(completeTask).mockReset();
   vi.mocked(importGraph).mockReset();
 });
 
@@ -239,24 +228,20 @@ describe("Board — selection and keyboard", () => {
 });
 
 describe("Board — completion choreography", () => {
-  it("slides the ✓ pill out, shows advancing…, then docks the next card after 1150ms", async () => {
+  it("slides the ✓ pill out, shows advancing…, then docks the next card after 1150ms", () => {
     vi.useFakeTimers();
-    vi.mocked(completeTask).mockResolvedValue({
-      task_id: "ds1",
-      capture: {
-        concept_id: "oidc",
-        name: "oidc trusted publishing",
-        streak: 1,
-        hollow: false,
-        next_display: "~4d",
-      },
+    const handleRef = createRef<BoardHandle>();
+    const { container, onToast } = renderBoard({ after: makeBoardAfter(), handleRef });
+
+    // The S5 capture reports completions through the handle.
+    act(() => {
+      handleRef.current?.onCompleted(
+        "ds1",
+        "ds",
+        "● oidc trusted publishing — captured · resurfaces ~4d",
+      );
     });
-    const { container, onToast } = renderBoard({ after: makeBoardAfter() });
 
-    key("c"); // Issue-#4 dev driver: complete the active lane's focus task.
-    await flush();
-
-    expect(completeTask).toHaveBeenCalledWith("ds1", "correct");
     expect(screen.getByText("✓ ds1")).toBeInTheDocument();
     expect(screen.getByText("advancing…")).toBeInTheDocument();
     const dsLane = container.querySelectorAll(".sw-lane")[0];
@@ -278,17 +263,18 @@ describe("Board — completion choreography", () => {
     expect(screen.getByText("Short ds2")).toBeInTheDocument();
   });
 
-  it("clears the advancing state after 60ms when reducedMotion is on", async () => {
+  it("clears the advancing state after 60ms when reducedMotion is on", () => {
     window.localStorage.setItem(
       SETTINGS_STORAGE_KEY,
       JSON.stringify({ reducedMotion: true, keyHints: true }),
     );
     vi.useFakeTimers();
-    vi.mocked(completeTask).mockResolvedValue({ task_id: "ds1", capture: null });
-    renderBoard({ after: makeBoardAfter() });
+    const handleRef = createRef<BoardHandle>();
+    renderBoard({ after: makeBoardAfter(), handleRef });
 
-    key("c");
-    await flush();
+    act(() => {
+      handleRef.current?.onCompleted("ds1", "ds", "toast");
+    });
     expect(screen.getByText("✓ ds1")).toBeInTheDocument();
 
     act(() => {
@@ -297,17 +283,17 @@ describe("Board — completion choreography", () => {
     expect(screen.queryByText("✓ ds1")).not.toBeInTheDocument();
   });
 
-  it("resets the lane's deal offset when a task completes", async () => {
+  it("resets the lane's deal offset when a task completes", () => {
     vi.useFakeTimers();
-    vi.mocked(completeTask).mockResolvedValue({ task_id: "ds2", capture: null });
-    renderBoard({ after: makeBoardAfter() });
+    const handleRef = createRef<BoardHandle>();
+    renderBoard({ after: makeBoardAfter(), handleRef });
 
     key("Tab"); // Deal ds2 to the front…
     expect(screen.getByText("Short ds2")).toBeInTheDocument();
-    key("c"); // …and complete it.
-    await flush();
+    act(() => {
+      handleRef.current?.onCompleted("ds2", "ds", "toast"); // …and complete it.
+    });
 
-    expect(completeTask).toHaveBeenCalledWith("ds2", "correct");
     // Offset snapped back to 0: the refreshed queue head (ds2) is dealt,
     // not the card at the stale offset (ds4).
     expect(screen.getByText("Short ds2")).toBeInTheDocument();

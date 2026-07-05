@@ -2,7 +2,7 @@ import { useCallback, useEffect, useImperativeHandle, useRef, useState, type Ref
 
 import seedRaw from "../../../seed/launch-graph.json?raw";
 import { displayedFocus, queueLength } from "../../lib/board/present";
-import { completeTask, importGraph } from "../../lib/ipc/commands";
+import { importGraph } from "../../lib/ipc/commands";
 import type { BoardView } from "../../lib/ipc/types";
 import { KEY_PRIORITY, useKeyLayer } from "../../lib/keys";
 import { useSettings } from "../../lib/settings";
@@ -101,31 +101,6 @@ export function Board({
     setDockNonces((prev) => ({ ...prev, [lane.key]: (prev[lane.key] ?? 0) + 1 }));
   }, [lanes, activeLane]);
 
-  /**
-   * DEV-ONLY driver, sanctioned by issue #4: until the task drawer lands in
-   * S4 there is no UI path that completes a task, so in dev builds pressing
-   * "c" completes the active lane's dealt focus task via the complete_task
-   * IPC with outcome "correct", then runs the same choreography S4/S5 will
-   * trigger through `BoardHandle.onCompleted`. Remove with the S4 drawer.
-   */
-  const devComplete = useCallback((): boolean => {
-    const lane = lanes[activeLane];
-    if (lane === undefined) return false;
-    const focus = displayedFocus(lane, dealOffsets[lane.key] ?? 0);
-    if (focus === null) return false;
-    void (async () => {
-      const result = await completeTask(focus.id, "correct");
-      const toast =
-        result.capture !== null
-          ? `● ${result.capture.name} — captured · resurfaces ${result.capture.next_display}`
-          : // Dev-only fallback: with S1's store every completion carries a
-            // capture, so this string is unreachable outside broken fixtures.
-            `✓ ${result.task_id} done`;
-      handleCompleted(focus.id, lane.key, toast);
-    })().catch((cause: unknown) => console.error("dev complete failed", cause));
-    return true;
-  }, [lanes, activeLane, dealOffsets, handleCompleted]);
-
   useKeyLayer(
     KEY_PRIORITY.BOARD,
     (event) => {
@@ -148,9 +123,6 @@ export function Board({
         if (focus === null) return false;
         onOpenTask(focus.id);
         return true;
-      }
-      if (import.meta.env.DEV && event.key === "c") {
-        return devComplete();
       }
       return false;
     },

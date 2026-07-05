@@ -267,7 +267,7 @@
   padding-top: 8px;
 }
 
-/* Capture placeholder — faded ledger of what was just done (design lines 187–191) */
+/* Capture phase — faded ledger of what was just done (design lines 187–191) */
 .sw-drawer-done {
   flex: none;
   display: flex;
@@ -279,4 +279,174 @@
 .sw-drawer-done-line {
   font: 500 10.5px var(--sw-mono);
   color: var(--sw-text-muted);
+}
+
+/* Capture phase — the ONE TAP question (design lines 192–214) */
+.sw-drawer-cap-spacer {
+  flex: 1;
+}
+
+.sw-drawer-cap-label {
+  flex: none;
+  font: 600 9.5px var(--sw-mono);
+  letter-spacing: 0.14em;
+  color: var(--sw-accent);
+}
+
+.sw-drawer-cap-q {
+  flex: none;
+  font: 600 20px/1.35 var(--sw-sans);
+  color: var(--sw-text-primary);
+  margin-bottom: 8px;
+}
+
+.sw-drawer-cap-choices {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* One choice row: key square · text · mark slot (design line 197–201). */
+.sw-drawer-cap-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--sw-border-14);
+  border-radius: var(--sw-radius-10);
+  padding: 11px 13px;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.sw-drawer-cap-choice-idle:hover {
+  border-color: var(--sw-accent-border-55);
+}
+
+.sw-drawer-cap-key {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--sw-radius-6);
+  border: 1px solid var(--sw-border-20);
+  background: transparent;
+  color: var(--sw-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 11px var(--sw-mono);
+  flex: none;
+}
+
+.sw-drawer-cap-text {
+  font: 400 13px/1.4 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  flex: 1;
+}
+
+.sw-drawer-cap-mark {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  flex: none;
+}
+
+/* Correct pick — the row flips accent (prototype capChoices, st === 'correct'). */
+.sw-drawer-cap-choice-correct {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-12);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-key {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent);
+  /* Design uses the sidebar background (#0F1013) as accent-square text. */
+  color: var(--sw-bg-sidebar);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-text {
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-cap-choice-correct .sw-drawer-cap-mark {
+  color: var(--sw-accent);
+}
+
+/* Miss — the picked row dims up its border and takes the ✕ mark… */
+.sw-drawer-cap-choice-missed {
+  border-color: var(--sw-border-32);
+}
+
+/* …and the correct row is revealed with "→ this one". */
+.sw-drawer-cap-choice-reveal {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-10);
+}
+
+.sw-drawer-cap-choice-reveal .sw-drawer-cap-text {
+  color: var(--sw-text-primary);
+}
+
+.sw-drawer-cap-choice-reveal .sw-drawer-cap-mark {
+  color: var(--sw-accent);
+}
+
+/* The why is the win (design line 205). */
+.sw-drawer-cap-why {
+  flex: none;
+  font: 400 12px/1.6 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  margin-top: 8px;
+}
+
+.sw-drawer-cap-continue {
+  flex: none;
+  width: 100%;
+  height: 40px;
+  border-radius: var(--sw-radius-10);
+  border: 1px solid var(--sw-accent-border-50);
+  background: transparent;
+  color: var(--sw-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 12.5px var(--sw-sans);
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* "● {concept} — captured" stamp under the flipped row. */
+.sw-drawer-cap-stamp {
+  flex: none;
+  font: 500 11px var(--sw-mono);
+  color: var(--sw-accent);
+  margin-top: 10px;
+}
+
+/* Inline complete_task failure — the drawer stays open. */
+.sw-drawer-cap-error {
+  flex: none;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+  margin-top: 10px;
+}
+
+/* Idle footer line: "1–4 commit · s skip — stays hollow ◌ · misses return sooner" */
+.sw-drawer-cap-idle {
+  flex: none;
+  font: 500 10.5px/1.6 var(--sw-mono);
+  color: var(--sw-text-muted);
+  text-align: center;
+}
+
+.sw-drawer-cap-skip {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }

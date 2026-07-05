@@ -2,8 +2,18 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "./App";
-import { getBoard, getMap, getTaskDetail, resetAll } from "./lib/ipc/commands";
-import type { BoardView, TaskDetail } from "./lib/ipc/types";
+import {
+  answerRecheck,
+  completeTask,
+  getBoard,
+  getDueRecheck,
+  getLedger,
+  getMap,
+  getRecheck,
+  getTaskDetail,
+  resetAll,
+} from "./lib/ipc/commands";
+import type { BoardView, DueRecheck, LedgerRow, TaskDetail } from "./lib/ipc/types";
 
 vi.mock("./lib/ipc/commands", () => ({
   getBoard: vi.fn(),
@@ -12,6 +22,10 @@ vi.mock("./lib/ipc/commands", () => ({
   resetAll: vi.fn(),
   completeTask: vi.fn(),
   importGraph: vi.fn(),
+  getLedger: vi.fn(),
+  getDueRecheck: vi.fn(),
+  getRecheck: vi.fn(),
+  answerRecheck: vi.fn(),
 }));
 
 const board: BoardView = {
@@ -92,15 +106,56 @@ const ds1Detail: TaskDetail = {
   },
 };
 
+const oidcCapture = {
+  concept_id: "oidc",
+  name: "oidc trusted publishing",
+  streak: 1,
+  hollow: false,
+  next_display: "~4d",
+};
+
+const ttlRecheck: DueRecheck = {
+  concept_id: "ttl",
+  name: "cache ttl + propagation",
+  question: "You drop a TTL from 3600 to 300 right before a cutover. Why?",
+  choices: [
+    "Lower TTL makes DNS resolve faster",
+    "Caches expire sooner, so the switch lands in minutes, not hours",
+    "300 is the minimum for CNAMEs",
+    "It forces resolvers to re-register the record",
+  ],
+  correct_index: 1,
+  why: "TTL is just cache lifetime — shorter cache, faster convergence.",
+};
+
+const ledgerRows: LedgerRow[] = [
+  {
+    concept_id: "ttl",
+    name: "cache ttl + propagation",
+    from_task: "ds3",
+    streak: 4,
+    hollow: false,
+    next_display: "30d",
+    has_question: true,
+  },
+];
+
 beforeEach(() => {
   window.localStorage.clear();
   vi.mocked(getBoard).mockReset();
   vi.mocked(getTaskDetail).mockReset();
   vi.mocked(getMap).mockReset();
   vi.mocked(resetAll).mockReset();
+  vi.mocked(completeTask).mockReset();
+  vi.mocked(getLedger).mockReset();
+  vi.mocked(getDueRecheck).mockReset();
+  vi.mocked(getRecheck).mockReset();
+  vi.mocked(answerRecheck).mockReset();
   vi.mocked(getBoard).mockResolvedValue(board);
   vi.mocked(getTaskDetail).mockResolvedValue(ds1Detail);
   vi.mocked(resetAll).mockResolvedValue(undefined);
+  vi.mocked(getDueRecheck).mockResolvedValue(null);
+  vi.mocked(getLedger).mockResolvedValue(ledgerRows);
 });
 
 afterEach(() => {
@@ -108,13 +163,28 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-/** Settle the getBoard/resetAll promise chains under fake timers. */
+/** Settle the IPC promise chains under fake timers. */
 async function flushMicrotasks() {
   await act(async () => {
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
   });
+}
+
+function key(k: string) {
+  fireEvent.keyDown(document, { key: k });
+}
+
+/** Open the ds1 drawer and walk its three steps into the capture phase. */
+async function walkToCapture() {
+  key("Enter");
+  await flushMicrotasks();
+  expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument();
+  key("Enter");
+  key("Enter");
+  key("Enter");
+  expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
 }
 
 describe("App", () => {
@@ -184,6 +254,7 @@ describe("App", () => {
     // Esc parks: drawer gone, nothing completed.
     fireEvent.keyDown(document, { key: "Escape" });
     expect(container.querySelector(".sw-drawer")).not.toBeInTheDocument();
+    expect(completeTask).not.toHaveBeenCalled();
 
     // Reopen the same task: the drawer restores steps phase at step 2.
     fireEvent.keyDown(document, { key: "Enter" });
@@ -232,5 +303,218 @@ describe("App", () => {
     await waitFor(() => expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument());
     fireEvent.keyDown(document, { key: "g" });
     expect(screen.queryByText("The map")).not.toBeInTheDocument();
+  });
+
+  it("l toggles the Learned ledger and gates the board keys while it shows", async () => {
+    const { container } = render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    key("l");
+    await waitFor(() => expect(screen.getByText("Learned")).toBeInTheDocument());
+    expect(getLedger).toHaveBeenCalledTimes(1);
+    expect(
+      screen.getByText("Evidence, not homework — rechecks ride along on the board."),
+    ).toBeInTheDocument();
+
+    // Board keys are dead while the ledger shows.
+    key("Enter");
+    expect(getTaskDetail).not.toHaveBeenCalled();
+    expect(container.querySelector(".sw-drawer")).not.toBeInTheDocument();
+
+    // l toggles closed again (consumed by the overlay layer).
+    key("l");
+    expect(screen.queryByText("Learned")).not.toBeInTheDocument();
+
+    // Never over an open drawer.
+    key("Enter");
+    await waitFor(() => expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument());
+    key("l");
+    expect(screen.queryByText("Learned")).not.toBeInTheDocument();
+  });
+
+  it("the titlebar l button opens the ledger", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "Learned" }));
+    await waitFor(() => expect(screen.getByText("Learned")).toBeInTheDocument());
+  });
+
+  it("completes a task through the full capture flow: choreography + exact toast + fresh state", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue({ task_id: "ds1", capture: oidcCapture });
+    const { container } = render(<App />);
+    await flushMicrotasks();
+
+    await walkToCapture();
+    key("2"); // The correct pick.
+    expect(completeTask).toHaveBeenCalledExactlyOnceWith("ds1", "correct");
+    await flushMicrotasks();
+    expect(screen.getByText("● oidc trusted publishing — captured")).toBeInTheDocument();
+
+    // The drawer holds through the 900ms dwell, then finishes.
+    expect(container.querySelector(".sw-drawer")).toBeInTheDocument();
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+    await flushMicrotasks();
+
+    // Drawer closed; the board runs the completion choreography.
+    expect(container.querySelector(".sw-drawer")).not.toBeInTheDocument();
+    expect(screen.getByText("✓ ds1")).toBeInTheDocument();
+    expect(screen.getByText("advancing…")).toBeInTheDocument();
+    expect(
+      screen.getByText("● oidc trusted publishing — captured · resurfaces ~4d"),
+    ).toBeInTheDocument();
+    // Server state refetched: board again, and the ledger/due-recheck state.
+    expect(getBoard).toHaveBeenCalledTimes(2);
+    expect(getDueRecheck).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      vi.advanceTimersByTime(1150);
+    });
+    expect(screen.queryByText("advancing…")).not.toBeInTheDocument();
+  });
+
+  it("a completed task never restores stale parked state", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue({ task_id: "ds1", capture: oidcCapture });
+    const { container } = render(<App />);
+    await flushMicrotasks();
+
+    // Park mid-steps first, so a stale snapshot exists.
+    key("Enter");
+    await flushMicrotasks();
+    key("Enter");
+    expect(screen.getByText("STEP 2 OF 3")).toBeInTheDocument();
+    key("Escape");
+
+    // Reopen (restores), finish the task hollow.
+    key("Enter");
+    await flushMicrotasks();
+    key("Enter");
+    key("Enter");
+    expect(screen.getByText("ONE TAP.")).toBeInTheDocument();
+    key("s");
+    await flushMicrotasks();
+    expect(container.querySelector(".sw-drawer")).not.toBeInTheDocument();
+
+    // Reopen ds1 (the fixture board still deals it): fresh at step 1.
+    key("Enter");
+    await flushMicrotasks();
+    expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument();
+  });
+
+  it("ships the exact miss and hollow toast copy", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue({ task_id: "ds1", capture: oidcCapture });
+    render(<App />);
+    await flushMicrotasks();
+
+    // Miss: wrong pick, read the why, continue.
+    await walkToCapture();
+    key("1");
+    expect(screen.getByText("→ this one")).toBeInTheDocument();
+    key("Enter");
+    await flushMicrotasks();
+    expect(completeTask).toHaveBeenLastCalledWith("ds1", "miss");
+    expect(
+      screen.getByText("✕ oidc trusted publishing — the why is the win · back ~1d"),
+    ).toBeInTheDocument();
+
+    // Clear the toast window, then skip hollow.
+    act(() => {
+      vi.advanceTimersByTime(5200);
+    });
+    await walkToCapture();
+    key("s");
+    await flushMicrotasks();
+    expect(completeTask).toHaveBeenLastCalledWith("ds1", "hollow");
+    expect(screen.getByText("◌ ds1 done, left hollow — it will ask again")).toBeInTheDocument();
+  });
+
+  it("offers the due recheck in the footer only when nothing else is talking", async () => {
+    vi.mocked(getDueRecheck).mockResolvedValue(ttlRecheck);
+    const { container } = render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    const slot = () =>
+      screen.queryByRole("button", { name: "[r] 20s recheck — cache ttl + propagation ◌" });
+    await waitFor(() => expect(slot()).toBeInTheDocument());
+
+    // Hidden while the drawer is open…
+    key("Enter");
+    await waitFor(() => expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument());
+    expect(slot()).not.toBeInTheDocument();
+    key("Escape");
+    expect(slot()).toBeInTheDocument();
+
+    // …while an overlay shows…
+    key("l");
+    await waitFor(() => expect(screen.getByText("Learned")).toBeInTheDocument());
+    expect(slot()).not.toBeInTheDocument();
+    key("Escape");
+    expect(slot()).toBeInTheDocument();
+
+    // …and while a toast shows.
+    fireEvent.click(screen.getByRole("button", { name: "reset" }));
+    await waitFor(() => expect(screen.getByText("reset — fresh tide")).toBeInTheDocument());
+    expect(slot()).not.toBeInTheDocument();
+    expect(container.querySelector(".sw-recheck")).not.toBeInTheDocument();
+  });
+
+  it("r (and the footer slot) opens the quiz card in passing; answering refreshes the due state", async () => {
+    vi.useFakeTimers();
+    vi.mocked(getDueRecheck).mockResolvedValue(ttlRecheck);
+    vi.mocked(answerRecheck).mockResolvedValue({ correct: true, streak: 5, next_display: "30d" });
+    const { container } = render(<App />);
+    await flushMicrotasks();
+
+    key("r");
+    expect(screen.getByText("20S RECHECK — IN PASSING")).toBeInTheDocument();
+    expect(screen.getByText(ttlRecheck.question)).toBeInTheDocument();
+    // The footer slot yields while the card shows.
+    expect(
+      screen.queryByRole("button", { name: "[r] 20s recheck — cache ttl + propagation ◌" }),
+    ).not.toBeInTheDocument();
+
+    // Nothing more is due once this one is answered.
+    vi.mocked(getDueRecheck).mockResolvedValue(null);
+    key("2");
+    expect(answerRecheck).toHaveBeenCalledExactlyOnceWith("ttl", 1);
+    await flushMicrotasks();
+    expect(screen.getByText("● held — fades 30d")).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(1700);
+    });
+    await flushMicrotasks();
+    expect(container.querySelector(".sw-recheck")).not.toBeInTheDocument();
+    expect(getDueRecheck).toHaveBeenCalledTimes(2);
+    expect(
+      screen.queryByRole("button", { name: "[r] 20s recheck — cache ttl + propagation ◌" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("ledger ask me opens the quiz over the ledger; Esc closes the quiz, not the ledger", async () => {
+    vi.mocked(getRecheck).mockResolvedValue(ttlRecheck);
+    const { container } = render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    key("l");
+    await waitFor(() => expect(screen.getByText("Learned")).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "ask me" }));
+    await waitFor(() => expect(getRecheck).toHaveBeenCalledExactlyOnceWith("ttl"));
+    await waitFor(() => expect(screen.getByText("ASK ME — FROM THE LEDGER")).toBeInTheDocument());
+    // The card renders over the still-open ledger.
+    expect(screen.getByText("Learned")).toBeInTheDocument();
+
+    // Esc hits the quiz layer first: card closes, ledger stays.
+    key("Escape");
+    expect(container.querySelector(".sw-recheck")).not.toBeInTheDocument();
+    expect(screen.getByText("Learned")).toBeInTheDocument();
+
+    // Esc again closes the ledger.
+    key("Escape");
+    expect(screen.queryByText("Learned")).not.toBeInTheDocument();
   });
 });

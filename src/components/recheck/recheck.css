@@ -1,0 +1,124 @@
+/* The bottom-anchored quiz card — recheck in passing. Geometry and type
+   transcribed from docs/design/project/"Slipway Sidebar.dc.html"
+   (recheck template, lines 218–235). Sits above the overlays (z 30) and
+   below nothing — the drawer (z 40) is never open at the same time. */
+
+.sw-recheck {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 58px;
+  z-index: 50;
+  box-sizing: border-box;
+  background: var(--sw-bg-toast);
+  border: 1px solid var(--sw-accent-border-40);
+  border-radius: var(--sw-radius-13);
+  padding: 16px 18px;
+  box-shadow: var(--sw-shadow-quiz);
+  animation: swFadeUp var(--sw-dur-panel) ease;
+}
+
+.sw-recheck-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.sw-recheck-label {
+  font: 600 9px var(--sw-mono);
+  letter-spacing: 0.12em;
+  color: var(--sw-accent);
+}
+
+.sw-recheck-spacer {
+  flex: 1;
+}
+
+.sw-recheck-close {
+  background: none;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+  cursor: pointer;
+}
+
+.sw-recheck-q {
+  font: 600 14px/1.4 var(--sw-sans);
+  color: var(--sw-text-primary);
+  margin-bottom: 10px;
+}
+
+.sw-recheck-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Compact choice row: bare number · text · accent mark (design lines 224–228). */
+.sw-recheck-choice {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 1px solid var(--sw-border-14);
+  border-radius: var(--sw-radius-9);
+  padding: 8px 11px;
+  cursor: pointer;
+}
+
+.sw-recheck-choice-idle:hover {
+  border-color: var(--sw-accent-border-55);
+}
+
+.sw-recheck-key {
+  font: 600 10px var(--sw-mono);
+  color: var(--sw-text-muted);
+  flex: none;
+}
+
+.sw-recheck-text {
+  font: 400 12px/1.4 var(--sw-sans);
+  color: var(--sw-text-secondary);
+  flex: 1;
+}
+
+/* Quiz marks are always accent, including the ✕ (design line 227). */
+.sw-recheck-mark {
+  font: 500 10px var(--sw-mono);
+  color: var(--sw-accent);
+  flex: none;
+}
+
+/* The correct row after any resolution: ✓ on a hold, → on a miss. */
+.sw-recheck-choice-hit {
+  border-color: var(--sw-accent);
+  background: var(--sw-accent-tint-10);
+}
+
+.sw-recheck-choice-hit .sw-recheck-key {
+  color: var(--sw-accent);
+}
+
+.sw-recheck-choice-hit .sw-recheck-text {
+  color: var(--sw-text-primary);
+}
+
+/* The picked-but-wrong row. */
+.sw-recheck-choice-missed {
+  border-color: var(--sw-border-32);
+}
+
+/* "● held — fades {next}" / "✕ {why}" result line. */
+.sw-recheck-result {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-secondary);
+  margin-top: 9px;
+}
+
+.sw-recheck-result-correct {
+  color: var(--sw-accent);
+}
