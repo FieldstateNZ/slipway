@@ -33,6 +33,8 @@ function dispatch(event: KeyboardEvent): void {
   // Highest priority first; within a priority, most recently registered first.
   const ordered = [...layers].sort((a, b) => b.priority - a.priority || b.seq - a.seq);
   for (const layer of ordered) {
+    // A higher layer may unregister lower ones mid-dispatch; skip the dead.
+    if (!layers.includes(layer)) continue;
     if (layer.handler(event)) {
       // Never let a handled Tab move browser focus.
       if (event.key === "Tab") {

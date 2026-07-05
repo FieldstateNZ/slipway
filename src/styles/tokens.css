@@ -11,6 +11,7 @@
   --sw-bg-drawer: #121418;
   --sw-bg-overlay: #101216;
   --sw-bg-command: #0b0c0e; /* command blocks */
+  --sw-bg-concept: #0f1216; /* tucked concept card in the drawer */
 
   /* Text */
   --sw-text-primary: #e8eaee;
@@ -45,6 +46,7 @@
 
   /* Accent borders — rgba(83, 169, 255, alpha) */
   --sw-accent-border-18: rgba(83, 169, 255, 0.18);
+  --sw-accent-dashes-45: rgba(83, 169, 255, 0.45); /* slide-out pill ˗˗˗ */
   --sw-accent-border-30: rgba(83, 169, 255, 0.3);
   --sw-accent-border-35: rgba(83, 169, 255, 0.35);
   --sw-accent-border-40: rgba(83, 169, 255, 0.4);
@@ -56,6 +58,18 @@
   --sw-accent-tint-06: rgba(83, 169, 255, 0.06);
   --sw-accent-tint-10: rgba(83, 169, 255, 0.1);
   --sw-accent-tint-12: rgba(83, 169, 255, 0.12);
+
+  /* Shadows + textures */
+  --sw-shadow-panel: 24px 0 80px rgba(0, 0, 0, 0.35); /* sidebar right edge */
+  --sw-shadow-focus:
+    0 0 0 3px rgba(83, 169, 255, 0.1), 0 14px 34px rgba(0, 0, 0, 0.4); /* active focus card */
+  --sw-shadow-quiz: 0 24px 60px rgba(0, 0, 0, 0.55); /* bottom quiz card */
+  --sw-glow-step: 0 0 0 3px rgba(83, 169, 255, 0.1); /* current drawer step */
+  --sw-stripe-drop: repeating-linear-gradient(
+    45deg,
+    rgba(233, 237, 244, 0.015) 0 10px,
+    transparent 10px 20px
+  ); /* intake drop zone */
 
   /* Radii */
   --sw-radius-5: 5px;
