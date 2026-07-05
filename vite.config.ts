@@ -25,7 +25,8 @@ export default defineConfig({
       ignored: ["**/src-tauri/**", "**/crates/**", "**/target/**"],
     },
   },
-  envPrefix: ["VITE_", "TAURI_ENV_*"],
+  // Plain prefix match (no globs): expose Tauri's TAURI_ENV_PLATFORM etc.
+  envPrefix: ["VITE_", "TAURI_ENV_"],
 
   test: {
     environment: "jsdom",
