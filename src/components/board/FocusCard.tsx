@@ -26,13 +26,12 @@ export function FocusCard({ focus, active, docking, onOpen }: FocusCardProps) {
       <div className="sw-focus-title">{focus.short}</div>
       <div className="sw-focus-sub">{focus.sub}</div>
       <div className="sw-focus-row">
-        {/* Clicks bubble to the card's onOpen — the button is not a separate action. */}
-        <button
-          type="button"
-          className={active ? "sw-focus-btn sw-focus-btn-active" : "sw-focus-btn"}
-        >
+        {/* A styled div, like the prototype: the whole card is the click
+            target, and a focusable button would let Enter fire both the
+            button's synthetic click and the board key layer (double-open). */}
+        <div className={active ? "sw-focus-btn sw-focus-btn-active" : "sw-focus-btn"}>
           {buttonLabel(focus)}
-        </button>
+        </div>
         <div className="sw-focus-frees">{focus.frees}</div>
       </div>
     </div>

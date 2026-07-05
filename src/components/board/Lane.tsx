@@ -49,6 +49,10 @@ export function Lane({
           key={`${focus.id}:${dockNonce}`}
           focus={focus}
           active={active}
+          // Known tradeoff: after the first deal this stays true, so a
+          // focus-id remount outside an advance replays swDockIn. In v0.1
+          // focus only changes via deal/advance, so the replay is unreachable;
+          // revisit if cross-lane freeing ever swaps a focus card in place.
           docking={advancing || dockNonce > 0}
           onOpen={() => onOpen(focus.id)}
         />

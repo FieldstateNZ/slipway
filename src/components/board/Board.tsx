@@ -46,6 +46,20 @@ export function Board({ board, refresh, onOpenTask, onToast, ref }: BoardProps) 
 
   useEffect(() => () => clearTimeout(advanceTimer.current), []);
 
+  // Track lane shape so client state never outlives the lanes it indexed:
+  // reset empties the board (clear everything, like the prototype's resetAll),
+  // and a removed lane can strand activeLane past the end (snap home).
+  useEffect(() => {
+    if (lanes.length === 0) {
+      setActiveLane(0);
+      setDealOffsets({});
+      setDockNonces({});
+      setAdvancing(null);
+    } else if (activeLane >= lanes.length) {
+      setActiveLane(0);
+    }
+  }, [lanes.length, activeLane]);
+
   const handleCompleted = useCallback(
     (taskId: string, projectKey: string, toast: string) => {
       // Pill slides out + header shows "advancing…" while the fresh board
@@ -91,9 +105,11 @@ export function Board({ board, refresh, onOpenTask, onToast, ref }: BoardProps) 
       const toast =
         result.capture !== null
           ? `● ${result.capture.name} — captured · resurfaces ${result.capture.next_display}`
-          : `✓ ${result.task_id} done`;
+          : // Dev-only fallback: with S1's store every completion carries a
+            // capture, so this string is unreachable outside broken fixtures.
+            `✓ ${result.task_id} done`;
       handleCompleted(focus.id, lane.key, toast);
-    })();
+    })().catch((cause: unknown) => console.error("dev complete failed", cause));
     return true;
   }, [lanes, activeLane, dealOffsets, handleCompleted]);
 
@@ -128,7 +144,7 @@ export function Board({ board, refresh, onOpenTask, onToast, ref }: BoardProps) 
     void (async () => {
       await importGraph(seedRaw);
       await refresh();
-    })();
+    })().catch((cause: unknown) => console.error("seed import failed", cause));
   };
 
   if (lanes.length === 0) {
