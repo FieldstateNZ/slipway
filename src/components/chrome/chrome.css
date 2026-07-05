@@ -50,6 +50,17 @@
   width: 11px;
   height: 11px;
   border-radius: 50%;
+  border: none;
+  padding: 0;
+}
+
+/* Red + yellow are real buttons (close / minimize): they re-enable pointer
+   events inside the pass-through wrapper — so they never become drag-region
+   holes — and keep the default cursor, like macOS traffic lights. */
+button.sw-titlebar-light {
+  pointer-events: auto;
+  cursor: default;
+  appearance: none;
 }
 
 .sw-titlebar-light-red {

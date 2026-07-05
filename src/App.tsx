@@ -69,6 +69,10 @@ function AppContent() {
   // over an open drawer until the drawer closes.
   const [dropped, setDropped] = useState<DroppedDoc | null>(null);
   const [intakePending, setIntakePending] = useState(false);
+  // Keys this session has already minted (in1, in2, …). The board prop can
+  // lag (a failed refresh, a raced second drop) — counting lanes alone could
+  // re-mint in1 and the importer would upsert over the first INBOX lane.
+  const mintedIntakeKeys = useRef(new Set<string>());
 
   const drawerClosed = openTaskId === null;
 
@@ -130,10 +134,14 @@ function AppContent() {
       await resetAll();
       // Parked drawer snapshots would otherwise survive into the re-imported
       // graph (task ids are stable), restoring pre-reset progress. An open
-      // quiz card would grade against wiped concepts — drop it too.
+      // quiz card would grade against wiped concepts — drop it too, and the
+      // held/dropped intake doc (prototype resetAll clears `dropped`).
       parkedDrawers.current.clear();
+      mintedIntakeKeys.current.clear();
       setOpenTaskId(null);
       setQuiz(null);
+      setDropped(null);
+      setIntakePending(false);
       await refreshAll();
       showToast("reset — fresh tide", RESET_TOAST_MS);
     })().catch((cause: unknown) => console.error("reset failed", cause));
@@ -194,6 +202,7 @@ function AppContent() {
   // the doc, then refresh and activate the new lane before toasting.
   const handleIntakeConfirmed = useCallback(
     (projectKey: string | null, toastText: string) => {
+      if (projectKey !== null) mintedIntakeKeys.current.add(projectKey);
       setOverlay(null);
       setDropped(null);
       void (async () => {
@@ -204,6 +213,22 @@ function AppContent() {
     },
     [refreshAll, showToast],
   );
+
+  // The next INBOX index: one past the highest in{N} key seen on the board
+  // OR minted this session, whichever is larger.
+  const intakeCustomCount = (() => {
+    const indexOf = (key: string): number => {
+      const match = /^in(\d+)$/.exec(key);
+      return match === null ? 0 : Number(match[1]);
+    };
+    const boardMax = Math.max(
+      0,
+      ...(board?.lanes.filter((lane) => lane.custom).map((lane) => indexOf(lane.key)) ?? []),
+    );
+    const mintedMax = Math.max(0, ...[...mintedIntakeKeys.current].map(indexOf));
+    const customLanes = board?.lanes.filter((lane) => lane.custom).length ?? 0;
+    return Math.max(boardMax, mintedMax, customLanes);
+  })();
 
   const openDueRecheck = useCallback(() => {
     if (dueRecheck !== null) setQuiz({ recheck: dueRecheck, source: "recheck" });
@@ -296,7 +321,7 @@ function AppContent() {
         onClose={closeOverlay}
         dropped={dropped}
         onDiscard={() => setDropped(null)}
-        customCount={board?.lanes.filter((lane) => lane.custom).length ?? 0}
+        customCount={intakeCustomCount}
         lanes={board?.lanes.map(({ key, name }) => ({ key, name })) ?? []}
         onConfirmed={handleIntakeConfirmed}
       />

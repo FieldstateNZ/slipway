@@ -325,7 +325,7 @@ describe("Board — empty board", () => {
     const empty: BoardView = { lanes: [], ready_count: 0, ready_effort_min: 0 };
     renderBoard({ initial: empty, after: makeBoard() });
 
-    expect(screen.getByText("or drop a doc — intake takes it from here")).toBeInTheDocument();
+    expect(screen.getByText("or go straight to intake — drop a doc / press i")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "load the launch graph" }));
 
     await waitFor(() => expect(importGraph).toHaveBeenCalledWith(seedRaw));

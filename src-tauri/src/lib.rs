@@ -109,7 +109,33 @@ fn reset_all(db: State<'_, Db>) -> CmdResult<()> {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    tauri::Builder::default()
+    #[allow(unused_mut)]
+    let mut builder = tauri::Builder::default();
+
+    // Desktop-only plugins (issue #9). Single-instance must register first so
+    // a second launch short-circuits before any other plugin does work.
+    #[cfg(desktop)]
+    {
+        builder = builder
+            .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
+                // A second launch focuses the existing window instead.
+                if let Some(window) = app.get_webview_window("main") {
+                    let _ = window.show();
+                    let _ = window.unminimize();
+                    let _ = window.set_focus();
+                }
+            }))
+            // Persists window position (and the free height) across restarts;
+            // width is pinned to 440 by tauri.conf.json regardless.
+            .plugin(tauri_plugin_window_state::Builder::default().build())
+            // Launch at login, toggled from the footer via the JS guest API.
+            .plugin(tauri_plugin_autostart::init(
+                tauri_plugin_autostart::MacosLauncher::LaunchAgent,
+                None,
+            ));
+    }
+
+    builder
         .setup(|app| {
             let dir = app.path().app_data_dir()?;
             std::fs::create_dir_all(&dir)?;

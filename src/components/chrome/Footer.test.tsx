@@ -46,6 +46,18 @@ describe("Footer", () => {
     expect(onReset).toHaveBeenCalledTimes(1);
   });
 
+  it("toggles launch at login and persists the setting", async () => {
+    const user = userEvent.setup();
+    renderFooter();
+
+    const toggle = screen.getByRole("button", { name: "launch at login: off" });
+    await user.click(toggle);
+    expect(screen.getByRole("button", { name: "launch at login: on" })).toBeInTheDocument();
+
+    const stored = window.localStorage.getItem(SETTINGS_STORAGE_KEY);
+    expect(JSON.parse(stored as string)).toMatchObject({ launchAtLogin: true });
+  });
+
   it("renders the toast slot when provided, and omits it otherwise", () => {
     const { view } = renderFooter({ toast: "task parked — 2 ready" });
     expect(screen.getByText("task parked — 2 ready")).toBeInTheDocument();

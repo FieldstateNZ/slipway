@@ -1,8 +1,20 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Titlebar } from "./Titlebar";
+
+const close = vi.fn().mockResolvedValue(undefined);
+const minimize = vi.fn().mockResolvedValue(undefined);
+
+vi.mock("@tauri-apps/api/window", () => ({
+  getCurrentWindow: () => ({ close, minimize }),
+}));
+
+beforeEach(() => {
+  close.mockClear();
+  minimize.mockClear();
+});
 
 afterEach(cleanup);
 
@@ -50,9 +62,30 @@ describe("Titlebar", () => {
     expect(onMap).toHaveBeenCalledTimes(1);
   });
 
-  it("labels the buttons + l g in order", () => {
+  it("closes the window from the red light and minimizes from the yellow", async () => {
+    const user = userEvent.setup();
     renderTitlebar();
-    const labels = screen.getAllByRole("button").map((b) => b.textContent);
-    expect(labels).toEqual(["+", "l", "g"]);
+
+    await user.click(screen.getByRole("button", { name: "Close window" }));
+    await waitFor(() => expect(close).toHaveBeenCalledTimes(1));
+    expect(minimize).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Minimize window" }));
+    await waitFor(() => expect(minimize).toHaveBeenCalledTimes(1));
+  });
+
+  it("keeps the green light decorative (maxWidth pins the window at 440px)", () => {
+    const { view } = renderTitlebar();
+    const green = view.container.querySelector(".sw-titlebar-light-green");
+    expect(green?.tagName).toBe("SPAN");
+    expect(green).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("orders the buttons: close, minimize, then + l g", () => {
+    renderTitlebar();
+    const names = screen
+      .getAllByRole("button")
+      .map((b) => b.getAttribute("aria-label") ?? b.textContent);
+    expect(names).toEqual(["Close window", "Minimize window", "Intake", "Learned", "Map"]);
   });
 });

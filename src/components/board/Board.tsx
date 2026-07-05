@@ -160,14 +160,16 @@ export function Board({
   };
 
   if (lanes.length === 0) {
-    // First-run empty state (issue #9's promise) — refined in S7/S8.
+    // First-run empty state (issue #9: never a blank wall) — also what the
+    // footer reset lands on. Both entry paths are on offer: the seed graph,
+    // or straight to intake ('i' works here — App owns that key).
     return (
       <div className="sw-board-empty">
         <div className="sw-board-empty-card">
           <button type="button" className="sw-board-empty-btn" onClick={handleImportSeed}>
             load the launch graph
           </button>
-          <div className="sw-board-empty-sub">or drop a doc — intake takes it from here</div>
+          <div className="sw-board-empty-sub">or go straight to intake — drop a doc / press i</div>
         </div>
       </div>
     );

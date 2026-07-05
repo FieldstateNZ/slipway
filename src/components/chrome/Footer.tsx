@@ -15,7 +15,7 @@ export interface FooterProps {
 }
 
 export function Footer({ toast, recheck, onReset }: FooterProps) {
-  const { keyHints } = useSettings();
+  const { keyHints, launchAtLogin, setLaunchAtLogin } = useSettings();
   return (
     <div className="sw-footer">
       {toast !== undefined && (
@@ -35,6 +35,15 @@ export function Footer({ toast, recheck, onReset }: FooterProps) {
           </span>
         )}
         <span className="sw-footer-spacer" />
+        {/* Minimal settings surface (issue #9): no settings panel in the v0.1
+            design, so launch-at-login lives here as a faint toggle line. */}
+        <button
+          type="button"
+          className="sw-footer-reset"
+          onClick={() => setLaunchAtLogin(!launchAtLogin)}
+        >
+          launch at login: {launchAtLogin ? "on" : "off"}
+        </button>
         <button type="button" className="sw-footer-reset" onClick={onReset}>
           reset
         </button>
