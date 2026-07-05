@@ -47,6 +47,7 @@ function pillClass(pill: PillView): string {
 /** The map overlay — dependency chains as pill rows. On demand, never home. */
 export function MapOverlay({ open, onClose, version = 0 }: MapOverlayProps) {
   const [map, setMap] = useState<MapView | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Refetch on every open (and on version bumps while open) so the map
   // always reflects completions — the previous payload keeps painting for
@@ -54,9 +55,19 @@ export function MapOverlay({ open, onClose, version = 0 }: MapOverlayProps) {
   useEffect(() => {
     if (!open) return;
     let stale = false;
-    void getMap().then((next) => {
-      if (!stale) setMap(next);
-    });
+    getMap().then(
+      (next) => {
+        if (!stale) {
+          setMap(next);
+          setError(null);
+        }
+      },
+      (cause: unknown) => {
+        console.error("map fetch failed", cause);
+        // Surface the failure instead of silently painting stale chains.
+        if (!stale) setError(cause instanceof Error ? cause.message : String(cause));
+      },
+    );
     return () => {
       stale = true;
     };
@@ -88,6 +99,7 @@ export function MapOverlay({ open, onClose, version = 0 }: MapOverlayProps) {
       </div>
       <div className="sw-map-legend">lit = ready · dashed = waiting · ✓ = done</div>
       <div className="sw-map-body">
+        {error !== null && <div className="sw-map-error">couldn’t load the map — {error}</div>}
         {(map?.chains ?? []).map((chain, chainIndex) => (
           <div className="sw-map-chain" key={`${chainIndex}-${chain.label}`}>
             <div className="sw-map-chain-label">{chain.label}</div>

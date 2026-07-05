@@ -36,11 +36,19 @@
 //!    "{NAME} — PATH A", "PATH B", …. Join annotations append to their
 //!    path's label: "{NAME} — PATH B · ◆ds9 joins at ds7".
 //!
-//! Refinement over the issue's classification sketch: a **custom** lane
-//! whose tasks carry no dependency edges at all (intake can produce a flat
-//! list) shows all its tasks as one chain in `pr` order instead of omitting
-//! every task as isolated — the prototype renders custom chains as "just
-//! their tasks". Non-custom projects keep the strict isolation rule.
+//! Refinements over the issue's classification sketch:
+//! - **Custom** lanes are never linearized: the prototype renders custom
+//!   chains as "just their tasks", so they always show every task as one
+//!   chain in `pr` order (intake's shells are linear in `pr` order anyway,
+//!   and this keeps loose tasks visible).
+//! - A task whose only deps point at *another project* is not "isolated" —
+//!   readiness sees that edge, so the map must too. It renders as its own
+//!   single-pill chain (waiting) rather than vanishing.
+//! - Projects larger than [`MAX_LINEARIZED_TASKS`] fall back to a flat `pr`
+//!   order chain: the fork step is exponential in stacked diamonds and the
+//!   recursion is depth-bound by the longest chain, so a pathological import
+//!   must not wedge `get_map` (it holds the app-wide store lock) or blow the
+//!   stack. A chain that long is unreadable as pills anyway.
 //!
 //! Import already rejects cycles and graphs are modest, so the recursion
 //! neither guards against cycles nor memoizes shared sub-paths.
@@ -137,6 +145,8 @@ struct ProjectGraph<'a> {
     deps: HashMap<&'a str, Vec<&'a str>>,
     /// Within-project dependents per task.
     dependents: HashMap<&'a str, Vec<&'a str>>,
+    /// Tasks with at least one dep pointing outside the project.
+    foreign: HashSet<&'a str>,
 }
 
 impl<'a> ProjectGraph<'a> {
@@ -147,16 +157,16 @@ impl<'a> ProjectGraph<'a> {
             .collect();
         let mut deps: HashMap<&str, Vec<&str>> = HashMap::new();
         let mut dependents: HashMap<&str, Vec<&str>> = HashMap::new();
+        let mut foreign: HashSet<&str> = HashSet::new();
         for task in project_tasks {
-            let mut ds: Vec<&str> = all_deps
+            let all: Vec<&str> = all_deps
                 .get(&task.id)
-                .map(|v| {
-                    v.iter()
-                        .map(String::as_str)
-                        .filter(|d| pr.contains_key(d))
-                        .collect()
-                })
+                .map(|v| v.iter().map(String::as_str).collect())
                 .unwrap_or_default();
+            let mut ds: Vec<&str> = all.iter().copied().filter(|d| pr.contains_key(d)).collect();
+            if ds.len() < all.len() {
+                foreign.insert(task.id.as_str());
+            }
             ds.sort_by_key(|d| self_pr(&pr, d));
             for dep in &ds {
                 dependents.entry(dep).or_default().push(task.id.as_str());
@@ -167,7 +177,12 @@ impl<'a> ProjectGraph<'a> {
             pr,
             deps,
             dependents,
+            foreign,
         }
+    }
+
+    fn has_foreign_dep(&self, id: &str) -> bool {
+        self.foreign.contains(id)
     }
 
     fn dep_count(&self, id: &str) -> usize {
@@ -192,28 +207,38 @@ fn self_pr(pr: &HashMap<&str, i64>, id: &str) -> i64 {
     *pr.get(id).expect("dep filtered to project tasks")
 }
 
+/// Above this size, a project's chains fall back to a flat `pr`-order list
+/// (module docs: exponential forks + recursion depth on pathological imports).
+const MAX_LINEARIZED_TASKS: usize = 200;
+
+fn flat_path<'a>(project_tasks: &[&'a Task]) -> Vec<RawPath<'a>> {
+    if project_tasks.is_empty() {
+        return Vec::new();
+    }
+    vec![RawPath {
+        ids: project_tasks.iter().map(|t| t.id.as_str()).collect(),
+        joins: Vec::new(),
+    }]
+}
+
 /// All linearized paths of a project, sorted for labelling.
 fn project_paths<'a>(
     project_tasks: &[&'a Task],
     graph: &ProjectGraph<'a>,
     custom: bool,
 ) -> Vec<RawPath<'a>> {
-    let has_edges = project_tasks.iter().any(|t| graph.dep_count(&t.id) > 0);
-    if !has_edges {
-        // Every task is isolated. Custom flat-list fallback (module docs);
-        // non-custom projects vanish from the map.
-        if custom && !project_tasks.is_empty() {
-            return vec![RawPath {
-                ids: project_tasks.iter().map(|t| t.id.as_str()).collect(),
-                joins: Vec::new(),
-            }];
-        }
-        return Vec::new();
+    // Custom lanes are never linearized — the prototype shows all their
+    // tasks in pr order — and oversized projects use the same flat fallback.
+    if custom || project_tasks.len() > MAX_LINEARIZED_TASKS {
+        return flat_path(project_tasks);
     }
     let mut paths = Vec::new();
     for task in project_tasks {
         let id = task.id.as_str();
-        let isolated = graph.dep_count(id) == 0 && graph.is_terminal(id);
+        // Isolated tasks (ds10) vanish; a task whose deps all live in another
+        // project is NOT isolated — it renders as its own waiting chain.
+        let isolated =
+            graph.dep_count(id) == 0 && graph.is_terminal(id) && !graph.has_foreign_dep(id);
         if graph.is_terminal(id) && !isolated {
             paths.extend(linearize(graph, id));
         }
@@ -527,5 +552,50 @@ mod tests {
         assert_eq!(path_letters(25), "Z");
         assert_eq!(path_letters(26), "AA");
         assert_eq!(path_letters(27), "AB");
+    }
+
+    #[test]
+    fn cross_project_only_dep_renders_as_waiting_not_isolated() {
+        // Review m1: readiness sees a cross-project dep, so the map must too.
+        let projects = [project("p", "PROJ", false), project("q", "OTHER", false)];
+        let tasks = [task("p", "p1", 1), task("q", "q1", 1), task("q", "q2", 2)];
+        let deps = dep_map(&[("p1", &["q1"]), ("q2", &["q1"])]);
+        let map = map_view(&projects, &tasks, &deps);
+        let p_chain = map.chains.iter().find(|c| c.label == "PROJ").unwrap();
+        assert_eq!(ids(p_chain), ["p1", "launch"]);
+        let p1 = &p_chain.pills[0];
+        assert!(!p1.ready, "p1 waits on q1 — must not paint ready");
+    }
+
+    #[test]
+    fn custom_lane_with_edges_keeps_loose_tasks_visible() {
+        // Review m2: the prototype flat-lists ALL custom tasks in pr order.
+        let projects = [project("z", "INBOX", true)];
+        let tasks = [task("z", "z1", 1), task("z", "z2", 2), task("z", "z3", 3)];
+        let deps = dep_map(&[("z2", &["z1"])]);
+        let map = map_view(&projects, &tasks, &deps);
+        assert_eq!(map.chains.len(), 1);
+        assert_eq!(
+            ids(&map.chains[0]),
+            ["z1", "z2", "z3"],
+            "no flag, no dropped z3"
+        );
+    }
+
+    #[test]
+    fn oversized_project_falls_back_to_flat_pr_order() {
+        // Review m3/m4: never fork/recurse on pathological imports.
+        let projects = [project("p", "PROJ", false)];
+        let tasks: Vec<Task> = (1..=MAX_LINEARIZED_TASKS + 1)
+            .map(|i| task("p", &format!("p{i}"), i as i64))
+            .collect();
+        let pairs: Vec<(String, Vec<String>)> = (2..=MAX_LINEARIZED_TASKS + 1)
+            .map(|i| (format!("p{i}"), vec![format!("p{}", i - 1)]))
+            .collect();
+        let deps: HashMap<String, Vec<String>> = pairs.into_iter().collect();
+        let map = map_view(&projects, &tasks, &deps);
+        assert_eq!(map.chains.len(), 1);
+        assert_eq!(map.chains[0].pills.len(), MAX_LINEARIZED_TASKS + 2); // + flag
+        assert_eq!(map.chains[0].pills[0].task_id, "p1");
     }
 }
