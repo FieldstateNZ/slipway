@@ -1,0 +1,118 @@
+/* The map overlay — dependency chains as pill rows. Geometry and type
+   transcribed from docs/design/project/"Slipway Sidebar.dc.html"
+   (map template, lines 115–131; pill styling from chainPill). */
+
+.sw-map {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  background: var(--sw-bg-overlay);
+  display: flex;
+  flex-direction: column;
+  animation: swPanelIn var(--sw-dur-panel) ease;
+}
+
+.sw-map-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 18px 24px 4px;
+}
+
+.sw-map-title {
+  font: 600 17px var(--sw-sans);
+  color: var(--sw-text-primary);
+}
+
+.sw-map-tag {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-muted);
+}
+
+.sw-map-spacer {
+  flex: 1;
+}
+
+.sw-map-close {
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+  cursor: pointer;
+}
+
+.sw-map-legend {
+  font: 400 11.5px var(--sw-sans);
+  color: var(--sw-text-muted);
+  padding: 0 24px 6px;
+}
+
+.sw-map-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 24px 16px;
+}
+
+.sw-map-chain {
+  margin-top: 16px;
+}
+
+.sw-map-chain-label {
+  font: 600 9.5px var(--sw-mono);
+  letter-spacing: 0.1em;
+  color: var(--sw-text-muted);
+  margin-bottom: 7px;
+}
+
+.sw-map-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* Pills — base shape shared by all five states. */
+.sw-map-pill {
+  display: inline-flex;
+  align-items: center;
+  background: var(--sw-bg-toast);
+  border: 1px solid var(--sw-border-16);
+  border-radius: var(--sw-radius-7);
+  padding: 4px 9px;
+  font: 500 10.5px var(--sw-mono);
+  white-space: nowrap;
+}
+
+.sw-map-pill-flag {
+  border-style: dashed;
+  border-color: var(--sw-border-25);
+  color: var(--sw-text-muted);
+}
+
+.sw-map-pill-done {
+  border-color: var(--sw-border-10);
+  color: var(--sw-text-faint);
+}
+
+.sw-map-pill-other {
+  border-style: dashed;
+  color: var(--sw-text-muted);
+}
+
+.sw-map-pill-ready {
+  border-color: var(--sw-accent-border-50);
+  color: var(--sw-accent);
+}
+
+.sw-map-pill-waiting {
+  border-style: dashed;
+  color: var(--sw-text-secondary);
+}
+
+/* Arrow separators — borderless, transparent. */
+.sw-map-arrow {
+  font: 500 10.5px var(--sw-mono);
+  color: var(--sw-text-faint);
+}

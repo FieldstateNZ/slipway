@@ -43,6 +43,30 @@ export interface BoardView {
   ready_effort_min: number;
 }
 
+/** One pill in a map chain. Semantics only — labels and styling derive in the frontend. */
+export interface PillView {
+  /** Task id — or the flag text (`launch` / `v0.1`) when `flag` is true. */
+  task_id: string;
+  /** Card-width title; empty on flag pills. */
+  short: string;
+  done: boolean;
+  ready: boolean;
+  owner: Owner;
+  /** True for the trailing ⚑ flag pill. */
+  flag: boolean;
+}
+
+/** One labelled pill row of the map. */
+export interface ChainView {
+  label: string;
+  pills: PillView[];
+}
+
+/** The map overlay payload: chains grouped by project in creation order. */
+export interface MapView {
+  chains: ChainView[];
+}
+
 /** One step inside the task drawer. */
 export interface StepView {
   text: string;

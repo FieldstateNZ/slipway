@@ -9,6 +9,7 @@ use rusqlite::{params, Connection, Row};
 use crate::derive::{self, HintStatus};
 use crate::error::{Error, Result};
 use crate::import::GraphImport;
+use crate::map::{self, MapView};
 use crate::model::{
     BoardView, CaptureEvent, CaptureResult, CaptureView, CompleteResult, Concept,
     ConceptCaptureView, DecisionOptionView, DueRecheck, FocusCard, LaneView, LearnLoop, LedgerRow,
@@ -446,6 +447,15 @@ impl Store {
             ready_count,
             ready_effort_min,
         })
+    }
+
+    /// The map overlay: dependency chains as pill rows, derived per project
+    /// by the branch-aware linearization in [`crate::map`].
+    pub fn map(&self) -> Result<MapView> {
+        let projects = self.load_projects()?;
+        let tasks = self.load_tasks()?;
+        let deps = load_deps(&self.conn)?;
+        Ok(map::map_view(&projects, &tasks, &deps))
     }
 
     /// Full drawer detail for a task. Errors when the task has no learn-loop

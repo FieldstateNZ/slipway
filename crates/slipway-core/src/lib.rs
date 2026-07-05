@@ -10,12 +10,14 @@
 pub mod derive;
 pub mod error;
 pub mod import;
+pub mod map;
 pub mod model;
 pub mod schema;
 pub mod store;
 
 pub use error::{Error, Result};
 pub use import::GraphImport;
+pub use map::{ChainView, MapView, PillView};
 pub use model::{
     BoardView, CaptureResult, CaptureView, CompleteResult, ConceptCaptureView, DecisionOptionView,
     DueRecheck, FocusCard, LaneView, LedgerRow, Owner, RecheckOutcome, RecheckQuestion, StepView,

@@ -2,12 +2,13 @@ import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-libra
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import App from "./App";
-import { getBoard, getTaskDetail, resetAll } from "./lib/ipc/commands";
+import { getBoard, getMap, getTaskDetail, resetAll } from "./lib/ipc/commands";
 import type { BoardView, TaskDetail } from "./lib/ipc/types";
 
 vi.mock("./lib/ipc/commands", () => ({
   getBoard: vi.fn(),
   getTaskDetail: vi.fn(),
+  getMap: vi.fn(),
   resetAll: vi.fn(),
   completeTask: vi.fn(),
   importGraph: vi.fn(),
@@ -95,6 +96,7 @@ beforeEach(() => {
   window.localStorage.clear();
   vi.mocked(getBoard).mockReset();
   vi.mocked(getTaskDetail).mockReset();
+  vi.mocked(getMap).mockReset();
   vi.mocked(resetAll).mockReset();
   vi.mocked(getBoard).mockResolvedValue(board);
   vi.mocked(getTaskDetail).mockResolvedValue(ds1Detail);
@@ -187,5 +189,48 @@ describe("App", () => {
     fireEvent.keyDown(document, { key: "Enter" });
     await waitFor(() => expect(screen.getByText("STEP 2 OF 3")).toBeInTheDocument());
     expect(screen.queryByText("STEP 1 OF 3")).not.toBeInTheDocument();
+  });
+
+  it("g toggles the map overlay and gates the board keys while it shows", async () => {
+    vi.mocked(getMap).mockResolvedValue({
+      chains: [
+        {
+          label: "DECISION STUDIO",
+          pills: [
+            {
+              task_id: "ds1",
+              short: "Short ds1",
+              done: false,
+              ready: true,
+              owner: "you",
+              flag: false,
+            },
+          ],
+        },
+      ],
+    });
+    const { container } = render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    fireEvent.keyDown(document, { key: "g" });
+    await waitFor(() => expect(screen.getByText("The map")).toBeInTheDocument());
+    expect(screen.getByText("on demand, never home")).toBeInTheDocument();
+
+    // Board keys are dead while the overlay shows (prototype semantics):
+    // Enter must not open the drawer behind the map.
+    fireEvent.keyDown(document, { key: "Enter" });
+    expect(getTaskDetail).not.toHaveBeenCalled();
+    expect(container.querySelector(".sw-drawer")).not.toBeInTheDocument();
+
+    // g toggles closed again (consumed by the overlay layer).
+    fireEvent.keyDown(document, { key: "g" });
+    expect(screen.queryByText("The map")).not.toBeInTheDocument();
+
+    // With the drawer open, g must NOT open the map (overlays never cover
+    // an open drawer in the prototype).
+    fireEvent.keyDown(document, { key: "Enter" });
+    await waitFor(() => expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument());
+    fireEvent.keyDown(document, { key: "g" });
+    expect(screen.queryByText("The map")).not.toBeInTheDocument();
   });
 });

@@ -9,6 +9,7 @@ import type {
   CompleteResult,
   DueRecheck,
   LedgerRow,
+  MapView,
   RecheckOutcome,
   TaskDetail,
 } from "./types";
@@ -16,6 +17,11 @@ import type {
 /** Per-lane board data plus the app-level ready summary. */
 export function getBoard(): Promise<BoardView> {
   return invoke("get_board");
+}
+
+/** The map overlay: dependency chains as pill rows, derived per project. */
+export function getMap(): Promise<MapView> {
+  return invoke("get_map");
 }
 
 /** Full drawer detail for a task. */

@@ -5,8 +5,8 @@ use std::sync::{Mutex, MutexGuard};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use slipway_core::{
-    BoardView, CaptureResult, CompleteResult, DueRecheck, LedgerRow, RecheckOutcome, Store,
-    TaskDetail,
+    BoardView, CaptureResult, CompleteResult, DueRecheck, LedgerRow, MapView, RecheckOutcome,
+    Store, TaskDetail,
 };
 use tauri::{Manager, State};
 
@@ -34,6 +34,12 @@ fn err(e: slipway_core::Error) -> String {
 #[tauri::command(rename_all = "snake_case")]
 fn get_board(db: State<'_, Db>) -> CmdResult<BoardView> {
     lock(&db)?.board().map_err(err)
+}
+
+/// The map overlay: dependency chains as pill rows.
+#[tauri::command(rename_all = "snake_case")]
+fn get_map(db: State<'_, Db>) -> CmdResult<MapView> {
+    lock(&db)?.map().map_err(err)
 }
 
 /// Full drawer detail for a task.
@@ -107,6 +113,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             get_board,
+            get_map,
             get_task_detail,
             complete_task,
             get_ledger,

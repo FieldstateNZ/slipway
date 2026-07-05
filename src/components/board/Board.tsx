@@ -30,11 +30,24 @@ export interface BoardProps {
   onOpenTask: (taskId: string) => void;
   /** Send toast text to the footer slot (App owns the timeout). */
   onToast: (toast: string) => void;
+  /**
+   * Gate for the board key layer. The prototype ignores every board key while
+   * a drawer or overlay is open (its handleKey returns inside those branches),
+   * so App disables this layer instead of relying on fall-through.
+   */
+  keysEnabled?: boolean;
   ref?: Ref<BoardHandle>;
 }
 
 /** The home surface: lanes of one. */
-export function Board({ board, refresh, onOpenTask, onToast, ref }: BoardProps) {
+export function Board({
+  board,
+  refresh,
+  onOpenTask,
+  onToast,
+  keysEnabled = true,
+  ref,
+}: BoardProps) {
   const { reducedMotion } = useSettings();
   const lanes = board.lanes;
 
@@ -113,32 +126,36 @@ export function Board({ board, refresh, onOpenTask, onToast, ref }: BoardProps) 
     return true;
   }, [lanes, activeLane, dealOffsets, handleCompleted]);
 
-  useKeyLayer(KEY_PRIORITY.BOARD, (event) => {
-    if (event.metaKey || event.ctrlKey || event.altKey) return false;
-    if (lanes.length === 0) return false;
-    if (/^[1-9]$/.test(event.key)) {
-      const index = Number(event.key) - 1;
-      if (index >= lanes.length) return false;
-      setActiveLane(index);
-      return true;
-    }
-    if (event.key === "Tab") {
-      dealNext();
-      return true;
-    }
-    if (event.key === "Enter") {
-      const lane = lanes[activeLane];
-      if (lane === undefined) return false;
-      const focus = displayedFocus(lane, dealOffsets[lane.key] ?? 0);
-      if (focus === null) return false;
-      onOpenTask(focus.id);
-      return true;
-    }
-    if (import.meta.env.DEV && event.key === "c") {
-      return devComplete();
-    }
-    return false;
-  });
+  useKeyLayer(
+    KEY_PRIORITY.BOARD,
+    (event) => {
+      if (event.metaKey || event.ctrlKey || event.altKey) return false;
+      if (lanes.length === 0) return false;
+      if (/^[1-9]$/.test(event.key)) {
+        const index = Number(event.key) - 1;
+        if (index >= lanes.length) return false;
+        setActiveLane(index);
+        return true;
+      }
+      if (event.key === "Tab") {
+        dealNext();
+        return true;
+      }
+      if (event.key === "Enter") {
+        const lane = lanes[activeLane];
+        if (lane === undefined) return false;
+        const focus = displayedFocus(lane, dealOffsets[lane.key] ?? 0);
+        if (focus === null) return false;
+        onOpenTask(focus.id);
+        return true;
+      }
+      if (import.meta.env.DEV && event.key === "c") {
+        return devComplete();
+      }
+      return false;
+    },
+    keysEnabled,
+  );
 
   const handleImportSeed = () => {
     void (async () => {
