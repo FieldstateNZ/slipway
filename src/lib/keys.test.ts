@@ -196,4 +196,33 @@ describe("useKeyLayer", () => {
     expect(first).not.toHaveBeenCalled();
     expect(second).toHaveBeenCalledTimes(1);
   });
+
+  it("keys typed into editable targets never reach the layers", () => {
+    const handler = vi.fn(() => true);
+    const unregister = registerKeyLayer(KEY_PRIORITY.BOARD, handler);
+
+    for (const tag of ["input", "textarea", "select"]) {
+      const el = document.createElement(tag);
+      document.body.appendChild(el);
+      const event = new KeyboardEvent("keydown", { key: "1", bubbles: true, cancelable: true });
+      el.dispatchEvent(event);
+      expect(handler).not.toHaveBeenCalled();
+      expect(event.defaultPrevented).toBe(false);
+      el.remove();
+    }
+
+    // Sanity: the same key from a non-editable target still dispatches.
+    press("1");
+    expect(handler).toHaveBeenCalledTimes(1);
+    unregister();
+  });
+
+  it("prevents the default action of every handled key, not just Tab", () => {
+    const unregister = registerKeyLayer(KEY_PRIORITY.BOARD, (event) => event.key === "Enter");
+    const handled = press("Enter");
+    expect(handled.defaultPrevented).toBe(true);
+    const unhandled = press("x");
+    expect(unhandled.defaultPrevented).toBe(false);
+    unregister();
+  });
 });

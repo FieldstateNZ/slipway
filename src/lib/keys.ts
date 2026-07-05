@@ -32,7 +32,10 @@ let listenerAttached = false;
 function isEditable(target: EventTarget | null): boolean {
   return (
     target instanceof HTMLElement &&
-    (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)
+    (target.tagName === "INPUT" ||
+      target.tagName === "TEXTAREA" ||
+      target.tagName === "SELECT" ||
+      target.isContentEditable)
   );
 }
 
