@@ -415,6 +415,27 @@ describe("App", () => {
       vi.advanceTimersByTime(1150);
     });
     expect(screen.queryByText("advancing…")).not.toBeInTheDocument();
+
+    // Issue #6 AC5's final link: the ledger now shows the captured concept
+    // at streak 1 (the post-completion fetch feeds the rows).
+    vi.mocked(getLedger).mockResolvedValue([
+      ...ledgerRows,
+      {
+        concept_id: "oidc",
+        name: "oidc trusted publishing",
+        from_task: "ds1",
+        streak: 1,
+        hollow: false,
+        next_display: "~4d",
+        has_question: true,
+      },
+    ]);
+    key("l");
+    await flushMicrotasks();
+    expect(screen.getByText("oidc trusted publishing")).toBeInTheDocument();
+    const row = screen.getByText("oidc trusted publishing").closest(".sw-ledger-row");
+    expect(row?.querySelector(".sw-ledger-streak-fill")?.textContent).toBe("▮");
+    expect(row?.textContent).toContain("ds1 · ~4d");
   });
 
   it("a completed task never restores stale parked state", async () => {

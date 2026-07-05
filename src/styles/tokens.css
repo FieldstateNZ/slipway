@@ -80,6 +80,7 @@
   --sw-radius-10: 10px;
   --sw-radius-12: 12px;
   --sw-radius-13: 13px;
+  --sw-radius-14: 14px; /* drag-curtain inner frame (design line 238) */
   --sw-radius-pill: 999px;
 
   /* Font stacks */

@@ -299,9 +299,7 @@
   height: 100%;
   box-sizing: border-box;
   border: 1.5px dashed var(--sw-accent-border-55);
-  /* Design says 14px; the radius token scale tops out at 13, and tokens.css
-     is frozen for this slice, so the one-off literal stays local. */
-  border-radius: 14px;
+  border-radius: var(--sw-radius-14);
   background: var(--sw-accent-tint-05);
   display: flex;
   flex-direction: column;

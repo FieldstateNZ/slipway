@@ -211,12 +211,21 @@ function AppContent() {
 
   // Ledger "ask me": fetch that concept's question regardless of due-ness.
   // The card renders over the open ledger (quiz z50 above overlay z30).
-  const handleAsk = useCallback((conceptId: string) => {
-    getRecheck(conceptId).then(
-      (recheck) => setQuiz({ recheck, source: "ledger" }),
-      (cause: unknown) => console.error("recheck fetch failed", cause),
-    );
-  }, []);
+  const handleAsk = useCallback(
+    (conceptId: string) => {
+      getRecheck(conceptId).then(
+        (recheck) => setQuiz({ recheck, source: "ledger" }),
+        (cause: unknown) => {
+          // Surface the dead click — the ledger stays open behind the toast.
+          console.error("recheck fetch failed", cause);
+          showToast(
+            `couldn’t load that recheck — ${cause instanceof Error ? cause.message : String(cause)}`,
+          );
+        },
+      );
+    },
+    [showToast],
+  );
 
   const handleQuizAnswered = useCallback(() => {
     // Repaint an open ledger behind the card, and re-ask what's due next.
