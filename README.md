@@ -65,11 +65,14 @@ that task completes instead of on the clock. Full rules:
 | `1`–`4` | capture / recheck | answer the question                         |
 | `s`     | capture           | skip — stays hollow, will ask again         |
 | `Enter` | after a miss      | got it — continue                           |
-| `Esc`   | anywhere          | park the drawer / close the overlay or quiz |
+| `Esc`   | anywhere\*        | park the drawer / close the overlay or quiz |
 | `g`     | board             | toggle the map (dependency chains)          |
 | `l`     | board             | toggle the ledger (learned concepts)        |
 | `i`     | board             | toggle intake                               |
 | `r`     | board             | take the offered 20s recheck                |
+
+\* Once a capture answer is picked, Esc is locked until the completion
+lands — parking mid-dwell would lose a completion already written.
 
 ## JSON import schema
 
@@ -103,6 +106,8 @@ top-level collections:
       "in_progress": false,
       "learn": {
         "before": "20-second framing…",
+        // kind "decision" tasks list their options here instead of steps:
+        // "decision_options": [{ "idx": 0, "title": "…", "body": "…" }],
         "steps": [
           {
             "idx": 0,
@@ -122,7 +127,9 @@ top-level collections:
       },
     },
   ],
-  // optional: pre-seeded learned concepts (synthetic backdated streaks)
+  // optional: pre-seeded learned concepts (synthetic backdated streaks);
+  // "question" ({ question, choices, correct_index, why }) supplies a
+  // standalone recheck quiz for concepts not captured from a task
   "seed_learned": [
     { "concept_id": "ttl", "from_task": "ds3", "streak": 4, "hollow": false, "next": "30d" },
   ],
@@ -138,7 +145,7 @@ dependency cycles are rejected. Details:
 
 ```sh
 pnpm lint && pnpm typecheck && pnpm test   # TypeScript
-cargo fmt --all --check && cargo clippy --workspace --all-targets && cargo test --workspace
+cargo fmt --all --check && cargo clippy --workspace --all-targets -- -D warnings && cargo test --workspace
 ```
 
 The full-app E2E (WebdriverIO + [tauri-driver](https://crates.io/crates/tauri-driver))

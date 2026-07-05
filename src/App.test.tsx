@@ -666,6 +666,53 @@ describe("App", () => {
     );
   });
 
+  it("footer reset clears a held or dropped intake doc (prototype resetAll)", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    // Drop a doc, then close intake — the doc is still held.
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    await waitFor(() => expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument());
+    key("Escape");
+    expect(screen.queryByText("the mouth of the app")).not.toBeInTheDocument();
+
+    // Reset: the pre-reset doc must not survive into the fresh tide.
+    fireEvent.click(screen.getByRole("button", { name: "reset" }));
+    await waitFor(() => expect(resetAll).toHaveBeenCalledTimes(1));
+    key("i");
+    await waitFor(() => expect(screen.getByText("the mouth of the app")).toBeInTheDocument());
+    expect(screen.queryByText("⌘ q3-brief.md")).not.toBeInTheDocument();
+    expect(screen.getByText("drop a doc here — or anywhere on the board")).toBeInTheDocument();
+  });
+
+  it("a stale board can never re-mint an already-used INBOX key", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    // First drop confirms as in1 — but the post-import refresh keeps
+    // returning the OLD board (no in1 lane), as if the refresh failed.
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    await waitFor(() => expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument());
+    key("Enter");
+    await waitFor(() => expect(importGraph).toHaveBeenCalledTimes(1));
+    const first = JSON.parse(vi.mocked(importGraph).mock.calls[0]?.[0] as string) as {
+      projects: { key: string }[];
+    };
+    expect(first.projects[0]?.key).toBe("in1");
+
+    // Second drop: the session watermark must mint in2, not clobber in1.
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    await waitFor(() => expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument());
+    key("Enter");
+    await waitFor(() => expect(importGraph).toHaveBeenCalledTimes(2));
+    const second = JSON.parse(vi.mocked(importGraph).mock.calls[1]?.[0] as string) as {
+      projects: { key: string }[];
+      tasks: { id: string }[];
+    };
+    expect(second.projects[0]?.key).toBe("in2");
+    expect(second.tasks.map((task) => task.id)).toEqual(["in2-1", "in2-2", "in2-3"]);
+  });
+
   it("a drop over an open drawer holds the doc until the drawer closes", async () => {
     render(<App />);
     await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());

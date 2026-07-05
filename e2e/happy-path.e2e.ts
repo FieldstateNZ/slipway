@@ -16,6 +16,22 @@ async function waitForTextContaining(selector: string, text: string): Promise<vo
 
 describe("Slipway v0.1 happy path", () => {
   it("goes first-run → seed → complete ds1 → ledger → map", async () => {
+    // Issue #9 acceptance: "no console errors" through the whole loop.
+    // WebKitWebDriver exposes no log API, so hook the page itself.
+    await browser.execute(() => {
+      const sink: string[] = [];
+      (window as unknown as { __swErrors: string[] }).__swErrors = sink;
+      window.addEventListener("error", (event) => sink.push(String(event.message)));
+      window.addEventListener("unhandledrejection", (event) =>
+        sink.push(`unhandled rejection: ${String(event.reason)}`),
+      );
+      const original = console.error.bind(console);
+      console.error = (...args: unknown[]) => {
+        sink.push(args.map(String).join(" "));
+        original(...args);
+      };
+    });
+
     // First-run empty state: never a blank wall — the seed button and the
     // intake line are both on offer.
     const seedButton = $(".sw-board-empty-btn");
@@ -68,5 +84,12 @@ describe("Slipway v0.1 happy path", () => {
     await browser.keys("g");
     await $(".sw-map").waitForDisplayed();
     await waitForTextContaining(".sw-map-body", "✓ ds1");
+
+    // The whole loop ran without a single console error, page error, or
+    // unhandled rejection.
+    const errors = await browser.execute(
+      () => (window as unknown as { __swErrors: string[] }).__swErrors,
+    );
+    expect(errors).toEqual([]);
   });
 });
