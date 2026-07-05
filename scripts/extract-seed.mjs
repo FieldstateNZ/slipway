@@ -1,6 +1,7 @@
 // Extracts the seed task graph from the authoritative design prototype
 // (docs/design/project/Slipway Sidebar.dc.html) into seed/launch-graph.json.
 // Run: node scripts/extract-seed.mjs
+import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -108,6 +109,8 @@ const seed = {
 
 mkdirSync(join(root, "seed"), { recursive: true });
 writeFileSync(join(root, "seed/launch-graph.json"), JSON.stringify(seed, null, 2) + "\n");
+// Keep the generated file prettier-stable so `pnpm format:check` stays green.
+execFileSync("npx", ["prettier", "--write", "seed/launch-graph.json"], { cwd: root });
 console.log(
   `wrote seed/launch-graph.json: ${projects.length} projects, ${tasks.length} tasks, ${concepts.length} concepts`,
 );

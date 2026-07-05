@@ -187,9 +187,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 10,
-      "deps": [
-        "ds2"
-      ],
+      "deps": ["ds2"],
       "title": "Add DNS CNAME — schema.workspec.io → fieldstatenz.github.io",
       "short": "DNS CNAME → GitHub Pages",
       "sub": "The schema’s permanent public address.",
@@ -242,9 +240,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 2,
-      "deps": [
-        "ds3"
-      ],
+      "deps": ["ds3"],
       "title": "Point GitHub Pages at the custom domain",
       "short": "Point Pages at the domain",
       "sub": "One gh api call — HTTPS enforced.",
@@ -290,9 +286,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 15,
-      "deps": [
-        "ds1"
-      ],
+      "deps": ["ds1"],
       "title": "Register npm trusted publishers — 4 packages",
       "short": "npm trusted publishers ×4",
       "sub": "Four packages, same three fields each.",
@@ -338,9 +332,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 5,
-      "deps": [
-        "ds4"
-      ],
+      "deps": ["ds4"],
       "title": "Verify $schema URL + IntelliSense from a clean editor",
       "short": "Verify $schema + IntelliSense",
       "sub": "The outside-world check.",
@@ -428,10 +420,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 15,
-      "deps": [
-        "ds5",
-        "ds9"
-      ],
+      "deps": ["ds5", "ds9"],
       "title": "Cut the first release",
       "short": "Cut first release",
       "sub": "npm login once, then the pipeline publishes.",
@@ -519,10 +508,7 @@
       "owner": "atlas",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "ds6",
-        "ds7"
-      ],
+      "deps": ["ds6", "ds7"],
       "title": "Marketing page copy",
       "short": "Marketing copy — you skim",
       "sub": "",
@@ -632,10 +618,7 @@
       "owner": "pipeline",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "lm1",
-        "lm5"
-      ],
+      "deps": ["lm1", "lm5"],
       "title": "Staging deploy + live-validation harness",
       "short": "Staging deploy + harness #27",
       "sub": "",
@@ -650,9 +633,7 @@
       "owner": "pipeline",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "lm2"
-      ],
+      "deps": ["lm2"],
       "title": "Run #27 — full live validation",
       "short": "Run #27 live validation",
       "sub": "",
@@ -667,9 +648,7 @@
       "owner": "atlas",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "lm3"
-      ],
+      "deps": ["lm3"],
       "title": "Marketing page copy",
       "short": "Marketing copy — you skim",
       "sub": "",
@@ -737,9 +716,7 @@
       "owner": "atlas",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "sw1"
-      ],
+      "deps": ["sw1"],
       "title": "Design → tech spec + backlog",
       "short": "Design → spec + backlog",
       "sub": "",
@@ -754,9 +731,7 @@
       "owner": "pipeline",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "sw2"
-      ],
+      "deps": ["sw2"],
       "title": "Pipeline builds v0.1",
       "short": "Build v0.1 — Tauri + SQLite",
       "sub": "",
@@ -771,9 +746,7 @@
       "owner": "you",
       "kind": "action",
       "effort_min": 0,
-      "deps": [
-        "sw3"
-      ],
+      "deps": ["sw3"],
       "title": "Dogfood: run both launches through Slipway",
       "short": "Dogfood both launches",
       "sub": "Run the Loom + DS launches through Slipway itself.",
