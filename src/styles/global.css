@@ -1,3 +1,4 @@
+@import "./tokens.css";
 @import "@fontsource/ibm-plex-sans/400.css";
 @import "@fontsource/ibm-plex-sans/500.css";
 @import "@fontsource/ibm-plex-sans/600.css";
@@ -10,18 +11,10 @@ html,
 body {
   margin: 0;
   height: 100%;
-  background: #08090b;
+  background: var(--sw-bg-app);
   overflow: hidden;
 }
 
 #root {
   height: 100%;
-}
-
-.sw-app {
-  position: fixed;
-  inset: 0;
-  background: #08090b;
-  font-family: "IBM Plex Sans", sans-serif;
-  color: #e8eaee;
 }
