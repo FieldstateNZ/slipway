@@ -44,17 +44,18 @@ export function RecheckCard({ recheck, source, onClose, onAnswered }: RecheckCar
       if (picked !== null) return;
       setPicked(index);
       setResolved(index === recheck.correct_index ? "correct" : "miss");
-      clearTimeout(dismissTimer.current);
-      dismissTimer.current = setTimeout(onClose, DISMISS_MS);
       answerRecheck(recheck.concept_id, index).then(
         (result) => {
           setOutcome(result);
           onAnswered(result);
+          // Arm the dismiss only once the write has landed — a slow IPC must
+          // not close the card (and lose the error surface) mid-flight.
+          clearTimeout(dismissTimer.current);
+          dismissTimer.current = setTimeout(onClose, DISMISS_MS);
         },
         (cause: unknown) => {
           // Don't dismiss over a failed write — surface it and stay put.
           console.error("answer recheck failed", cause);
-          clearTimeout(dismissTimer.current);
           setError(cause instanceof Error ? cause.message : String(cause));
         },
       );

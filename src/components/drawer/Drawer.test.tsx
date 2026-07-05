@@ -612,4 +612,46 @@ describe("Drawer — capture phase", () => {
       errorSpy.mockRestore();
     }
   });
+
+  it("a failed correct pick re-opens the question so a retry pick works", async () => {
+    vi.useFakeTimers();
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      vi.mocked(completeTask).mockRejectedValueOnce(new Error("db locked"));
+      vi.mocked(completeTask).mockResolvedValueOnce(ds3Result);
+      const { container, onComplete } = await renderCapture();
+      key("2");
+      await flushMicrotasks();
+      expect(screen.getByText("couldn’t complete — db locked")).toBeInTheDocument();
+      // The choices are idle again — pick once more and finish normally.
+      expect(container.querySelectorAll(".sw-drawer-cap-choice-idle")).toHaveLength(4);
+      key("2");
+      await flushMicrotasks();
+      act(() => {
+        vi.advanceTimersByTime(900);
+      });
+      expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "correct");
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("hides the header park button while a correct pick is mid-dwell", async () => {
+    vi.useFakeTimers();
+    vi.mocked(completeTask).mockResolvedValue(ds3Result);
+    const { onPark, onComplete } = await renderCapture();
+    expect(screen.getByRole("button", { name: "esc parks it ✕" })).toBeInTheDocument();
+
+    key("2");
+    await flushMicrotasks();
+    // Mid-dwell the park affordance is gone — clicking it would swallow a
+    // completion that already landed in SQLite.
+    expect(screen.queryByRole("button", { name: "esc parks it ✕" })).not.toBeInTheDocument();
+    expect(onPark).not.toHaveBeenCalled();
+
+    act(() => {
+      vi.advanceTimersByTime(900);
+    });
+    expect(onComplete).toHaveBeenCalledExactlyOnceWith(ds3Result, "correct");
+  });
 });

@@ -399,3 +399,41 @@ fn reimport_never_resurrects_in_progress_on_done_tasks() {
     // sw1 is done: no ready you-task remains in the lane at all.
     assert!(sw.focus.is_none());
 }
+
+#[test]
+fn miss_capture_round_trips_with_one_day_return() {
+    // Issue #6 AC1: the miss outcome round-trips to SQLite.
+    let mut store = seeded_store();
+    let result = store
+        .complete_task("ds1", CaptureResult::Miss, None, NOW)
+        .unwrap();
+    let capture = result.capture.unwrap();
+    assert_eq!(capture.concept_id, "oidc");
+    assert_eq!(capture.streak, 0);
+    assert!(!capture.hollow);
+    assert_eq!(capture.next_display, "~1d — missed");
+    let row = ledger_row(&store, "oidc");
+    assert_eq!(row.streak, 0);
+    assert_eq!(row.next_display, "~1d — missed");
+    // ...and it comes due one day out.
+    assert!(store.due_recheck(NOW + DAY_SECS).unwrap().is_some());
+}
+
+#[test]
+fn hollow_concept_answered_correctly_unhollows_and_starts_a_streak() {
+    // Issue #6 AC4: a hollow concept's recheck, answered correctly,
+    // un-hollows and starts a streak.
+    let mut store = seeded_store();
+    store
+        .complete_task("ds10", CaptureResult::Hollow, Some(0), NOW)
+        .unwrap();
+    assert!(ledger_row(&store, "guards").hollow);
+
+    // guards' recheck question is ds10's loop question; choice 1 is correct.
+    let outcome = store.answer_recheck("guards", 1, NOW).unwrap();
+    assert!(outcome.correct);
+    assert_eq!(outcome.streak, 1);
+    let row = ledger_row(&store, "guards");
+    assert!(!row.hollow, "a correct recheck un-hollows the concept");
+    assert_eq!(row.streak, 1);
+}

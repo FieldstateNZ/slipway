@@ -186,7 +186,15 @@ export function Drawer({ taskId, restored, onPark, onComplete }: DrawerProps) {
           reducedMotion ? CAPTURE_FINISH_REDUCED_MS : CAPTURE_FINISH_MS,
         );
         // Fire immediately; the response's capture feeds the stamp + toast.
-        submitComplete("correct").then(setCapResult, failComplete);
+        submitComplete("correct").then(setCapResult, (cause: unknown) => {
+          failComplete(cause);
+          // Re-open the question so a retry pick works (the task is not done
+          // — locally-invoked complete_task only rejects without writing).
+          clearTimeout(capTimer.current);
+          setCapState(null);
+          setCapPicked(null);
+          setCapTimerDone(false);
+        });
       } else {
         setCapState("miss");
       }
@@ -221,14 +229,17 @@ export function Drawer({ taskId, restored, onPark, onComplete }: DrawerProps) {
   // what gives the prototype's swallow-everything behavior. Tab is consumed
   // here so focus can't walk onto the drawer's buttons (a focused button
   // turns Enter into a click even with the key handled — see keys.ts).
+  // Deliberate deviation from the prototype (which allows Esc at any point
+  // and aborts the pending finish): here complete_task fires eagerly on a
+  // correct pick, so once a pick landed the park exits are locked — parking
+  // mid-dwell would swallow a completion that already succeeded in SQLite.
+  // A failed complete re-opens the exits so the user is never trapped.
+  const captureLocked =
+    phase === "capture" && (capState !== null || submitting.current) && completeError === null;
+
   useKeyLayer(KEY_PRIORITY.DRAWER, (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return false;
     if (event.key === "Escape") {
-      // Prototype: once a capture pick landed (correct dwell or miss reveal)
-      // only capture keys act — Esc is consumed but does nothing. A failed
-      // complete re-opens the exit so the user is never trapped.
-      const captureLocked =
-        phase === "capture" && (capState !== null || submitting.current) && completeError === null;
       if (!captureLocked) park();
       return true;
     }
@@ -314,9 +325,13 @@ export function Drawer({ taskId, restored, onPark, onComplete }: DrawerProps) {
       <div className="sw-drawer-head">
         <span className="sw-drawer-crumb">{crumb}</span>
         <span className="sw-drawer-head-spacer" />
-        <button type="button" className="sw-drawer-close" onClick={park}>
-          esc parks it ✕
-        </button>
+        {/* Same lock as the Esc key: parking mid-dwell would swallow a
+            completion that already landed in SQLite. */}
+        {!captureLocked && (
+          <button type="button" className="sw-drawer-close" onClick={park}>
+            esc parks it ✕
+          </button>
+        )}
       </div>
 
       {(phase === "steps" || phase === "decision") && (
