@@ -11,9 +11,10 @@ import {
   getMap,
   getRecheck,
   getTaskDetail,
+  importGraph,
   resetAll,
 } from "./lib/ipc/commands";
-import type { BoardView, DueRecheck, LedgerRow, TaskDetail } from "./lib/ipc/types";
+import type { BoardView, DueRecheck, LaneView, LedgerRow, TaskDetail } from "./lib/ipc/types";
 
 vi.mock("./lib/ipc/commands", () => ({
   getBoard: vi.fn(),
@@ -128,6 +129,45 @@ const ttlRecheck: DueRecheck = {
   why: "TTL is just cache lifetime — shorter cache, faster convergence.",
 };
 
+// The custom lane the refreshed board carries after an intake confirm.
+const inboxLane: LaneView = {
+  key: "in1",
+  name: "INBOX — Q3-BRIEF",
+  full_name: "inbox",
+  custom: true,
+  focus: {
+    id: "in1-1",
+    kind: "action",
+    effort_min: 5,
+    in_progress: false,
+    title: "Skim q3-brief.md",
+    short: "Skim q3-brief.md",
+    sub: "imported — refine as you go",
+    frees: "frees in1-2",
+  },
+  queue: [
+    {
+      id: "in1-1",
+      kind: "action",
+      effort_min: 5,
+      in_progress: false,
+      title: "Skim q3-brief.md",
+      short: "Skim q3-brief.md",
+      sub: "imported — refine as you go",
+      frees: "frees in1-2",
+    },
+  ],
+  others_behind: 2,
+  remaining_effort_min: 30,
+};
+
+/** A dropped-file stub shaped like the slice of File the drop handler reads. */
+const briefFile = {
+  name: "q3-brief.md",
+  size: 12288,
+  text: () => Promise.resolve("the brief body"),
+};
+
 const ledgerRows: LedgerRow[] = [
   {
     concept_id: "ttl",
@@ -151,6 +191,8 @@ beforeEach(() => {
   vi.mocked(getDueRecheck).mockReset();
   vi.mocked(getRecheck).mockReset();
   vi.mocked(answerRecheck).mockReset();
+  vi.mocked(importGraph).mockReset();
+  vi.mocked(importGraph).mockResolvedValue(undefined);
   vi.mocked(getBoard).mockResolvedValue(board);
   vi.mocked(getTaskDetail).mockResolvedValue(ds1Detail);
   vi.mocked(resetAll).mockResolvedValue(undefined);
@@ -516,5 +558,137 @@ describe("App", () => {
     // Esc again closes the ledger.
     key("Escape");
     expect(screen.queryByText("Learned")).not.toBeInTheDocument();
+  });
+
+  it("i (and the titlebar +) toggles intake and gates the board keys while it shows", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    key("i");
+    expect(screen.getByText("the mouth of the app")).toBeInTheDocument();
+    expect(screen.getByText("drop a doc here — or anywhere on the board")).toBeInTheDocument();
+    expect(
+      screen.getByText("a brief · a PR list · meeting notes · a wall of text"),
+    ).toBeInTheDocument();
+
+    // Board keys are dead while intake shows.
+    key("Enter");
+    expect(getTaskDetail).not.toHaveBeenCalled();
+
+    // i toggles closed again (consumed by the overlay layer).
+    key("i");
+    expect(screen.queryByText("the mouth of the app")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Intake" }));
+    expect(screen.getByText("the mouth of the app")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Intake" }));
+    expect(screen.queryByText("the mouth of the app")).not.toBeInTheDocument();
+  });
+
+  it("a window drop opens intake pre-filled with the doc and its stubs", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    await waitFor(() => expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument());
+    expect(screen.getByText("the mouth of the app")).toBeInTheDocument();
+    expect(screen.getByText("12 kb")).toBeInTheDocument();
+    expect(screen.getByText("BECOMES")).toBeInTheDocument();
+    expect(screen.getByText("Skim q3-brief.md")).toBeInTheDocument();
+    expect(screen.getAllByText("guess")).toHaveLength(3);
+  });
+
+  it("a text drop truncates the name at 34 chars (prototype line 331)", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    const text = "a wall of text much longer than thirty-four characters";
+    fireEvent.drop(window, { dataTransfer: { files: [], getData: () => text } });
+    await waitFor(() => expect(screen.getByText(`⌘ ${text.slice(0, 34)}…`)).toBeInTheDocument());
+  });
+
+  it("confirming a drop imports, refreshes, selects the new lane, and toasts", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    await waitFor(() => expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument());
+
+    // The refreshed board carries the new custom lane.
+    vi.mocked(getBoard).mockResolvedValue({
+      ...board,
+      lanes: [...board.lanes, inboxLane],
+      ready_count: 5,
+      ready_effort_min: 40,
+    });
+    key("Enter");
+    await waitFor(() => expect(importGraph).toHaveBeenCalledTimes(1));
+    const payload = JSON.parse(vi.mocked(importGraph).mock.calls[0]?.[0] as string) as {
+      projects: { key: string }[];
+      tasks: { id: string }[];
+    };
+    expect(payload.projects[0]?.key).toBe("in1");
+    expect(payload.tasks.map((task) => task.id)).toEqual(["in1-1", "in1-2", "in1-3"]);
+
+    await waitFor(() =>
+      expect(screen.getByText("3 tasks docked — from q3-brief.md")).toBeInTheDocument(),
+    );
+    expect(getBoard).toHaveBeenCalledTimes(2);
+    // Intake closed, and the new lane is the active one (secondary name color).
+    expect(screen.queryByText("the mouth of the app")).not.toBeInTheDocument();
+    const laneName = screen.getByText("INBOX — Q3-BRIEF");
+    await waitFor(() =>
+      expect((laneName as HTMLElement).style.color).toBe("var(--sw-text-secondary)"),
+    );
+    expect((screen.getByText("DECISION STUDIO") as HTMLElement).style.color).toBe(
+      "var(--sw-text-muted)",
+    );
+  });
+
+  it("a drop over an open drawer holds the doc until the drawer closes", async () => {
+    render(<App />);
+    await waitFor(() => expect(screen.getByText("Short ds1")).toBeInTheDocument());
+
+    key("Enter");
+    await waitFor(() => expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument());
+
+    fireEvent.drop(window, { dataTransfer: { files: [briefFile] } });
+    // Let the async file read land: the doc is held, intake stays hidden
+    // (App's rule: overlays never show over an open drawer).
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect(screen.queryByText("the mouth of the app")).not.toBeInTheDocument();
+    expect(screen.getByText("STEP 1 OF 3")).toBeInTheDocument();
+
+    // Esc parks the drawer — intake opens with the held doc.
+    key("Escape");
+    await waitFor(() => expect(screen.getByText("the mouth of the app")).toBeInTheDocument());
+    expect(screen.getByText("⌘ q3-brief.md")).toBeInTheDocument();
+  });
+
+  it("the drag curtain shows on dragover and lifts ~260ms after the drag stops", async () => {
+    vi.useFakeTimers();
+    render(<App />);
+    await flushMicrotasks();
+
+    fireEvent.dragOver(window);
+    expect(screen.getByText("drop it — it becomes tasks")).toBeInTheDocument();
+    expect(screen.getByText("intake opens with the parsed loops")).toBeInTheDocument();
+
+    // Continued dragging keeps resetting the clear timer.
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+    fireEvent.dragOver(window);
+    act(() => {
+      vi.advanceTimersByTime(259);
+    });
+    expect(screen.getByText("drop it — it becomes tasks")).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(screen.queryByText("drop it — it becomes tasks")).not.toBeInTheDocument();
   });
 });

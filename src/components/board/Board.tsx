@@ -21,6 +21,12 @@ export interface BoardHandle {
    * and refetches server state.
    */
   onCompleted: (taskId: string, projectKey: string, toast: string) => void;
+  /**
+   * Activate the lane with this project key (S7 intake confirm). The key is
+   * held until the lane exists on the board, so calling right after a
+   * refresh — before the new lane's props have landed — still selects it.
+   */
+  selectLane: (key: string) => void;
 }
 
 export interface BoardProps {
@@ -55,6 +61,7 @@ export function Board({
   const [dealOffsets, setDealOffsets] = useState<Record<string, number>>({});
   const [dockNonces, setDockNonces] = useState<Record<string, number>>({});
   const [advancing, setAdvancing] = useState<{ laneKey: string; taskId: string } | null>(null);
+  const [pendingLaneKey, setPendingLaneKey] = useState<string | null>(null);
   const advanceTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(advanceTimer.current), []);
@@ -68,10 +75,22 @@ export function Board({
       setDealOffsets({});
       setDockNonces({});
       setAdvancing(null);
+      setPendingLaneKey(null);
     } else if (activeLane >= lanes.length) {
       setActiveLane(0);
     }
   }, [lanes.length, activeLane]);
+
+  // Resolve a requested lane key once the lane is actually on the board
+  // (intake's selectLane can land before the refreshed lanes prop does).
+  useEffect(() => {
+    if (pendingLaneKey === null) return;
+    const index = lanes.findIndex((lane) => lane.key === pendingLaneKey);
+    if (index !== -1) {
+      setActiveLane(index);
+      setPendingLaneKey(null);
+    }
+  }, [lanes, pendingLaneKey]);
 
   const handleCompleted = useCallback(
     (taskId: string, projectKey: string, toast: string) => {
@@ -90,7 +109,11 @@ export function Board({
     [onToast, refresh, reducedMotion],
   );
 
-  useImperativeHandle(ref, () => ({ onCompleted: handleCompleted }), [handleCompleted]);
+  useImperativeHandle(
+    ref,
+    () => ({ onCompleted: handleCompleted, selectLane: setPendingLaneKey }),
+    [handleCompleted],
+  );
 
   const dealNext = useCallback(() => {
     const lane = lanes[activeLane];

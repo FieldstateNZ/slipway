@@ -20,7 +20,8 @@
         "maxWidth": 440,
         "resizable": true,
         "decorations": false,
-        "transparent": false
+        "transparent": false,
+        "dragDropEnabled": false
       }
     ],
     "security": {

@@ -3,11 +3,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Board, type BoardHandle } from "./components/board/Board";
 import { AppShell } from "./components/chrome/AppShell";
 import { Drawer, type DrawerParkSnapshot } from "./components/drawer/Drawer";
+import { DragOverlay } from "./components/intake/DragOverlay";
+import { IntakeOverlay } from "./components/intake/IntakeOverlay";
 import { LedgerOverlay } from "./components/ledger/LedgerOverlay";
 import { MapOverlay } from "./components/map/MapOverlay";
 import { RecheckCard, type QuizSource } from "./components/recheck/RecheckCard";
 import { readySummary } from "./lib/board/present";
 import { useBoard } from "./lib/board/useBoard";
+import { useWindowDrop, type DroppedDoc } from "./lib/intake/useWindowDrop";
 import { getDueRecheck, getRecheck, resetAll } from "./lib/ipc/commands";
 import type { CaptureResult, CompleteResult, DueRecheck } from "./lib/ipc/types";
 import { KEY_PRIORITY, useKeyLayer } from "./lib/keys";
@@ -18,7 +21,7 @@ const TOAST_MS = 5200;
 const RESET_TOAST_MS = 2500;
 
 /** The full-screen overlays; at most one shows (prototype `state.overlay`). */
-type OverlayKind = "map" | "ledger";
+type OverlayKind = "map" | "ledger" | "intake";
 
 /** The quiz card on offer, plus where it came from. */
 interface QuizState {
@@ -37,10 +40,6 @@ function completionToast(result: CompleteResult, outcome: CaptureResult): string
     return `● ${result.capture.name} — captured · resurfaces ${result.capture.next_display}`;
   }
   return `✕ ${result.capture.name} — the why is the win · back ~1d`;
-}
-
-function noop(): void {
-  // Placeholder chrome handler until the intake slice (S7) wires real behavior.
 }
 
 function AppContent() {
@@ -65,7 +64,34 @@ function AppContent() {
   const [dueRecheck, setDueRecheck] = useState<DueRecheck | null>(null);
   const [quiz, setQuiz] = useState<QuizState | null>(null);
 
+  // Intake: the dropped doc lives here (not in the overlay) because drops
+  // land while intake is closed; `intakePending` holds a drop that arrived
+  // over an open drawer until the drawer closes.
+  const [dropped, setDropped] = useState<DroppedDoc | null>(null);
+  const [intakePending, setIntakePending] = useState(false);
+
   const drawerClosed = openTaskId === null;
+
+  // Window-level drag-drop (prototype lines 319–335). The prototype sets
+  // overlay:'intake' on every drop, even with a drawer open (the drawer just
+  // renders above it); App's standing rule is that overlays never show over
+  // a drawer, so a drop while one is open holds the doc and opens intake the
+  // moment the drawer closes — same outcome, no hidden overlay swap.
+  const dragging = useWindowDrop((doc: DroppedDoc) => {
+    setDropped(doc);
+    if (drawerClosed) {
+      setOverlay("intake");
+    } else {
+      setIntakePending(true);
+    }
+  });
+
+  useEffect(() => {
+    if (intakePending && drawerClosed) {
+      setIntakePending(false);
+      setOverlay("intake");
+    }
+  }, [intakePending, drawerClosed]);
 
   useEffect(() => () => clearTimeout(toastTimer.current), []);
 
@@ -164,6 +190,21 @@ function AppContent() {
 
   const closeOverlay = useCallback(() => setOverlay(null), []);
 
+  // Intake confirmed: the payload is already imported. Close intake, drop
+  // the doc, then refresh and activate the new lane before toasting.
+  const handleIntakeConfirmed = useCallback(
+    (projectKey: string | null, toastText: string) => {
+      setOverlay(null);
+      setDropped(null);
+      void (async () => {
+        await refreshAll();
+        if (projectKey !== null) boardRef.current?.selectLane(projectKey);
+        showToast(toastText);
+      })().catch((cause: unknown) => console.error("post-intake refresh failed", cause));
+    },
+    [refreshAll, showToast],
+  );
+
   const openDueRecheck = useCallback(() => {
     if (dueRecheck !== null) setQuiz({ recheck: dueRecheck, source: "recheck" });
   }, [dueRecheck]);
@@ -207,6 +248,10 @@ function AppContent() {
         toggleOverlay("ledger");
         return true;
       }
+      if (event.key === "i") {
+        toggleOverlay("intake");
+        return true;
+      }
       if (event.key === "r" && recheckSlot !== undefined) {
         openDueRecheck();
         return true;
@@ -219,7 +264,7 @@ function AppContent() {
   return (
     <AppShell
       readySummary={board !== null ? readySummary(board) : "0 ready · 0m"}
-      onIntake={noop}
+      onIntake={() => toggleOverlay("intake")}
       onLearned={() => toggleOverlay("ledger")}
       onMap={() => toggleOverlay("map")}
       toast={toast}
@@ -237,6 +282,15 @@ function AppContent() {
         />
       )}
       <MapOverlay open={overlay === "map"} onClose={closeOverlay} version={mapVersion} />
+      <IntakeOverlay
+        open={overlay === "intake"}
+        onClose={closeOverlay}
+        dropped={dropped}
+        onDiscard={() => setDropped(null)}
+        customCount={board?.lanes.filter((lane) => lane.custom).length ?? 0}
+        lanes={board?.lanes.map(({ key, name }) => ({ key, name })) ?? []}
+        onConfirmed={handleIntakeConfirmed}
+      />
       <LedgerOverlay
         open={overlay === "ledger"}
         onClose={closeOverlay}
@@ -261,6 +315,7 @@ function AppContent() {
           onAnswered={handleQuizAnswered}
         />
       )}
+      {dragging && <DragOverlay />}
     </AppShell>
   );
 }
